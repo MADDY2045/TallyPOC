@@ -11,14 +11,13 @@
 </head>
 <body class="text-center">
     <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
-    <h1 class="cover-heading">Table Example</h1>
+    <h1 class="cover-heading">Transaction Details</h1>
     <div class="container bg-light text-dark">
     <table class="table table-striped">
     <thead>
     <tr>
     <th>Tally ID</th>
     <th>Voucher Number</th>
-    <th>Amount</th>
     <th>Date</th>
     </tr>
     </thead>
@@ -27,7 +26,6 @@
     <tr>
     <td><%=entry.tallyid%></td>
     <td><%=entry.vchnumber%></td>
-    <td><%=entry.amount%></td>
     <td><%=entry.date%></td>
     <td><a class="btn btn-primary" href="http://localhost:5050/test/<%=entry.tallyid%>">cancel</a></td>
     </tr>
