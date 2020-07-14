@@ -15,44 +15,46 @@ var xmlstring = '<ENVELOPE><HEADER><TALLYREQUEST>Export Data</TALLYREQUEST></HEA
 
 
 app.get('/test',(req,res)=>{
-    axios({
-        url:'http://localhost:9000',
-        method:'POST',
-        headers:{
-            ContentType: 'text/xml',
-            charset:'UTF-8',
-        },
-        data:xmlstring
-    }).then(response=>{
-        //console.log(response.data);
+    try{
+        axios({
+            url:'http://localhost:9000',
+            method:'POST',
+            headers:{
+                ContentType: 'text/xml',
+                charset:'UTF-8',
+            },
+            data:xmlstring
+        }).then(response=>{
+            //console.log(response.data);
 
-        parseString(response.data, function (err, result) {
-            if(result.ENVELOPE.BODY[0].IMPORTDATA[0].REQUESTDATA[0].TALLYMESSAGE && result.ENVELOPE.BODY[0].IMPORTDATA[0].REQUESTDATA[0].TALLYMESSAGE.length>0){
+            parseString(response.data, function (err, result) {
+                if(result.ENVELOPE.BODY[0].IMPORTDATA[0].REQUESTDATA[0].TALLYMESSAGE && result.ENVELOPE.BODY[0].IMPORTDATA[0].REQUESTDATA[0].TALLYMESSAGE.length>0){
 
 
-                result.ENVELOPE.BODY[0].IMPORTDATA[0].REQUESTDATA[0].TALLYMESSAGE.pop();
-            let exportData = result.ENVELOPE.BODY[0].IMPORTDATA[0].REQUESTDATA[0].TALLYMESSAGE;
-            let tempArr = [];
-            exportData.map(item=>{
-                if(item.VOUCHER[0].ISCANCELLED !='Yes'){
-                    let tempObj={};
-                    tempObj['tallyid']=item.VOUCHER[0].MASTERID[0].trim();
-                    tempObj['vchnumber']=item.VOUCHER[0].VOUCHERNUMBER[0];
-                    tempObj['date']=item.VOUCHER[0].DATE[0];
-                    tempObj['amount']=item.VOUCHER[0]['ALLINVENTORYENTRIES.LIST'][0].AMOUNT[0];
-                    console.log(item.VOUCHER[0].$.VCHTYPE);
-                    tempArr.push(tempObj);
-                }
+                    result.ENVELOPE.BODY[0].IMPORTDATA[0].REQUESTDATA[0].TALLYMESSAGE.pop();
+                let exportData = result.ENVELOPE.BODY[0].IMPORTDATA[0].REQUESTDATA[0].TALLYMESSAGE;
+                let tempArr = [];
+                exportData.map(item=>{
+                    if(item.VOUCHER[0].ISCANCELLED !='Yes'){
+                        let tempObj={};
+                        tempObj['tallyid']=item.VOUCHER[0].MASTERID[0].trim();
+                        tempObj['vchnumber']=item.VOUCHER[0].VOUCHERNUMBER[0];
+                        tempObj['date']=item.VOUCHER[0].DATE[0];
+                        tempObj['amount']=item.VOUCHER[0]['ALLINVENTORYENTRIES.LIST'][0].AMOUNT[0];
+                        console.log(item.VOUCHER[0].$.VCHTYPE);
+                        tempArr.push(tempObj);
+                    }
 
-            })
-            res.render('pages/home',{
-                table:tempArr
                 })
-            }else{
-                res.send("no arrays!!!");
-            }
-        });
-    }).catch(err=>console.log(err));
+                res.render('pages/home',{
+                    table:tempArr
+                    })
+                }else{
+                    res.send("no arrays!!!");
+                }
+            });
+        }).catch(err=>console.log(err));
+    }catch(error){ res.send("Please turn on Tally Instance!!!")}
 })
 
 app.get('/test/:id', (req, res) => {
@@ -84,7 +86,7 @@ app.get('/test/:id', (req, res) => {
                         let vouchernumber = item.VOUCHER[0].VOUCHERNUMBER;
                         let vchtype = item.VOUCHER[0].$.VCHTYPE
                         //axios goes here
-                        let cancelVoucher = `<ENVELOPE><HEADER><TALLYREQUEST>Import Data</TALLYREQUEST></HEADER><BODY><IMPORTDATA><REQUESTDESC><REPORTNAME>All Masters</REPORTNAME></REQUESTDESC><REQUESTDATA><TALLYMESSAGE xmlns:UDF="TallyUDF"><VOUCHER DATE="01-April-2019" TAGNAME = "Voucher Number" TAGVALUE="${vouchernumber}" VCHTYPE = "${vchtype}" ACTION="Cancel"><NARRATION>Cancelled by Madhavan</NARRATION></VOUCHER></TALLYMESSAGE></REQUESTDATA></IMPORTDATA></BODY></ENVELOPE>`;
+                        let cancelVoucher = `<ENVELOPE><HEADER><TALLYREQUEST>Import Data</TALLYREQUEST></HEADER><BODY><IMPORTDATA><REQUESTDESC><REPORTNAME>All Masters</REPORTNAME><STATICVARIABLES><VOUCHERTYPENAME>${vchtype}</VOUCHERTYPENAME></STATICVARIABLES></REQUESTDESC><REQUESTDATA><TALLYMESSAGE xmlns:UDF="TallyUDF"><VOUCHER DATE="01-April-2019" TAGNAME = "Voucher Number" TAGVALUE="${vouchernumber}" VCHTYPE = "${vchtype}" ACTION="Cancel"><NARRATION>Cancelled by Madhavan</NARRATION></VOUCHER></TALLYMESSAGE></REQUESTDATA></IMPORTDATA></BODY></ENVELOPE>`;
                         console.log(cancelVoucher);
                         axios({
                             url:'http://localhost:9000',
