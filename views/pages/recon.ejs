@@ -10,8 +10,8 @@
     <title>Document</title>
     <style>
         td{
-            min-width: 30px;
-            max-width: 30px;
+            min-width: 35px;
+            max-width: auto;
         }
     </style>
 </head>
@@ -114,16 +114,16 @@
                         </thead>
                         <tbody>
                           <tr>
-                            <td>100</td>
-                            <td>20</td>
-                            <td>30</td>
-                            <td>40</td>
-                            <td>10</td>
-                            <td>0</td>
-                            <td>12</td>
-                            <td>18</td>
-                            <td>27</td>
-                            <td>26</td>
+                            <td><%= table[0]['Sales'].length %></td>
+                            <td><%= table[1]['Purchase'].length %></td>
+                            <td><%= table[2]['Delivery Note'].length %></td>
+                            <td><%= table[3]['Receipt Note'].length %></td>
+                            <td><%= table[4]['Journal'].length %></td>
+                            <td><%= table[5]['Receipt'].length %></td>
+                            <td><%= table[6]['Payment'].length %></td>
+                            <td><%= table[7]['Credit Note'].length %></td>
+                            <td><%= table[8]['Debit Note'].length %></td>
+                            <td><%= table[9]['Stock Journal'].length %></td>
                           </tr>
 
 
@@ -148,17 +148,17 @@
                           </tr>
                         </thead>
                         <tbody>
-                          <tr>
-                            <td>100</td>
-                            <td>20</td>
-                            <td>30</td>
-                            <td>40</td>
-                            <td>10</td>
-                            <td>0</td>
-                            <td>12</td>
-                            <td>18</td>
-                            <td>27</td>
-                            <td>26</td>
+                          <tr >
+                            <td><%= table[0].amount %></td>
+                            <td><%= table[1].amount %></td>
+                            <td><%= table[2].amount %></td>
+                            <td><%= table[3].amount %></td>
+                            <td><%= table[4].amount %></td>
+                            <td><%= table[5].amount %></td>
+                            <td><%= table[6].amount %></td>
+                            <td><%= table[7].amount %></td>
+                            <td><%= table[8].amount %></td>
+                            <td><%= table[9].amount %></td>
                           </tr>
 
 

@@ -11,7 +11,7 @@ app.set('view engine', 'ejs');
 app.use(express.static('./public'));
 
 const port = 5050;
-var xmlstring = '<ENVELOPE><HEADER><TALLYREQUEST>Export Data</TALLYREQUEST></HEADER><BODY><EXPORTDATA><REQUESTDESC><REPORTNAME>Day Book</REPORTNAME><STATICVARIABLES><SVEXPORTFORMAT>$$SysName:XML</SVEXPORTFORMAT></STATICVARIABLES></REQUESTDESC></EXPORTDATA></BODY></ENVELOPE>';
+var xmlstring = '<ENVELOPE><HEADER><TALLYREQUEST>Export Data</TALLYREQUEST></HEADER><BODY><EXPORTDATA><REQUESTDESC><REPORTNAME>Day Book</REPORTNAME><STATICVARIABLES><SVEXPORTFORMAT>$$SysName:XML</SVEXPORTFORMAT><SVCURRENTCOMPANY>Main</SVCURRENTCOMPANY><SVFROMDATE>20190401</SVFROMDATE><SVTODATE>20190401</SVTODATE></STATICVARIABLES></REQUESTDESC></EXPORTDATA></BODY></ENVELOPE>';
 
 app.get('/',(req,res)=>{
     // res.render('pages/recon');
@@ -41,36 +41,43 @@ app.get('/',(req,res)=>{
                                                      tempObj['date']=item.VOUCHER[0].DATE[0];
                                                     //   tempObj['items']=[];
                                                     //   tempObj['items'].push(item.VOUCHER[0]);
-                                                     //tempObj['amount']=item.VOUCHER[0]['ALLINVENTORYENTRIES.LIST'][0].AMOUNT[0];
+                                                    if(item.VOUCHER[0]['ALLINVENTORYENTRIES.LIST']){
+                                                        tempObj['amount']=item.VOUCHER[0]['ALLINVENTORYENTRIES.LIST'][0].AMOUNT[0];
+                                                    }else if(item.VOUCHER[0]['ALLLEDGERENTRIES.LIST']){
+                                                        tempObj['amount']=item.VOUCHER[0]['ALLLEDGERENTRIES.LIST'][0].AMOUNT[0];
+                                                    }else{
+                                                        tempObj['amount']=item.VOUCHER[0]['INVENTORYENTRIESIN.LIST'][0].AMOUNT[0];
+                                                    }
+
                                                      tempArr.push(tempObj);
                                                  }
 
                                              })
                                              let tallyArrayObj=[
-                                                 {'Sales':[]},
-                                                 {'Purchase':[]},
-                                                 {'Delivery Note':[]},
-                                                 {'Receipt Note':[]},
-                                                 {'Journal':[]},
-                                                 {'Receipt':[]},
-                                                 {'Payment':[]},
-                                                 {'Credit Note':[]},
-                                                 {'Debit Note':[]},
-                                                 {'Stock Journal':[]}
+                                                 {'Sales':[],amount:0},
+                                                 {'Purchase':[],amount:0},
+                                                 {'Delivery Note':[],amount:0},
+                                                 {'Receipt Note':[],amount:0},
+                                                 {'Journal':[],amount:0},
+                                                 {'Receipt':[],amount:0},
+                                                 {'Payment':[],amount:0},
+                                                 {'Credit Note':[],amount:0},
+                                                 {'Debit Note':[],amount:0},
+                                                 {'Stock Journal':[],amount:0}
                                                 ];
                                              tempArr.map(item=>{
-                                                //  console.log(item)
                                                  tallyArrayObj.map(obj=>{
                                                      let keys=Object.keys(obj);
-                                                    //  console.log(keys[0]);
+
                                                      if(item.vouchertype==keys[0]){
+                                                        obj[keys[1]] += Number(item.amount);
                                                         obj[keys[0]].push(item);
                                                      }
 
                                                  })
 
                                              })
-                            console.log(tallyArrayObj)
+                            console.log(tallyArrayObj);
                             res.render('pages/recon',{table:tallyArrayObj})
                         })
 
