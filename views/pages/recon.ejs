@@ -14,10 +14,34 @@
             max-width: auto;
         }
     </style>
+    <script type="text/javascript">
+    function myFunction() {
+    var x = document.getElementById("mySelect").selectedIndex;
+    // alert(document.getElementsByTagName("option")[x].value);
+    document.getElementById("aid").href = `http://localhost:5050/getrecondetails/${document.getElementsByTagName("option")[x].value}`;
+    alert(document.getElementById("aid").href);
+
+}
+    </script>
 </head>
 <body>
     <div style="margin: 0px 45px 45px 45px;">
-        <a class="btn btn-primary mt-5" href="http://">Reconcile</a>
+
+      <a id="aid" class="btn btn-primary" href="" type="button" onclick="myFunction()">Reconcile</a>
+        <select id="mySelect"
+                    <option selected>Choose Transaction</option>
+                    <option value="All">All</option>
+                    <option value="Sales">Sales Invoice</option>
+                    <option value="Purchase">Purchase Invoice</option>
+                    <option value="Delivery Note">Delivery Note</option>
+                    <option value="Receipt Note">Receipt Note</option>
+                    <option value="Journal">Journal Voucher</option>
+                    <option value="Receipt">Receipt Voucher</option>
+                    <option value="Payment">Payment Voucher</option>
+                    <option value="Credit Note">Credit Note</option>
+                    <option value="Debit Note">Debit Note</option>
+                    <option value="Stock Journal">Stock Journal</option>
+                </select>
         <div class="row mt-5" style="min-height: 650px;margin: auto;">
             <div class="col-md-6 card " style="background:#efefef">
                 <h1 style="text-align:center;position: relative;top:20px">GS APP</h1>
@@ -40,16 +64,16 @@
                         </thead>
                         <tbody>
                           <tr>
-                            <td>100</td>
-                            <td>20</td>
-                            <td>30</td>
-                            <td>40</td>
-                            <td>10</td>
-                            <td>0</td>
-                            <td>12</td>
-                            <td>18</td>
-                            <td>27</td>
-                            <td>26</td>
+                            <td><%= table2[0]['Sales'].length %></td>
+                            <td><%= table2[1]['Purchase'].length %></td>
+                            <td><%= table2[2]['Delivery Note'].length %></td>
+                            <td><%= table2[3]['Receipt Note'].length %></td>
+                            <td><%= table2[4]['Journal'].length %></td>
+                            <td><%= table2[5]['Receipt'].length %></td>
+                            <td><%= table2[6]['Payment'].length %></td>
+                            <td><%= table2[7]['Credit Note'].length %></td>
+                            <td><%= table2[8]['Debit Note'].length %></td>
+                            <td><%= table2[9]['Stock Journal'].length %></td>
                           </tr>
 
 
@@ -74,17 +98,17 @@
                           </tr>
                         </thead>
                         <tbody>
-                          <tr>
-                            <td>100</td>
-                            <td>20</td>
-                            <td>30</td>
-                            <td>40</td>
-                            <td>10</td>
-                            <td>0</td>
-                            <td>12</td>
-                            <td>18</td>
-                            <td>27</td>
-                            <td>26</td>
+                          <tr >
+                            <td><%= table2[0].amount %></td>
+                            <td><%= table2[1].amount %></td>
+                            <td><%= table2[2].amount %></td>
+                            <td><%= table2[3].amount %></td>
+                            <td><%= table2[4].amount %></td>
+                            <td><%= table2[5].amount %></td>
+                            <td><%= table2[6].amount %></td>
+                            <td><%= table2[7].amount %></td>
+                            <td><%= table2[8].amount %></td>
+                            <td><%= table2[9].amount %></td>
                           </tr>
 
 
