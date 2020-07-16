@@ -42,6 +42,7 @@ app.get('/test',(req,res)=>{
                         tempObj['tallyid']=item.VOUCHER[0].MASTERID[0].trim();
                         tempObj['vchnumber']=item.VOUCHER[0].VOUCHERNUMBER[0];
                         tempObj['date']=item.VOUCHER[0].DATE[0];
+                        tempObj['vouchertype']=item.VOUCHER[0].$.VCHTYPE;
                         //tempObj['amount']=item.VOUCHER[0]['ALLINVENTORYENTRIES.LIST'][0].AMOUNT[0];
                         tempArr.push(tempObj);
                     }
