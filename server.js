@@ -27,7 +27,7 @@ app.get('/',getGsApp,(req,res)=>{
                                                  if(item.VOUCHER[0].ISCANCELLED !='Yes'){
                                                      let tempObj={};
                                                      tempObj['tallyid']=item.VOUCHER[0].MASTERID[0].trim();
-                                                     tempObj['vchnumber']=item.VOUCHER[0].VOUCHERNUMBER[0];
+                                                     tempObj['vouchernumber']=item.VOUCHER[0].VOUCHERNUMBER[0];
                                                      tempObj['vouchertype']=item.VOUCHER[0].$.VCHTYPE;
                                                      tempObj['date']=item.VOUCHER[0].DATE[0];
                                                     //   tempObj['items']=[];
@@ -91,7 +91,7 @@ app.get('/getrecondetails/:id',getGsApp,(req,res)=>{
                                                      if(item.VOUCHER[0].ISCANCELLED !='Yes'){
                                                          let tempObj={};
                                                          tempObj['tallyid']=item.VOUCHER[0].MASTERID[0].trim();
-                                                         tempObj['vchnumber']=item.VOUCHER[0].VOUCHERNUMBER[0];
+                                                         tempObj['vouchernumber']=item.VOUCHER[0].VOUCHERNUMBER[0];
                                                          tempObj['vouchertype']=item.VOUCHER[0].$.VCHTYPE;
                                                          tempObj['date']=item.VOUCHER[0].DATE[0];
                                                         //   tempObj['items']=[];
@@ -151,7 +151,7 @@ app.get('/getrecondetails/:id',getGsApp,(req,res)=>{
                                                      if(item.VOUCHER[0].ISCANCELLED !='Yes' && item.VOUCHER[0].$.VCHTYPE==searchvoucher){
                                                          let tempObj={};
                                                          tempObj['tallyid']=item.VOUCHER[0].MASTERID[0].trim();
-                                                         tempObj['vchnumber']=item.VOUCHER[0].VOUCHERNUMBER[0];
+                                                         tempObj['vouchernumber']=item.VOUCHER[0].VOUCHERNUMBER[0];
                                                          tempObj['vouchertype']=item.VOUCHER[0].$.VCHTYPE;
                                                          tempObj['date']=item.VOUCHER[0].DATE[0];
                                                         //   tempObj['items']=[];
@@ -214,7 +214,23 @@ app.get('/getrecondetails/:id',getGsApp,(req,res)=>{
 
                                                     })
                                                     //res.send(tallyAppArr);
-                                                    res.render('pages/recon',{table:tallyAppArr,table2:GsAppArray,message:true,vouchername:searchvoucher});
+                                                    const compareName = (obj1, obj2)=>{
+                                                        return (obj1.tallyid === obj2.tallyid);
+                                                      }
+                                                      let output1=[];
+                                                      let output2=[];
+                                                        output1 = tallyAppArr[0][searchvoucher].filter(b=>{
+                                                            let indexFound = GsAppArray[0][searchvoucher].findIndex(a => compareName(a, b));
+                                                            return indexFound == -1;
+                                                          })
+
+                                                         output2 = GsAppArray[0][searchvoucher].filter(b=>{
+                                                            let indexFound = tallyAppArr[0][searchvoucher].findIndex(a => compareName(a, b));
+                                                            return indexFound == -1;
+                                                          })
+
+                                                    //res.send(missingVoucher);
+                                                    res.render('pages/recon',{table:tallyAppArr,table2:GsAppArray,message:true,vouchername:searchvoucher,missingvouchertally:output1,missingvouchergs:output2});
                                                 })
                         }).catch(err=>console.log(err));
 

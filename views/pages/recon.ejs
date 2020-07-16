@@ -15,16 +15,6 @@
         }
     </style>
     <script type="text/javascript">
-    //  window.onbeforeunload = function(e) {
-    //     // Turning off the event
-    //     e.preventDefault();
-    // }
-    // $(document).ready(function(){
-    //   $("#aid").submit(function(e) {
-    //   e.preventDefault();
-    // });
-    // })
-
     function myFunction() {
     var x = document.getElementById("mySelect").selectedIndex;
     document.getElementById("aid").href = `http://localhost:5050/getrecondetails/${document.getElementsByTagName("option")[x].value}`;
@@ -201,7 +191,7 @@
                     </div>
                 </div>
               <% } else{ %>
-                <div class="row mt-5" style="min-height: 650px;margin: auto;">
+                <div class="row mt-5" style="min-height: 150px;margin: auto;width:600px;">
                   <div class="col-md-6 card " style="background:#efefef">
                       <h1 style="text-align:center;position: relative;top:20px">GS APP</h1>
                       <h4 style="position: relative;top: 50px;">Total Vouchers</h4>
@@ -270,6 +260,56 @@
                             </table>
                       </div>
                   </div>
+                  <div class="col-md-6 mt-4 card" style="background:#efefef">
+                    <h4 style="position: relative;top:15px">In GS App</h4>
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered mt-3" >
+                            <thead>
+                              <tr>
+                                <th>Missing Vouchers</th>
+                                <th>Amount</th>
+                                <th>Date</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                                <% missingvouchertally.forEach( card => { %>
+                                  <tr>
+                                  <td><%= card.vouchernumber %></td>
+                                  <td><%= card.amount %></td>
+                                  <td><%= card.date %></td>
+                                  </tr>
+                              <% }) %>
+
+                        </tbody>
+                          </table>
+                    </div>
+                </div>
+                <div class="col-md-6 mt-4 card" style="background:#efefef">
+                  <h4 style="position: relative;top:15px">In Tally App</h4>
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered mt-3" >
+                          <thead>
+                            <tr>
+                              <th>Missing Vouchers</th>
+                              <th>Amount</th>
+                              <th>Date</th>
+                          </tr>
+                          </thead>
+                          <tbody>
+
+                              <% missingvouchergs.forEach( card => { %>
+                                <tr>
+                                <td><%= card.vouchernumber %></td>
+                                <td><%= card.amount %></td>
+                                <td><%= card.date %></td>
+                                </tr>
+                            <% }) %>
+
+                      </tbody>
+                        </table>
+                  </div>
+              </div>
               </div>
               <% } %>
 
