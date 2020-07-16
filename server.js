@@ -29,7 +29,7 @@ app.get('/test',(req,res)=>{
 
             parseString(response.data, function (err, result) {
 
-                console.log('result is ',result.ENVELOPE.BODY[0].IMPORTDATA[0].REQUESTDATA[0].TALLYMESSAGE && result.ENVELOPE.BODY[0].IMPORTDATA[0].REQUESTDATA[0].TALLYMESSAGE);
+                // console.log('result is ',result.ENVELOPE.BODY[0].IMPORTDATA[0].REQUESTDATA[0].TALLYMESSAGE && result.ENVELOPE.BODY[0].IMPORTDATA[0].REQUESTDATA[0].TALLYMESSAGE);
                 if(result.ENVELOPE.BODY[0].IMPORTDATA[0].REQUESTDATA[0].TALLYMESSAGE && result.ENVELOPE.BODY[0].IMPORTDATA[0].REQUESTDATA[0].TALLYMESSAGE.length>0){
 
 
@@ -87,7 +87,31 @@ app.get('/test/:id', (req, res) => {
                         let vouchernumber = item.VOUCHER[0].VOUCHERNUMBER;
                         let vchtype = item.VOUCHER[0].$.VCHTYPE
                         //axios goes here
-                        let cancelVoucher = `<ENVELOPE><HEADER><TALLYREQUEST>Import Data</TALLYREQUEST></HEADER><BODY><IMPORTDATA><REQUESTDESC><REPORTNAME>All Masters</REPORTNAME><STATICVARIABLES><VOUCHERTYPENAME>${vchtype}</VOUCHERTYPENAME></STATICVARIABLES></REQUESTDESC><REQUESTDATA><TALLYMESSAGE xmlns:UDF="TallyUDF"><VOUCHER DATE="01-April-2019" TAGNAME = "Voucher Number" TAGVALUE="${vouchernumber}" VCHTYPE = "${vchtype}" ACTION="Cancel"><VOUCHERNUMBER>null</VOUCHERNUMBER><NARRATION>Cancelled by Madhavan</NARRATION></VOUCHER></TALLYMESSAGE></REQUESTDATA></IMPORTDATA></BODY></ENVELOPE>`;
+                        let cancelVoucher = `<ENVELOPE>
+                        <HEADER>
+                        <TALLYREQUEST>Import Data</TALLYREQUEST>
+                        </HEADER>
+                        <BODY>
+                        <IMPORTDATA>
+                        <REQUESTDESC>
+                        <REPORTNAME>All Masters</REPORTNAME>
+                        <STATICVARIABLES>
+                        <VOUCHERTYPENAME>${vchtype.toUpperCase()}</VOUCHERTYPENAME>
+                        </STATICVARIABLES>
+                        </REQUESTDESC>
+                        <REQUESTDATA>
+                        <TALLYMESSAGE xmlns:UDF="TallyUDF">
+<VOUCHER DATE="01-April-2019" TAGNAME = "Voucher Number" TAGVALUE="${vouchernumber}" VCHTYPE = "${vchtype}" ACTION="Cancel">
+                        <VOUCHERNUMBER>null</VOUCHERNUMBER>
+                        <NARRATION>Cancelled by Madhavan</NARRATION>
+                        </VOUCHER>
+                        </TALLYMESSAGE>
+                        </REQUESTDATA>
+                        </IMPORTDATA>
+                        </BODY>
+                        </ENVELOPE>`;
+
+                        console.log(cancelVoucher);
                         axios({
                             url:'http://localhost:9000',
                             method:'POST',
