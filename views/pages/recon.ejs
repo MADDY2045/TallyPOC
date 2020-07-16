@@ -24,8 +24,11 @@
 <body>
     <div style="margin: 0px 45px 45px 45px;">
 
-      <a id="aid" class="btn btn-primary" href="" type="button" onclick="myFunction()">Reconcile</a>
+      <a
+      style="width: 250px;position: relative;top:30px;height: 40px;"
+      id="aid" class="btn btn-primary" href="" type="button" onclick="myFunction()">Reconcile</a>
         <select id="mySelect"
+                    style="width: 250px;position: relative;top:32px;height: 40px;"
                     <option selected>Choose Transaction</option>
                     <option value="All">All</option>
                     <option value="Sales">Sales Invoice</option>
@@ -191,7 +194,7 @@
                     </div>
                 </div>
               <% } else{ %>
-                <div class="row mt-5" style="min-height: 150px;margin: auto;width:600px;">
+                <div class="row mt-5" style="min-height: 150px;margin: auto;width:900px;">
                   <div class="col-md-6 card " style="background:#efefef">
                       <h1 style="text-align:center;position: relative;top:20px">GS APP</h1>
                       <h4 style="position: relative;top: 50px;">Total Vouchers</h4>
@@ -263,11 +266,12 @@
                   <div class="col-md-6 mt-4 card" style="background:#efefef">
                     <h4 style="position: relative;top:15px">In GS App</h4>
                     <div class="table-responsive">
-                        <table class="table table-striped table-bordered mt-3" >
+                        <table class="table table-striped table-bordered mt-3" style="overflow: scroll">
                             <thead>
                               <tr>
                                 <th>Missing Vouchers</th>
                                 <th>Amount</th>
+                                <th>Tallyid</th>
                                 <th>Date</th>
                             </tr>
                             </thead>
@@ -277,10 +281,11 @@
                                   <tr>
                                   <td><%= card.vouchernumber %></td>
                                   <td><%= card.amount %></td>
+                                  <td><%= card.tallyid %></td>
                                   <td><%= card.date %></td>
                                   </tr>
                               <% }) %>
-
+                              <button style="position: relative;top:0px;left:150px" class="btn btn-primary">Delete From Tally</button>
                         </tbody>
                           </table>
                     </div>
@@ -293,6 +298,7 @@
                             <tr>
                               <th>Missing Vouchers</th>
                               <th>Amount</th>
+                              <th>Tallyid</th>
                               <th>Date</th>
                           </tr>
                           </thead>
@@ -302,10 +308,11 @@
                                 <tr>
                                 <td><%= card.vouchernumber %></td>
                                 <td><%= card.amount %></td>
+                                <td><%= card.tallyid %></td>
                                 <td><%= card.date %></td>
                                 </tr>
                             <% }) %>
-
+                        <button style="position: relative;top:0px;left:150px" class="btn btn-primary">Resync</button>
                       </tbody>
                         </table>
                   </div>
@@ -314,7 +321,7 @@
               <% } %>
 
               <% } else{ %>
-                Nothing
+
               <% } %>
 
 
