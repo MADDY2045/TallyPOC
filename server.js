@@ -5,9 +5,11 @@ const axios = require('axios');
 const cors = require('cors');
 var parseString = require('xml2js').parseString;
 
+app.use(cors());
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 //setup public folder
+
 app.use(express.static('./public'));
 
 const port = 5050;
