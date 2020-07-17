@@ -94,7 +94,7 @@ app.get('/test/:id', (req, res) => {
                         <BODY>
                         <IMPORTDATA>
                         <REQUESTDESC>
-                        <REPORTNAME>All Masters</REPORTNAME>
+                        <REPORTNAME>Vouchers</REPORTNAME>
                         <STATICVARIABLES>
                         <VOUCHERTYPENAME>${vchtype.toUpperCase()}</VOUCHERTYPENAME>
                         </STATICVARIABLES>
