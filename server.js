@@ -121,12 +121,12 @@ app.get('/test/:id', (req, res) => {
                             },
                             data:cancelVoucher
                         }).then(response=>{
-
-                        }).catch(err=>console.log(err))
-
-                    }
-
-                })
+                            parseString(response.data, function (err, result) {
+                                console.log(result);
+                            })
+                           }).catch(err=>console.log(err))
+                        }
+                    })
                 tempArr.splice(index,1)
                 res.send({message:"cancelled successfully"});
             }else{
