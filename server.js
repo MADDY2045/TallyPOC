@@ -275,3 +275,22 @@ function getGsApp(req,res,next){
     }).catch(err=>console.log(err));
 
 }
+
+app.get("/gettallydetails",getGsApp,(req,res,next)=>{
+    let responseContent = [];
+    axios({url:'http://localhost:9000',method:'POST',headers:{ContentType: 'text/xml',charset:'UTF-8'},data:xmlstring})
+    .then(response=>{
+                    parseString(response.data, (err, result)=>{
+                        if(!err){
+                            responseContent.push(result);
+                            responseContent.push(req.body);
+                             res.status(200).send(responseContent);
+
+
+                        }
+                    })
+                }).catch(err=>console.log(err));
+
+
+})
+
