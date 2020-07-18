@@ -68,7 +68,7 @@ app.get('/',getGsApp,(req,res)=>{
                                                      }
                                                     })
                                                 })
-                                                // console.log(JSON.stringify(tallyArrayObj,null,2));
+
                                                 res.render('pages/recon',{table:tallyArrayObj,table2:req.body,message:false});
                                             })
                     }).catch(err=>console.log(err));
@@ -77,7 +77,7 @@ app.get('/',getGsApp,(req,res)=>{
 })
 
 app.get('/getrecondetails/:id',getGsApp,(req,res)=>{
-    console.log('entered',req.params.id);
+
     let searchvoucher = req.params.id;
     if(searchvoucher === 'All'){
         try{
@@ -132,7 +132,7 @@ app.get('/getrecondetails/:id',getGsApp,(req,res)=>{
                                                          }
                                                         })
                                                     })
-                                                    // console.log(JSON.stringify(tallyArrayObj,null,2));
+
                                                     res.render('pages/recon',{table:tallyArrayObj,table2:req.body,message:true,vouchername:null});
                                                 })
                         }).catch(err=>console.log(err));
@@ -140,7 +140,7 @@ app.get('/getrecondetails/:id',getGsApp,(req,res)=>{
         }catch(error){console.log('error:::::::',error)}
     }else{
         try{
-            console.log('searchvoucher is ::',searchvoucher);
+
             axios({url:'http://localhost:9000',method:'POST',headers:{ContentType: 'text/xml',charset:'UTF-8'},data:xmlstring})
             .then(response=>{
                             parseString(response.data, (err, result)=>{
@@ -196,24 +196,21 @@ app.get('/getrecondetails/:id',getGsApp,(req,res)=>{
                                                     tallyArrayObj.map(item=>{
                                                         Object.keys(item).map(key=>{
                                                             if(key==searchvoucher){
-                                                                console.log('keys are',key);
                                                                 tallyAppArr.push(item)
                                                             }
                                                         })
 
 
                                                     })
-                                                    // console.log(JSON.stringify(tallyArrayObj,null,2));
+
                                                     let GsAppArray = [];
                                                     req.body.map(item=>{
                                                         Object.keys(item).map(key=>{
                                                             if(key==searchvoucher){
-                                                                console.log('keys are',key);
+
                                                                 GsAppArray.push(item)
                                                             }
                                                         })
-
-
                                                     })
                                                     //res.send(tallyAppArr);
                                                     const compareName = (obj1, obj2)=>{
@@ -221,6 +218,7 @@ app.get('/getrecondetails/:id',getGsApp,(req,res)=>{
                                                       }
                                                       let output1=[];
                                                       let output2=[];
+                                                      console.log(tallyAppArr);
                                                         output1 = tallyAppArr[0][searchvoucher].filter(b=>{
                                                             let indexFound = GsAppArray[0][searchvoucher].findIndex(a => compareName(a, b));
                                                             return indexFound == -1;

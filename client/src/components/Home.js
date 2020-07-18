@@ -3,9 +3,10 @@ import GsApp from '../components/GsApp';
 import Tally from '../components/Tally';
 import { parseString } from 'xml2js';
 import axios from 'axios';
-import qs from 'qs';
-import request from "request";
-import utf8 from 'utf8';
+
+const compareName = (obj1, obj2)=>{
+    return (obj1.tallyid === obj2.tallyid);
+  }
 
 
 var xmlstring = '<ENVELOPE><HEADER><TALLYREQUEST>Export Data</TALLYREQUEST></HEADER><BODY><EXPORTDATA><REQUESTDESC><REPORTNAME>Day Book</REPORTNAME><STATICVARIABLES><SVEXPORTFORMAT>$$SysName:XML</SVEXPORTFORMAT><SVCURRENTCOMPANY>Main</SVCURRENTCOMPANY><SVFROMDATE>20190401</SVFROMDATE><SVTODATE>20190401</SVTODATE></STATICVARIABLES></REQUESTDESC></EXPORTDATA></BODY></ENVELOPE>';
@@ -15,7 +16,8 @@ const Home = () => {
     const [loader,setLoader] = useState(false);
     const [jsondata,setJsondata] = useState([]);
     const [optionvalue,setOptionvalue] = useState('');
-
+    const [tallyMatchingArray,setTallyMatchingArray] = useState([]);
+    const [gsMatchingArray,setGsMatchingArray] = useState([]);
     useEffect(()=>{
         parseString(xmlstring,(err,result)=>{
             setJsondata(result);
@@ -23,34 +25,130 @@ const Home = () => {
     },[])
 
 
-    const handleSubmit=()=>{
-        if(loader){
-            axios.get('http://localhost:5050/gettallydetails')
-            .then(response=>{
-                setJsondata(response.data);
-             })
-            .catch(err=>console.log(err));
+    const handleSubmit= async ()=>{
+        setLoader(true);
+       await axios.get('http://localhost:5050/gettallydetails')
+                .then(response=>{
+                    setJsondata(response.data);
+                    setLoader(true);
+                    })
+                .catch(err=>console.log(err));
+
         }
-    }
 
    const handleOption=(e)=>{
-        setOptionvalue(e.target.value)
-    }
-    useEffect(()=>{
-        // console.log('jsondata',jsondata);
-    },[jsondata]);
+       e.preventDefault();
+       setLoader(false)
+        setOptionvalue(e.target.value);
+       }
 
-    useEffect(()=>{
-        if(optionvalue.trim() !='' && optionvalue.trim() !== 'Choose' ){
-            setLoader(true);
-        }else{
-            setLoader(false);
+useEffect(()=>{
+    setTimeout(()=>{
+        if(jsondata[0]!==undefined){
+            let tempArr=[];
+            let result = jsondata[0].ENVELOPE.BODY[0].IMPORTDATA[0].REQUESTDATA[0].TALLYMESSAGE;
+            if (optionvalue!=='All' && optionvalue!=='Choose' && optionvalue!==''){
+                result.map(item=>{
+
+                    if(item.VOUCHER[0].ISCANCELLED !='Yes' && item.VOUCHER[0].$.VCHTYPE==optionvalue){
+                        console.log('iet',item);
+
+                        let tempObj ={};
+                        tempObj['tallyid']=item.VOUCHER[0].MASTERID[0].trim();
+                        tempObj['vouchernumber']=item.VOUCHER[0].VOUCHERNUMBER[0];
+                        tempObj['vouchertype']=item.VOUCHER[0].$.VCHTYPE;
+                        tempObj['date']=item.VOUCHER[0].DATE[0];
+                       //   tempObj['items']=[];
+                       //   tempObj['items'].push(item.VOUCHER[0]);
+                       if(item.VOUCHER[0]['ALLINVENTORYENTRIES.LIST']){
+                           tempObj['amount']=item.VOUCHER[0]['ALLINVENTORYENTRIES.LIST'][0].AMOUNT[0];
+                       }else if(item.VOUCHER[0]['ALLLEDGERENTRIES.LIST']){
+                           tempObj['amount']=item.VOUCHER[0]['ALLLEDGERENTRIES.LIST'][0].AMOUNT[0];
+                       }else{
+                           tempObj['amount']=item.VOUCHER[0]['INVENTORYENTRIESIN.LIST'][0].AMOUNT[0];
+                       }
+
+                        tempArr.push(tempObj);
+                    }
+                    let tallyArrayObj=[
+                        {'Sales':[],amount:0},
+                        {'Purchase':[],amount:0},
+                        {'Delivery Note':[],amount:0},
+                        {'Receipt Note':[],amount:0},
+                        {'Journal':[],amount:0},
+                        {'Receipt':[],amount:0},
+                        {'Payment':[],amount:0},
+                        {'Credit Note':[],amount:0},
+                        {'Debit Note':[],amount:0},
+                        {'Stock Journal':[],amount:0}
+                       ];
+                       let tallyAppArr=[];
+                    tempArr.map(item=>{
+                        tallyArrayObj.map(obj=>{
+                            let keys=Object.keys(obj);
+
+                            if(item.vouchertype==keys[0]&&keys[0]==optionvalue){
+                               obj[keys[1]] += Number(item.amount);
+                               obj[keys[0]].push(item);
+                            }
+                           })
+                       })
+                       tallyArrayObj.map(item=>{
+                           Object.keys(item).map(key=>{
+                               if(key==optionvalue){
+                                   tallyAppArr.push(item)
+                               }
+                           })
+
+
+                       })
+            setTimeout(()=>{
+                setTallyMatchingArray(tallyAppArr);
+            },0)
+
+                    let GsAppArray = [];
+                    jsondata[1].map(item=>{
+                        Object.keys(item).map(key=>{
+                            if(key==optionvalue){
+                                GsAppArray.push(item)
+                            }
+                        })
+                    })
+                    setGsMatchingArray(GsAppArray);
+                })
+            }
         }
-    },[optionvalue]);
+    },0)
+
+},[jsondata])
+
+useEffect(()=>{
+    let output1=[];
+    let output2=[];
+
+    if(tallyMatchingArray[0]!==undefined && gsMatchingArray[0]!==undefined){
+        output1 = tallyMatchingArray[0][optionvalue].filter(b=>{
+            let indexFound = gsMatchingArray[0][optionvalue].findIndex(a => compareName(a, b));
+            return indexFound == -1;
+            })
+            console.log('output1',output1);
+            output2 = gsMatchingArray[0][optionvalue].filter(b=>{
+            let indexFound = tallyMatchingArray[0][optionvalue].findIndex(a => compareName(a, b));
+            return indexFound == -1;
+            })
+            console.log('output2',output2);
+    }
+
+
+},[tallyMatchingArray])
+
+useEffect(()=>{
+    // console.log('gsmatchingarray',gsMatchingArray);
+},[gsMatchingArray])
 
 return (
         <div>
-            <div className="row">
+            <div className="row"  style={{position:"relative",left:'65px',top:'20px'}}>
                 <div className="col-md-4">
                 <div className="input-group">
                 <select
@@ -75,9 +173,15 @@ return (
             </div>
                 </div>
             </div>
+            { loader && optionvalue!=='' && optionvalue !=='Choose' ? <div className="row" >
+                <div className="col=md-6 card mt-auto ml-5" style={{minHeight:'700px',minWidth:'800px',maxWidth:'800px',position:"relative",top:'50px',left:'30px'}}>
+                <GsApp trandata={jsondata} optionvalue={optionvalue} loader={loader}/>
+                </div>
+                <div className="col=md-5 card" style={{minHeight:'700px',minWidth:'800px',maxWidth:'800px',position:"relative",left:'80px',top:'50px'}}>
+                <Tally trandata={jsondata} optionvalue={optionvalue} loader={loader}/>
+                </div>
+            </div> :null }
 
-            <GsApp trandata={jsondata}/>
-            <Tally trandata={jsondata}/>
         </div>
     );
 }
