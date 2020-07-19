@@ -8,9 +8,10 @@ const Tally = (props) => {
     const [iteratingAmountArray,setIteratingAmountArray] = useState([]);
     const [iteratingindividualArray,setIteratingindividualArray] = useState([]);
 
-    useEffect(() => {
-       console.log(props.loader)
-    }, [props.loader])
+    useEffect(()=>{
+        console.log('tallymissingvouchers',props.tallyMissingVouchers);
+   },[props.tallyMissingVouchers])
+
 
     useEffect(() => {
         if(props.trandata[0]!==undefined){
@@ -191,108 +192,142 @@ const Tally = (props) => {
 
     return (
         <div >
-            {props.optionvalue==='All' ?
-            <div>
-                {iteratingArray .length > 0 ?
+             <h2>Tally App</h2>
+            { props.optionvalue === 'All' ?
+
+            iteratingArray.length > 0 ?
                 <div style={{position:"relative",top:"30px"}}>
-                    <h1>Tally App</h1>
-                <h4 style={{position:'relative',left:'50px'}}>Total Vouchers</h4>
-                <table className="table table-bordered table-responsive table-hover table-info" style={{width:"90%",position:"relative",left:'30px',top:"20px",borderCollapse: 'collapse',borderRadius:'0.5em',overflow:'auto'}}>
-                  <thead className="thead-light">
-                      <tr>
-                      <th scope="col">Sales Invoice</th>
-                      <th scope="col">Purchase Invoice</th>
-                      <th scope="col">Delivery Note</th>
-                      <th scope="col">Receipt Note</th>
-                      <th scope="col">Journal Voucher</th>
-                      <th scope="col">Receipt Voucher</th>
-                      <th scope="col">Payment Voucher</th>
-                      <th scope="col">Credit Note</th>
-                      <th scope="col">Debit Note</th>
-                      <th scope="col">Stock Journal</th>
-                      </tr>
-                  </thead>
-                  <tbody>
-                      <tr>
-                          {iteratingArray.map((item,index)=>{
-                              return <td className="text-center" key={index}>{item}</td>
-                          })}
-                      </tr>
-                      </tbody>
-                  </table>
-                           <h4 style={{position:'relative',left:'50px',marginTop:'100px'}}>Total Amount</h4>
-                           <table className="table table-bordered table-responsive table-hover table-warning" style={{width:"90%",position:"relative",left:'30px',top:"20px",borderCollapse: 'collapse',borderRadius:'0.5em',overflow:'auto'}}>
-                  <thead className="thead-light">
-                      <tr>
-                      <th scope="col">Sales Invoice</th>
-                      <th scope="col">Purchase Invoice</th>
-                      <th scope="col">Delivery Note</th>
-                      <th scope="col">Receipt Note</th>
-                      <th scope="col">Journal Voucher</th>
-                      <th scope="col">Receipt Voucher</th>
-                      <th scope="col">Payment Voucher</th>
-                      <th scope="col">Credit Note</th>
-                      <th scope="col">Debit Note</th>
-                      <th scope="col">Stock Journal</th>
-                      </tr>
-                  </thead>
-                  <tbody>
-                      <tr>
-                          {iteratingAmountArray.map((item,index)=>{
-                              return <td className="text-center" key={index}>{item}</td>
-                          })}
-                      </tr>
-                      </tbody>
-                  </table>
-           </div>
-                : null}
-            </div>
-            :
-            // {not All loop}
-            <div>
 
-               {iteratingindividualArray.length>0 ?
-               <div className="row">
-               <h2 style={{position:"relative",left:"100px",top:"20px"}}>Tally App</h2>
-                <div className="col-md-6 card" style={{position:"relative",left:'-80px',top:"90px",borderRadius:"50px",minHeight:'350px',maxWidth:'300px'}}>
-               <h5 style={{position:"relative",left:'70px',top:"20px"}}>Total Vouchers</h5>
-         <table className="table table-bordered table-hover table-info" style={{width:"70%",position:"relative",left:'30px',top:"20px",borderCollapse: 'collapse',borderRadius:'1em',overflow:'hidden'}}>
-             <thead className="thead-light">
-                 <tr>
-                       <th className="text-center">{iteratingindividualArray[0]}</th>
-                   </tr>
-             </thead>
-             <tbody>
-                 <tr>
-                 <td className="text-center" >{iteratingindividualArray[1]}</td>
-                   </tr>
-                 </tbody>
-             </table>
-             <h5 style={{position:"relative",left:'70px',top:"20px",marginTop:"10px"}}>Total Amount</h5>
-             <table className="table table-bordered table-hover table-warning" style={{width:"70%",position:"relative",left:'30px',top:"20px",borderCollapse: 'collapse',borderRadius:'1em',overflow:'hidden'}}>
-
-             <thead className="thead-light">
-                 <tr>
-                       <th className="text-center">{iteratingindividualArray[0]}</th>
-                   </tr>
-             </thead>
-             <tbody>
-                 <tr>
-                 <td className="text-center">{iteratingindividualArray[2]}</td>
-                   </tr>
-                 </tbody>
-             </table>
-               </div>
-
-
+               <h4 style={{position:'relative',left:'50px'}}>Total Vouchers</h4>
+               <table className="table table-bordered table-responsive table-hover table-info" style={{width:"90%",position:"relative",left:'30px',top:"20px",borderCollapse: 'collapse',borderRadius:'0.5em',overflow:'auto'}}>
+                 <thead className="thead-light">
+                     <tr>
+                     <th scope="col">Sales Invoice</th>
+                     <th scope="col">Purchase Invoice</th>
+                     <th scope="col">Delivery Note</th>
+                     <th scope="col">Receipt Note</th>
+                     <th scope="col">Journal Voucher</th>
+                     <th scope="col">Receipt Voucher</th>
+                     <th scope="col">Payment Voucher</th>
+                     <th scope="col">Credit Note</th>
+                     <th scope="col">Debit Note</th>
+                     <th scope="col">Stock Journal</th>
+                     </tr>
+                 </thead>
+                 <tbody>
+                     <tr>
+                         {iteratingArray.map((item,index)=>{
+                             return <td className="text-center" key={index}>{item}</td>
+                         })}
+                     </tr>
+                     </tbody>
+                 </table>
+                          <h4 style={{position:'relative',left:'50px',marginTop:'100px'}}>Total Amount</h4>
+                          <table className="table table-bordered table-responsive table-hover table-warning" style={{width:"90%",position:"relative",left:'30px',top:"20px",borderCollapse: 'collapse',borderRadius:'0.5em',overflow:'auto'}}>
+                 <thead className="thead-light">
+                     <tr>
+                     <th scope="col">Sales Invoice</th>
+                     <th scope="col">Purchase Invoice</th>
+                     <th scope="col">Delivery Note</th>
+                     <th scope="col">Receipt Note</th>
+                     <th scope="col">Journal Voucher</th>
+                     <th scope="col">Receipt Voucher</th>
+                     <th scope="col">Payment Voucher</th>
+                     <th scope="col">Credit Note</th>
+                     <th scope="col">Debit Note</th>
+                     <th scope="col">Stock Journal</th>
+                     </tr>
+                 </thead>
+                 <tbody>
+                     <tr>
+                         {iteratingAmountArray.map((item,index)=>{
+                             return <td className="text-center" key={index}>{item}</td>
+                         })}
+                     </tr>
+                     </tbody>
+                 </table>
           </div>
-               :null
-               }
+                : null
+            :
+            iteratingindividualArray.length>0 ?
+            <div className="row">
+
+
+
+<div className="col-md-6 " style={{position:"absolute",left:"110px",top:'80px'}}>
+                <h5 style={{position:"relative",left: '72px',top:"0px"}}>Total Vouchers</h5>
+                <table className="table table-bordered table-hover table-info" style={{width:"70%",borderCollapse: 'collapse',borderRadius:'1em',overflow:'hidden'}}>
+                    <thead className="thead-light">
+                        <tr>
+                            <th className="text-center">{iteratingindividualArray[0]}</th>
+                        </tr>
+                </thead>
+              <tbody>
+                  <tr>
+                  <td className="text-center" >{iteratingindividualArray[1]}</td>
+                    </tr>
+                  </tbody>
+              </table>
+             </div>
+             <div className="col-md-6" style={{position:"absolute",left:"380px",top:'80px'}}>
+            <h5 style={{position:"relative",left: '72px',top:"0px"}}>Total Amount</h5>
+              <table className="table table-bordered table-hover table-warning" style={{width:"70%",borderCollapse: 'collapse',borderRadius:'1em',overflow:'hidden'}}>
+
+              <thead className="thead-light">
+                  <tr>
+                        <th className="text-center">{iteratingindividualArray[0]}</th>
+                    </tr>
+              </thead>
+              <tbody>
+                  <tr>
+                  <td className="text-center">{iteratingindividualArray[2]}</td>
+                    </tr>
+                  </tbody>
+              </table>
             </div>
-            }
 
-           </div>
+           </div> : null
+          }
+<div className="col-md-12" style={{position:"absolute",top:'300px'}}>
 
+
+                        { props.tallyMissingVouchers.length >0  && props.optionvalue !=="All" ?
+                    <div className="table-responsive table-bordered table-primary" style={{maxWidth:'100%',borderRadius:'10px'}}>
+                        <h4>Missing Vouchers</h4>
+                    <table class="table">
+                    <thead class="thead-light">
+                        <tr>
+                        <th >Voucher Number</th>
+                        <th >Tally Id</th>
+                        <th >Voucher type</th>
+                        <th >Amount</th>
+                        <th >Created On</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {props.tallyMissingVouchers.map( item => {
+                        return (
+                            <tr key={item._id}>
+                            <td>{item.vouchernumber}</td>
+                            <td>{item.tallyid}</td>
+                            <td>{item.vouchertype}</td>
+                            <td>{item.amount}</td>
+                            <td>{item.date}</td>
+                            <td><button className="btn btn-primary">Details</button>|<button className="btn btn-primary">Resync</button></td>
+                            </tr>
+                        );
+                        })}
+
+                    </tbody>
+                    </table>
+                    </div>
+                        :
+                        null
+                    }
+
+
+                </div>
+        </div>
     );
 }
 

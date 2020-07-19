@@ -18,11 +18,15 @@ const Home = () => {
     const [optionvalue,setOptionvalue] = useState('');
     const [tallyMatchingArray,setTallyMatchingArray] = useState([]);
     const [gsMatchingArray,setGsMatchingArray] = useState([]);
+    const [gsMissingVouchers,setGsMissingVouchers] = useState([]);
+    const [tallyMissingVouchers,setTallyMissingVouchers] = useState([]);
+
+
     useEffect(()=>{
         parseString(xmlstring,(err,result)=>{
             setJsondata(result);
         })
-    },[])
+       },[])
 
 
     const handleSubmit= async ()=>{
@@ -51,8 +55,6 @@ useEffect(()=>{
                 result.map(item=>{
 
                     if(item.VOUCHER[0].ISCANCELLED !='Yes' && item.VOUCHER[0].$.VCHTYPE==optionvalue){
-                        console.log('iet',item);
-
                         let tempObj ={};
                         tempObj['tallyid']=item.VOUCHER[0].MASTERID[0].trim();
                         tempObj['vouchernumber']=item.VOUCHER[0].VOUCHERNUMBER[0];
@@ -131,14 +133,15 @@ useEffect(()=>{
             let indexFound = gsMatchingArray[0][optionvalue].findIndex(a => compareName(a, b));
             return indexFound == -1;
             })
-            console.log('output1',output1);
+            // console.log('output1',output1);
+            setGsMissingVouchers(output1);
             output2 = gsMatchingArray[0][optionvalue].filter(b=>{
             let indexFound = tallyMatchingArray[0][optionvalue].findIndex(a => compareName(a, b));
             return indexFound == -1;
             })
-            console.log('output2',output2);
+            //console.log('output2',output2);
+            setTallyMissingVouchers(output2)
     }
-
 
 },[tallyMatchingArray])
 
@@ -175,10 +178,11 @@ return (
             </div>
             { loader && optionvalue!=='' && optionvalue !=='Choose' ? <div className="row" >
                 <div className="col=md-6 card mt-auto ml-5" style={{minHeight:'700px',minWidth:'800px',maxWidth:'800px',position:"relative",top:'50px',left:'30px'}}>
-                <GsApp trandata={jsondata} optionvalue={optionvalue} loader={loader}/>
+                <GsApp trandata={jsondata} optionvalue={optionvalue} loader={loader} gsMissingVouchers={gsMissingVouchers}
+                tallyMissingVouchers={tallyMissingVouchers}/>
                 </div>
-                <div className="col=md-5 card" style={{minHeight:'700px',minWidth:'800px',maxWidth:'800px',position:"relative",left:'80px',top:'50px'}}>
-                <Tally trandata={jsondata} optionvalue={optionvalue} loader={loader}/>
+                <div className="col=md-6 card" style={{minHeight:'700px',minWidth:'800px',maxWidth:'800px',position:"relative",left:'80px',top:'50px'}}>
+                <Tally trandata={jsondata} optionvalue={optionvalue} loader={loader} tallyMissingVouchers={tallyMissingVouchers}gsMissingVouchers={gsMissingVouchers}/>
                 </div>
             </div> :null }
 
