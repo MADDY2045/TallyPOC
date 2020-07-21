@@ -3,7 +3,9 @@
 }
 
 th{
-    text-align: center!important;;
+    text-align: center!important;
+    font-size: 12px!important;
+    min-height: 120px!important;
 }
 
 td{
