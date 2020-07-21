@@ -133,7 +133,13 @@ app.get('/getrecondetails/:id',getGsApp,(req,res)=>{
                                                         })
                                                     })
 
-                                                    res.render('pages/recon',{table:tallyArrayObj,table2:req.body,message:true,vouchername:null});
+                                                    let responseArray=[];
+
+
+                                                    responseArray.push(tallyArrayObj);
+                                                    responseArray.push(req.body);
+                                                   res.send(responseArray);
+                                                    //res.render('pages/recon',{table:tallyArrayObj,table2:req.body,message:true,vouchername:null});
                                                 })
                         }).catch(err=>console.log(err));
 
@@ -230,7 +236,21 @@ app.get('/getrecondetails/:id',getGsApp,(req,res)=>{
                                                           })
 
                                                     //res.send(missingVoucher);
-                                                    res.render('pages/recon',{table:tallyAppArr,table2:GsAppArray,message:true,vouchername:searchvoucher,missingvouchertally:output1,missingvouchergs:output2});
+                                                    let responseArray=[];
+                                                    let vouchername ={};
+                                                    let missingobj={}
+                                                    missingobj['missingvoucherone'] =[]
+                                                    missingobj['missingvouchertwo'] =[]
+
+                                                    responseArray.push(tallyAppArr[0]);
+                                                    responseArray.push(GsAppArray[0]);
+
+                                                    missingobj['missingvoucherone'].push(output1);
+                                                    missingobj['missingvouchertwo'].push(output2);
+                                                    responseArray.push(output1);
+                                                    responseArray.push(output2);
+                                                    res.send(responseArray)
+                                                    //res.render('pages/recon',{table:tallyAppArr,table2:GsAppArray,message:true,vouchername:searchvoucher,missingvouchertally:output1,missingvouchergs:output2});
                                                 })
                         }).catch(err=>console.log(err));
 
