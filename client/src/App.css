@@ -10,5 +10,9 @@ th{
 
 td{
 
-    text-align: center!important;;
-}
+    text-align: center!important;
+    }
+
+td:hover{
+    background: rgb(190, 158, 97)!important;
+   }

@@ -5,28 +5,36 @@ const Tally = (props) => {
     const [txnLoader,setTxnLoader] = useState(false);
     const [voucherArray,setVoucherArray]=useState([]);
 
-    useMemo(() => {
-
+    useEffect(() => {
+        console.log('props.response in tally is',props.response);
         if(props.response!==undefined && props.option!=='Choose' && props.option!==''){
-           setgsAlltxnArray(props.response[0]);
-           }
+            if(props.option==='All'){
+                setgsAlltxnArray(props.response[0]);
+            }else{
+                console.log('props.response in gs App individual is',props.response[1]);
+                console.log('props.response in gs App individual is',props.response[2]);
+                //setgsAlltxnArray(props.response[0]);
+            }
 
+           }
+           return ()=>{
+            console.log("cleaned arrays in tally!!!");
+            setgsAlltxnArray([]);
+        }
         }, [props]);
 
 useEffect(()=>{
-
-    if(gsalltxnArray!==undefined && gsalltxnArray.length>0  ){
+       if(gsalltxnArray!==undefined && gsalltxnArray.length>0  ){
        setTxnLoader(true);
     }
 },[gsalltxnArray])
 
-useMemo(() => {
+useEffect(() => {
     let tempArr = [];
     if(gsalltxnArray!==undefined && gsalltxnArray.length>0){
        gsalltxnArray.map(item=>{
         Object.keys(item).map(element=>{
            if(element!=='amount'){
-                console.log('element is',element);
                 tempArr.push(item[element].length)
             }
         })
@@ -44,7 +52,7 @@ useMemo(() => {
                 <div className="row">
                     <div className="col-md-12  table-responsive" style={{maxWidth:"830px",overflow:"auto",position:"absolute",top:"100px"}}>
                     <h4 style={{position:"absolute",top:"10px",left:"200px"}}>TALLY APP TOTAL VOUCHERS-COUNT-WISE </h4>
-            <table className="table table-hover table-success table-striped mt-5 table-bordered" style={{borderCollapse: 'collapse',borderRadius:'1em',overflow:'hidden'}}>
+            <table className="table table-hover bg-info table-striped mt-5 table-bordered" style={{borderCollapse: 'collapse',borderRadius:'1em',overflow:'hidden'}}>
 
                 <thead>
                     <tr>
@@ -63,7 +71,7 @@ useMemo(() => {
                 <tbody>
                     <tr>
                         {voucherArray.map((item,index)=>{
-                            return <td className="table-danger" key={index}>{item}</td>
+                            return <td className="bg-light" key={index}>{item}</td>
                         })}
                     </tr>
 
@@ -72,7 +80,7 @@ useMemo(() => {
             </div>
             <div className="col-md-12  table-responsive" style={{maxWidth:"830px",overflow:"auto",position:"absolute",top:"400px"}}>
             <h4 style={{position:"absolute",top:"10px",left:"200px"}}>TALLY APP TOTAL AMOUNT-WISE </h4>
-            <table className="table table-hover table-success table-striped mt-5 table-bordered" style={{borderCollapse: 'collapse',borderRadius:'1em',overflow:'hidden'}}>
+            <table className="table table-hover bg-info table-striped mt-5 table-bordered" style={{borderCollapse: 'collapse',borderRadius:'1em',overflow:'hidden'}}>
                 <thead>
                     <tr>
                     <th>Sales Invoice</th>
@@ -90,7 +98,7 @@ useMemo(() => {
                 <tbody>
                     <tr>
                         { gsalltxnArray && gsalltxnArray.length> 0 ? gsalltxnArray.map((item,index)=>{
-                            return  <td className="table-danger" key={index}>{item.amount}</td>
+                            return  <td className="bg-light" key={index}>{item.amount}</td>
                         }):null
                         }
                     </tr>
