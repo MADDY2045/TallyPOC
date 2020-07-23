@@ -1,14 +1,16 @@
 import React from 'react';
 
+
 const SelectTransaction = (props) => {
     return (
         <div>
-             <div className="row"  style={{position:"relative",left:'65px',top:'20px'}}>
+             <div className="row"  >
                 <div className="col-md-4">
-                <div className="input-group">
+                <div className="input-group" style={{position:"absolute",top:"30px",left:"60px"}}>
                 <select
-                onChange={props.onChange}
+               onChange={props.onChange}
                 className="custom-select" id="inputGroupSelect04">
+
                 <option defaultValue>Choose</option>
                     <option value="All">All</option>
                     <option value="Sales">Sales Invoice</option>
@@ -22,8 +24,9 @@ const SelectTransaction = (props) => {
                     <option value="Debit Note">Debit Note</option>
                     <option value="Stock Journal">Stock Journal</option>
                 </select>
+
             <div className="input-group-append">
-                <button onClick={props.onClick} className="btn btn-outline-secondary">RECONCILE</button>
+                <button style={{position:"absolute",top:"-10px",left:"600px"}} onClick={props.onClick} className="btn btn-outline-secondary">RECONCILE</button>
             </div>
             </div>
 </div>

@@ -1,10 +1,12 @@
-import React,{useState,useEffect} from 'react';
+import React,{useState} from 'react';
 import GsApp from '../components/GsApp';
 import Tally from '../components/Tally';
-import { parseString } from 'xml2js';
 import axios from 'axios';
 import SelectTransaction from '../components/SelectTransaction';
-
+import '@fortawesome/fontawesome-free/css/all.min.css';
+import 'bootstrap-css-only/css/bootstrap.min.css';
+import 'mdbreact/dist/css/mdb.css';
+import { Link } from 'react-router-dom';
 const Home = () => {
 
 const [initialdata,setInitialData] = useState([]);
@@ -32,12 +34,13 @@ if(option ==='' || option ==='Choose'){
 
 return (
         <div >
+            <Link className="btn btn-primary" to={`/cancel`} style={{position:"absolute",left:"1580px",top:"10px"}}>Cancel Flow</Link>
            <SelectTransaction onChange={handleOption} onClick={handleSubmit}/>
            <div className="row container">
-                <div className="col-md-6 card" style={{minHeight:'700px',position:"absolute",top:"80px",maxWidth:'840px',left:"40px"}}>
+                <div className="col-md-6 card" style={{minHeight:'700px',position:"absolute",top:"80px",maxWidth:'840px',left:"40px",border:"1px solid grey"}}>
                     <GsApp response={initialdata} option={option} loader={loader}/>
                 </div>
-                <div className="col-md-6 card" style={{minHeight:'700px',position:"absolute",top:"80px",left:"900px",maxWidth:'840px'}}>
+                <div className="col-md-6 card" style={{minHeight:'700px',position:"absolute",top:"80px",left:"900px",maxWidth:'840px',border:"1px solid grey"}}>
                 <Tally response={initialdata} option={option} loader={loader}/>
                 </div>
            </div>

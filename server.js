@@ -13,7 +13,23 @@ app.set('view engine', 'ejs');
 app.use(express.static('./public'));
 
 const port = 5050;
-var xmlstring = '<ENVELOPE><HEADER><TALLYREQUEST>Export Data</TALLYREQUEST></HEADER><BODY><EXPORTDATA><REQUESTDESC><REPORTNAME>Day Book</REPORTNAME><STATICVARIABLES><SVEXPORTFORMAT>$$SysName:XML</SVEXPORTFORMAT><SVCURRENTCOMPANY>Main</SVCURRENTCOMPANY><SVFROMDATE>20190401</SVFROMDATE><SVTODATE>20190401</SVTODATE></STATICVARIABLES></REQUESTDESC></EXPORTDATA></BODY></ENVELOPE>';
+var xmlstring = `<ENVELOPE>
+<HEADER>
+<VERSION>1</VERSION>
+<TALLYREQUEST>EXPORT</TALLYREQUEST>
+<TYPE>DATA</TYPE>
+<ID>Voucher Register</ID>
+</HEADER>
+<BODY>
+<DESC>
+<STATICVARIABLES>
+<SVEXPORTFORMAT>$$SysName:XML</SVEXPORTFORMAT>
+<SVFROMDATE TYPE="Date">20190401</SVFROMDATE>
+<SVTODATE TYPE="Date">20190430</SVTODATE>
+</STATICVARIABLES>
+</DESC>
+</BODY>
+</ENVELOPE>`;
 
 app.get('/',getGsApp,(req,res)=>{
      try{
@@ -87,8 +103,8 @@ app.get('/getrecondetails/:id',getGsApp,(req,res)=>{
                                 let tempArr=[];
                                 let tempObj ={};
 
-                                result.ENVELOPE.BODY[0].IMPORTDATA[0].REQUESTDATA[0].TALLYMESSAGE.pop();
-                                 let exportData = result.ENVELOPE.BODY[0].IMPORTDATA[0].REQUESTDATA[0].TALLYMESSAGE;
+                                result.ENVELOPE.BODY[0].DATA[0].TALLYMESSAGE.pop();
+                                 let exportData = result.ENVELOPE.BODY[0].DATA[0].TALLYMESSAGE;
                                                  exportData.map(item=>{
                                                      if(item.VOUCHER[0].ISCANCELLED !='Yes'){
                                                          let tempObj={};
@@ -153,8 +169,8 @@ app.get('/getrecondetails/:id',getGsApp,(req,res)=>{
                                 let tempArr=[];
                                 let tempObj ={};
 
-                                result.ENVELOPE.BODY[0].IMPORTDATA[0].REQUESTDATA[0].TALLYMESSAGE.pop();
-                                 let exportData = result.ENVELOPE.BODY[0].IMPORTDATA[0].REQUESTDATA[0].TALLYMESSAGE;
+                                result.ENVELOPE.BODY[0].DATA[0].TALLYMESSAGE.pop();
+                                 let exportData = result.ENVELOPE.BODY[0].DATA[0].TALLYMESSAGE;
                                                  exportData.map(item=>{
                                                      if(item.VOUCHER[0].ISCANCELLED !='Yes' && item.VOUCHER[0].$.VCHTYPE==searchvoucher){
                                                          let tempObj={};
