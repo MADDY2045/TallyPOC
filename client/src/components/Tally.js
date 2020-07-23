@@ -12,19 +12,14 @@ const Tally = (props) => {
 
         if(props.response!==undefined && props.option!=='Choose' && props.option!==''){
             if(props.option==='All'){
-                console.log('props.response in tally is',props.response[0]);
-                setgsAlltxnArray(props.response[0]);
+              setgsAlltxnArray(props.response[0]);
             }else{
-                console.log('props.response in tally individual is',props.response[0]);
                 setindiTallyArray(props.response[0]);
-                console.log('missing in tally individual is',props.response[3]);
                 setmissingVoucherArray(props.response[3]);
-                //setgsAlltxnArray(props.response[0]);
             }
 
            }
            return ()=>{
-            console.log("cleaned arrays in tally!!!");
             setgsAlltxnArray([]);
         }
         }, [props]);
@@ -166,7 +161,7 @@ useEffect(() => {
                             <table className="table table-hover bg-light table-striped table-bordered" style={{borderCollapse: 'collapse',borderRadius:'1em',overflow:'hidden',position:"absolute",top:"30px",left:"12px",width:"97%"}}>
                                 <thead>
                                     <tr className="bg-warning">
-                                        <th colspan="6" id="tally-header">Missing Vouchers</th>
+                                        <th colSpan="6" id="tally-header">Missing Vouchers</th>
                                     </tr>
                                     <tr className="bg-warning">
                                         <th id="tally-header">Tally ID</th>

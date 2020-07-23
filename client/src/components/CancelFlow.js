@@ -5,15 +5,40 @@ const CancelFlow = () => {
 
     const [ cancelData,setCancelData ] = useState([]);
 
+
     useEffect(() => {
         axios.get('http://localhost:6050/posttransaction').then(response=>{
-            console.log("response is",response.data);
+            console.log('cancel flow data',response.data);
             setCancelData(response.data)
         }).catch(err=>console.log(err));
         return () => {
             setCancelData([])
         };
-    }, []);
+    }, [setCancelData]);
+
+
+    const handleCancel=(id,vouchertype,vouchernumber)=>{
+        try{
+            axios.get(`http://localhost:5050/canceltally/${id}/${vouchertype}/${vouchernumber}`).then(response=>{
+
+                console.log(response.data);
+                if(response.data!==undefined ){
+                    let LASTVCHID = Number(response.data[0]['LASTVCHID']);
+                    let tallyid = Number(id);
+                    console.log('in tally',LASTVCHID,"in gs",tallyid);
+                    console.log(response.data[0]["ALTERED"]);
+                    if(tallyid===LASTVCHID){
+                        console.log("cancelled and altered");
+                        window.location.reload(true);
+                       }
+                }
+                }).catch(err=>{
+                console.log('err',err);
+            })
+        }catch(error){
+            console.log('error in catch',error);
+        }
+}
 
     return (
         <div>
@@ -45,7 +70,9 @@ const CancelFlow = () => {
                                                 <td>{item.amount}</td>
                                                 <td>{item.vouchernumber}</td>
                                                 <td>{item.date}</td>
-                                                <td><button className="btn btn-secondary">Cancel</button></td>
+                                                <td><button
+                                                onClick={()=>handleCancel(item.tallyid,item.vouchertype,item.date)}
+                                                className="btn btn-secondary" disabled={item.cancelflag}>Cancel</button></td>
                                         </tr>)
                                     })}
                                 </tbody>

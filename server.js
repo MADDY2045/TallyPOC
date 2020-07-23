@@ -3,6 +3,7 @@ const path = require('path');
 const app = express();
 const axios = require('axios');
 const cors = require('cors');
+const {response}=require('express');
 var parseString = require('xml2js').parseString;
 
 app.use(cors());
@@ -13,23 +14,7 @@ app.set('view engine', 'ejs');
 app.use(express.static('./public'));
 
 const port = 5050;
-var xmlstring = `<ENVELOPE>
-<HEADER>
-<VERSION>1</VERSION>
-<TALLYREQUEST>EXPORT</TALLYREQUEST>
-<TYPE>DATA</TYPE>
-<ID>Voucher Register</ID>
-</HEADER>
-<BODY>
-<DESC>
-<STATICVARIABLES>
-<SVEXPORTFORMAT>$$SysName:XML</SVEXPORTFORMAT>
-<SVFROMDATE TYPE="Date">20190401</SVFROMDATE>
-<SVTODATE TYPE="Date">20190430</SVTODATE>
-</STATICVARIABLES>
-</DESC>
-</BODY>
-</ENVELOPE>`;
+
 
 app.get('/',getGsApp,(req,res)=>{
      try{
@@ -92,8 +77,26 @@ app.get('/',getGsApp,(req,res)=>{
     }catch(error){console.log('error:::::::',error)}
 })
 
-app.get('/getrecondetails/:id',getGsApp,(req,res)=>{
+app.get('/getrecondetails/:id/:fromdate/:todate',getGsApp,(req,res)=>{
 
+    var xmlstring = `<ENVELOPE>
+<HEADER>
+<VERSION>1</VERSION>
+<TALLYREQUEST>EXPORT</TALLYREQUEST>
+<TYPE>DATA</TYPE>
+<ID>Voucher Register</ID>
+</HEADER>
+<BODY>
+<DESC>
+<STATICVARIABLES>
+<SVEXPORTFORMAT>$$SysName:XML</SVEXPORTFORMAT>
+<SVFROMDATE TYPE="Date">${req.params.fromdate}</SVFROMDATE>
+<SVTODATE TYPE="Date">${req.params.todate}</SVTODATE>
+</STATICVARIABLES>
+</DESC>
+</BODY>
+</ENVELOPE>`;
+console.log(xmlstring);
     let searchvoucher = req.params.id;
     if(searchvoucher === 'All'){
         try{
@@ -240,7 +243,7 @@ app.get('/getrecondetails/:id',getGsApp,(req,res)=>{
                                                       }
                                                       let output1=[];
                                                       let output2=[];
-                                                      console.log(tallyAppArr);
+
                                                         output1 = tallyAppArr[0][searchvoucher].filter(b=>{
                                                             let indexFound = GsAppArray[0][searchvoucher].findIndex(a => compareName(a, b));
                                                             return indexFound == -1;
@@ -295,14 +298,18 @@ function getGsApp(req,res,next){
     axios.get('http://localhost:6050/posttransaction').then(response=>{
       tempArr2=response.data;
       tempArr2.map(item=>{
-        GsAppObj.map(obj=>{
-            let keys=Object.keys(obj);
+          console.log('item is',item);
+          if(item.cancelflag!==true){
+            GsAppObj.map(obj=>{
+                let keys=Object.keys(obj);
 
-            if(item.vouchertype==keys[0]){
-               obj[keys[1]] += Number(item.amount);
-               obj[keys[0]].push(item);
-            }
-           })
+                if(item.vouchertype==keys[0]){
+                   obj[keys[1]] += Number(item.amount);
+                   obj[keys[0]].push(item);
+                }
+               })
+          }
+
        })
        req.body = GsAppObj;
        next();
@@ -318,6 +325,7 @@ app.get("/gettallydetails",getGsApp,(req,res,next)=>{
                         if(!err){
                             responseContent.push(result);
                             responseContent.push(req.body);
+                            console.log('in gs app rendering',req.body);
                              res.status(200).send(responseContent);
 
 
@@ -326,5 +334,95 @@ app.get("/gettallydetails",getGsApp,(req,res,next)=>{
                 }).catch(err=>console.log(err));
 
 
-})
+});
 
+app.get("/canceltally/:id/:vouchertype/:date",getTallyData, async(req,res)=>{
+
+    req.body.ENVELOPE.BODY[0].DATA[0].TALLYMESSAGE.pop();
+    let exportData =  req.body.ENVELOPE.BODY[0].DATA[0].TALLYMESSAGE;
+    // console.log(exportData);
+    let tallyid = req.params.id.toString();
+    // console.log('tallyid from request is ',tallyid);
+
+    let vouchertype = req.params.vouchertype;
+    // console.log('vouchertype from request is ',vouchertype);
+    let date = req.params.date;
+    let responseContent = [];
+
+
+let responsedata = [];
+
+                    exportData.map(item=>{
+                        //console.log('masterid from tally is',item.VOUCHER[0].MASTERID);
+                        let iterabletallyid = item.VOUCHER[0].MASTERID[0].trim();
+                        if(item.VOUCHER[0].ISCANCELLED[0] !=='Yes' && item.VOUCHER[0].$.VCHTYPE === vouchertype && tallyid==iterabletallyid ){
+                            let cancelVoucher =`<ENVELOPE>
+                            <HEADER>
+                                <VERSION>1</VERSION>
+                                <TALLYREQUEST>Import</TALLYREQUEST>
+                                <TYPE>Data</TYPE>
+                                <ID>Vouchers</ID>
+                            </HEADER>
+                            <BODY>
+                                <DESC>
+                                <VOUCHERTYPENAME>${vouchertype.toUpperCase()}</VOUCHERTYPENAME>
+                                </DESC>
+                                <DATA>
+                                    <TALLYMESSAGE>
+                                    <VOUCHER DATE = "01-April-2019" TAGNAME = "MASTER ID" TAGVALUE=" ${tallyid}" ACTION = "Cancel"  VCHTYPE = "${vouchertype}">
+                                        <NARRATION>Cancelled by Madhavan</NARRATION>
+                                    </VOUCHER>
+                                    </TALLYMESSAGE>
+                                </DATA>
+                            </BODY>
+                        </ENVELOPE>	`
+                        // console.log('entered if:::::::::::::::',item.VOUCHER[0].ISCANCELLED);
+                            axios({url:'http://localhost:9000',method:'POST',headers:{ContentType: 'text/xml',charset:'UTF-8'},data:cancelVoucher})
+                            .then(response=>{
+                                parseString(response.data, async (err, result)=>{
+                                                if(!err){
+                                                    // console.log('response is',result.ENVELOPE.BODY[0].DATA[0].IMPORTRESULT[0]);
+                                                    responsedata.push(result.ENVELOPE.BODY[0].DATA[0].IMPORTRESULT[0]);
+                                                    await updateGsApp(tallyid,vouchertype);
+                                                    res.status(200).send(responsedata);
+                                                }
+                                            })
+                                        }).catch(err=>{console.log(err)
+                                                response.send(404).send("error in cancelling")
+                                        });
+
+                        }else{
+                            console.log("not found")
+                        }
+
+                    })
+                })
+
+function updateGsApp(tallyid,vouchertype){
+    // console.log('called tallyid',tallyid)
+
+    axios({url:`http://localhost:6050/edittransaction/${tallyid}/${vouchertype}`,method:'PUT'})
+    .then(response=>{
+        // console.log(response.data);
+    }).catch(err=>{
+        console.log(err);
+    })
+
+}
+
+function getTallyData(req,res,next){
+
+
+    let responseContent = [];
+    axios({url:'http://localhost:9000',method:'POST',headers:{ContentType: 'text/xml',charset:'UTF-8'},data:xmlstring})
+    .then(response=>{
+                    parseString(response.data, (err, result)=>{
+                        if(!err){
+                            responseContent.push(result);
+                            req.body=result;
+                            next();
+                        }
+                    })
+                }).catch(err=>console.log(err));
+
+}

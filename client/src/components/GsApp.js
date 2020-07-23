@@ -12,26 +12,21 @@ const GsApp = (props) => {
 
         if(props.response!==undefined && props.option!=='Choose' && props.option!==''){
             if(props.option==='All'){
-                console.log('props.response in gs App All is',props.response[1]);
-                setgsAlltxnArray(props.response[1]);
+               setgsAlltxnArray(props.response[1]);
             }else{
-                console.log('props.response in gs App individual is',props.response[1]);
                 setindiGsArray(props.response[1]);
-                console.log('props.response in gs App individual is',props.response[2]);
                 setmissingVoucherArray(props.response[2]);
                 //setgsAlltxnArray(props.response[1]);
             }
 
            }
            return ()=>{
-               console.log("cleaned arrays in gs!!!");
-               setgsAlltxnArray([]);
+              setgsAlltxnArray([]);
            }
         }, [props]);
 
 
 useEffect(()=>{
-
     if(props.option==='All' && props.option!=='Choose' && props.option!==''){
         if(gsalltxnArray!==undefined && gsalltxnArray.length>0 ){
             setTxnLoader(true);
@@ -44,6 +39,7 @@ useEffect(()=>{
         }else{
             setTxnLoader(false);
         }
+
     }
 },[gsalltxnArray])
 
@@ -167,7 +163,7 @@ useEffect(() => {
                             <table className="table table-hover bg-light table-striped table-bordered" style={{borderCollapse: 'collapse',borderRadius:'1em',overflow:'hidden',position:"absolute",top:"30px",left:"12px",width:"97%"}}>
                                 <thead>
                                     <tr className="bg-primary">
-                                        <th id="gs-header" colspan="6">Missing Vouchers</th>
+                                        <th id="gs-header" colSpan="6">Missing Vouchers</th>
                                     </tr>
                                     <tr className="bg-primary">
                                         <th id="gs-header">Tally ID</th>
