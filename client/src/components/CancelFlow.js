@@ -1,10 +1,21 @@
 import React,{ useState,useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 const CancelFlow = () => {
 
     const [ cancelData,setCancelData ] = useState([]);
-
+    const notify = () => toast.success('Cancelled Successfully!!!!', {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        });;
 
     useEffect(() => {
         axios.get('http://localhost:6050/posttransaction').then(response=>{
@@ -28,8 +39,10 @@ const CancelFlow = () => {
                     console.log('in tally',LASTVCHID,"in gs",tallyid);
                     console.log(response.data[0]["ALTERED"]);
                     if(tallyid===LASTVCHID){
+                        notify();
                         console.log("cancelled and altered");
-                        window.location.reload(true);
+                        //window.location.reload(true);
+
                        }
                 }
                 }).catch(err=>{
@@ -43,6 +56,7 @@ const CancelFlow = () => {
     return (
         <div>
             <div className="row">
+            <ToastContainer />
                 <div className="col-md-12">
                 <Link className="btn btn-primary" to={"/"}>RECONCILE</Link>
                 </div>
@@ -72,7 +86,7 @@ const CancelFlow = () => {
                                                 <td>{item.date}</td>
                                                 <td><button
                                                 onClick={()=>handleCancel(item.tallyid,item.vouchertype,item.date)}
-                                                className="btn btn-secondary" disabled={item.cancelflag}>Cancel</button></td>
+                                                className="btn btn-secondary" >Cancel</button></td>
                                         </tr>)
                                     })}
                                 </tbody>

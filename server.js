@@ -379,11 +379,10 @@ let responsedata = [];
                         // console.log('entered if:::::::::::::::',item.VOUCHER[0].ISCANCELLED);
                             axios({url:'http://localhost:9000',method:'POST',headers:{ContentType: 'text/xml',charset:'UTF-8'},data:cancelVoucher})
                             .then(response=>{
-                                parseString(response.data, async (err, result)=>{
+                                parseString(response.data, (err, result)=>{
                                                 if(!err){
                                                     // console.log('response is',result.ENVELOPE.BODY[0].DATA[0].IMPORTRESULT[0]);
                                                     responsedata.push(result.ENVELOPE.BODY[0].DATA[0].IMPORTRESULT[0]);
-                                                    await updateGsApp(tallyid,vouchertype);
                                                     res.status(200).send(responsedata);
                                                 }
                                             })
@@ -398,21 +397,25 @@ let responsedata = [];
                     })
                 })
 
-function updateGsApp(tallyid,vouchertype){
-    // console.log('called tallyid',tallyid)
 
-    axios({url:`http://localhost:6050/edittransaction/${tallyid}/${vouchertype}`,method:'PUT'})
-    .then(response=>{
-        // console.log(response.data);
-    }).catch(err=>{
-        console.log(err);
-    })
-
-}
 
 function getTallyData(req,res,next){
 
-
+    var xmlstring = `<ENVELOPE>
+    <HEADER>
+    <VERSION>1</VERSION>
+    <TALLYREQUEST>EXPORT</TALLYREQUEST>
+    <TYPE>DATA</TYPE>
+    <ID>Voucher Register</ID>
+    </HEADER>
+    <BODY>
+    <DESC>
+    <STATICVARIABLES>
+    <SVEXPORTFORMAT>$$SysName:XML</SVEXPORTFORMAT>
+    </STATICVARIABLES>
+    </DESC>
+    </BODY>
+    </ENVELOPE>`;
     let responseContent = [];
     axios({url:'http://localhost:9000',method:'POST',headers:{ContentType: 'text/xml',charset:'UTF-8'},data:xmlstring})
     .then(response=>{

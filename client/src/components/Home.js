@@ -54,15 +54,11 @@ const handleSubmit=()=>{
 if(option ==='' || option ==='Choose'){
     // console.log('not allowed');
 }else{
-
-
-        axios.get(`http://localhost:5050/getrecondetails/${option}/${formatFromDate}/${formatToDate}`).then(response=>{
+    axios.get(`http://localhost:5050/getrecondetails/${option}/${formatFromDate}/${formatToDate}`).then(response=>{
             setInitialData(response.data);
             setLoader(true)
          }).catch(err=>console.log(err));
-
-
-}
+        }
 }
 
 return (
