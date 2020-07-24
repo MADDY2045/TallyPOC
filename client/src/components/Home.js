@@ -9,16 +9,16 @@ import 'mdbreact/dist/css/mdb.css';
 import { Link } from 'react-router-dom';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-var dateFormat = require('dateformat');
+
 
 
 const Home = () => {
 
 
     const [fromDate,setFromDate] = useState(new Date());
+    const [toDate,setToDate] = useState(new Date());
     const [formatFromDate,setFormatFromDate]=useState('');
     const [formatToDate,setFormatToDate]=useState('');
-    const [toDate,setToDate] = useState(new Date());
     const [initialdata,setInitialData] = useState([]);
     const [option,setOption] = useState('Choose');
     const [loader,setLoader] = useState(false);
@@ -37,24 +37,24 @@ const handleOption=(e)=>{
     setLoader(false);
 }
 
-useEffect(() => {
+// useEffect(() => {
 
-    if(toDate.getTime() > fromDate.getTime() || toDate.getTime() == fromDate.getTime()){
-        const fortmattedfromdate= dateFormat(fromDate, "yyyymmdd");
-        setFormatFromDate(fortmattedfromdate);
-        const fortmattedtodate= dateFormat(toDate, "yyyymmdd");
-        setFormatToDate(fortmattedtodate);
+//     if(toDate.getTime() > fromDate.getTime() || toDate.getTime() == fromDate.getTime()){
+//         const fortmattedfromdate= dateFormat(fromDate, "yyyymmdd");
+//         setFormatFromDate(fortmattedfromdate);
+//         const fortmattedtodate= dateFormat(toDate, "yyyymmdd");
+//         setFormatToDate(fortmattedtodate);
 
-    }
+//     }
 
-}, [fromDate,toDate])
+// }, [fromDate,toDate])
 
 const handleSubmit=()=>{
 
 if(option ==='' || option ==='Choose'){
     // console.log('not allowed');
 }else{
-    axios.get(`http://localhost:5050/getrecondetails/${option}/${formatFromDate}/${formatToDate}`).then(response=>{
+    axios.get(`http://localhost:5050/getrecondetails/${option}/${fromDate}/${toDate}`).then(response=>{
             setInitialData(response.data);
             setLoader(true)
          }).catch(err=>console.log(err));
@@ -63,7 +63,8 @@ if(option ==='' || option ==='Choose'){
 
 return (
         <div >
-            <Link className="btn btn-primary" to={`/cancel`} style={{position:"absolute",left:"1580px",top:"10px"}}>Cancel Flow</Link>
+            <Link className="btn btn-primary" to={`/cancel`} style={{position:"absolute",left:"1580px",top:"10px"}}>Cancel</Link>
+            <Link target="_blank"  className="btn btn-primary" to={`/create`} style={{position:"absolute",left:"1460px",top:"10px"}}>Create</Link>
            <SelectTransaction onChange={handleOption} onClick={handleSubmit}/>
            <div style={{position:"absolute",top:"40px",left:"900px",fontSize:"20px"}}>
            <label >From</label>

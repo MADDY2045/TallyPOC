@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import dateformat from 'dateformat';
 
 const CancelFlow = () => {
 
@@ -18,7 +19,7 @@ const CancelFlow = () => {
         });;
 
     useEffect(() => {
-        axios.get('http://localhost:6050/posttransaction').then(response=>{
+        axios.get('http://localhost:5050/posttransaction').then(response=>{
             console.log('cancel flow data',response.data);
             setCancelData(response.data)
         }).catch(err=>console.log(err));
@@ -27,6 +28,10 @@ const CancelFlow = () => {
         };
     }, [setCancelData]);
 
+
+    const getdate=(date)=>{
+        return dateformat(date,"dd/mm/yyyy")
+    }
 
     const handleCancel=(id,vouchertype,vouchernumber)=>{
         try{
@@ -39,15 +44,14 @@ const CancelFlow = () => {
                     console.log('in tally',LASTVCHID,"in gs",tallyid);
                     console.log(response.data[0]["ALTERED"]);
                     if(tallyid===LASTVCHID){
-                        notify();
                         console.log("cancelled and altered");
-                        //window.location.reload(true);
+                        window.location.reload(true);
+                        }
 
-                       }
                 }
                 }).catch(err=>{
-                console.log('err',err);
-            })
+                console.log('err',err);})
+            notify();
         }catch(error){
             console.log('error in catch',error);
         }
@@ -83,10 +87,10 @@ const CancelFlow = () => {
                                                 <td>{item.tallyid}</td>
                                                 <td>{item.amount}</td>
                                                 <td>{item.vouchernumber}</td>
-                                                <td>{item.date}</td>
+                                                <td>{getdate(item.date)}</td>
                                                 <td><button
                                                 onClick={()=>handleCancel(item.tallyid,item.vouchertype,item.date)}
-                                                className="btn btn-secondary" >Cancel</button></td>
+                                                className="btn btn-secondary" disabled={item.cancelflag}>Cancel</button></td>
                                         </tr>)
                                     })}
                                 </tbody>

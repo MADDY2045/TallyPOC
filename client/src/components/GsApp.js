@@ -1,4 +1,5 @@
 import React,{useState,useEffect,useMemo} from 'react';
+import dateformat from 'dateformat';
 
 const GsApp = (props) => {
 
@@ -25,6 +26,9 @@ const GsApp = (props) => {
            }
         }, [props]);
 
+        const getdate=(date)=>{
+            return dateformat(date,"dd/mm/yyyy")
+        }
 
 useEffect(()=>{
     if(props.option==='All' && props.option!=='Choose' && props.option!==''){

@@ -1,5 +1,6 @@
 import React,{useState,useEffect,useMemo} from 'react';
 import '../App.css';
+import dateformat from 'dateformat';
 
 const Tally = (props) => {
     const [gsalltxnArray,setgsAlltxnArray ] = useState([]);
@@ -24,6 +25,9 @@ const Tally = (props) => {
         }
         }, [props]);
 
+        const getdate=(date)=>{
+            return dateformat(date,"dd/mm/yyyy")
+        }
 
 useEffect(()=>{
     if(props.option==='All' && props.option!=='Choose' && props.option!==''){
@@ -179,7 +183,7 @@ useEffect(() => {
                                         <td>{listValue.tallyid}</td>
                                         <td>{listValue.vouchernumber}</td>
                                         <td>{listValue.vouchertype}</td>
-                                        <td>{listValue.date}</td>
+                                        <td>{getdate(listValue.date)}</td>
                                         <td>{listValue.amount}</td>
                                         <td><button className="btn btn-primary">Resync</button>|<button className="btn btn-danger">Delete</button></td>
                                         </tr>
