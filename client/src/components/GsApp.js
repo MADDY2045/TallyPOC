@@ -1,5 +1,5 @@
-import React,{useState,useEffect,useMemo} from 'react';
-import dateformat from 'dateformat';
+import React,{useState,useEffect} from 'react';
+
 
 const GsApp = (props) => {
 
@@ -26,9 +26,7 @@ const GsApp = (props) => {
            }
         }, [props]);
 
-        const getdate=(date)=>{
-            return dateformat(date,"dd/mm/yyyy")
-        }
+
 
 useEffect(()=>{
     if(props.option==='All' && props.option!=='Choose' && props.option!==''){
@@ -45,16 +43,17 @@ useEffect(()=>{
         }
 
     }
-},[gsalltxnArray])
+},[gsalltxnArray,props.option])
 
 useEffect(() => {
     let tempArr = [];
     if(gsalltxnArray!==undefined && gsalltxnArray.length>0){
        gsalltxnArray.map(item=>{
-        Object.keys(item).map(element=>{
+        return Object.keys(item).map(element=>{
            if(element!=='amount'){
                 tempArr.push(item[element].length)
             }
+            return tempArr;
         })
     })
     }

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-var dateFormat = require('dateformat');
+
 class CreateTransaction extends Component {
 
     constructor(props){
@@ -26,9 +26,10 @@ class CreateTransaction extends Component {
     }
 
     handleCreateDate=(date)=>{
-        this.setState({date:date});
+       this.setState({date:date});
     }
     handleSubmit=(e)=>{
+        console.log('date is ',this.state.date);
         console.log(this.state);
         e.preventDefault();
         axios({method:'POST',url:'http://localhost:5050/posttransaction',data:this.state}).then(res=>{

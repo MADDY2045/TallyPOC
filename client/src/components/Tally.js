@@ -1,4 +1,4 @@
-import React,{useState,useEffect,useMemo} from 'react';
+import React,{useState,useEffect} from 'react';
 import '../App.css';
 import dateformat from 'dateformat';
 
@@ -43,16 +43,17 @@ useEffect(()=>{
             setTxnLoader(false);
         }
     }
-},[gsalltxnArray])
+},[gsalltxnArray,props.option])
 
 useEffect(() => {
     let tempArr = [];
     if(gsalltxnArray!==undefined && gsalltxnArray.length>0){
        gsalltxnArray.map(item=>{
-        Object.keys(item).map(element=>{
-           if(element!=='amount'){
-                tempArr.push(item[element].length)
+            return Object.keys(item).map(element=>{
+                if(element!=='amount'){
+                 tempArr.push(item[element].length)
             }
+            return tempArr;
         })
     })
     }

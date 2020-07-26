@@ -8,6 +8,7 @@ var parseString = require('xml2js').parseString;
 const mongoose = require('mongoose');
 const TallyMaster = require('./models/TallyTransaction');
 var dateFormat = require('dateformat');
+var moment = require('moment');
 
 app.use(cors());
 app.use(express.json());
@@ -29,10 +30,12 @@ app.post('/posttransaction',(req,res)=>{
             if(output.length>0){
                 console.log('Tally id already exists!!!');
             }else{
-                const newTransaction = new TallyMaster({vouchertype,tallyid,amount,vouchernumber,date});
+                let formatdate = dateFormat(date,"yyyy-mm-dd");
+                const newTransaction = new TallyMaster({vouchertype,tallyid,amount,vouchernumber,date:formatdate});
                 const newTransactionDetails = newTransaction.save()
                 .then(()=>{
                    console.log("saved successfully!!!");
+                   res.end();
                 }).catch(err=>{
                     res.status(404).send(err);
                 })
@@ -288,21 +291,26 @@ function getGsApp(req,res,next){
       tempArr2=response.data;
       tempArr2.map(item=>{
 
-          comparedate = new Date(item.date).getTime();
-          let fromdate = new Date(req.params.fromdate).getTime();
-          let todate = new Date(req.params.todate).getTime();
-          if(item.cancelflag===false && comparedate>=fromdate && comparedate<=todate ){
+          comparedate = new Date(item.date);
+          if(item.cancelflag===false ){
             GsAppObj.map(obj=>{
                 let keys=Object.keys(obj);
+                let compareitemdate = new Date(dateFormat(item.date,'mm/dd/yyyy')).getTime();
+                let comparefromdate = new Date(dateFormat(req.params.fromdate,'mm/dd/yyyy')).getTime();
+                let comparetodate = new Date(dateFormat(req.params.todate,'mm/dd/yyyy')).getTime();
 
-                if(item.vouchertype==keys[0]){
-                   obj[keys[1]] += Number(item.amount);
-                   obj[keys[0]].push(item);
-                }
+
+                if(item.vouchertype==keys[0] ){
+                    if(compareitemdate >= comparefromdate && compareitemdate <= comparetodate){
+                        obj[keys[1]] += Number(item.amount);
+                        obj[keys[0]].push(item);
+                    }else{
+                        console.log("not valid date entry");
+                    }
+                  }
                })
           }
-
-       })
+        })
        req.body = GsAppObj;
        next();
     }).catch(err=>console.log(err));
@@ -312,17 +320,16 @@ function getGsApp(req,res,next){
 
 
 /*needed*/
-app.get("/canceltally/:id/:vouchertype/:date",getTallyData, async(req,res)=>{
+app.get("/canceltally/:id/:vouchertype/:date/:vouchernumber",getTallyData, async(req,res)=>{
 
     req.body.ENVELOPE.BODY[0].DATA[0].TALLYMESSAGE.pop();
     let exportData =  req.body.ENVELOPE.BODY[0].DATA[0].TALLYMESSAGE;
 
     let tallyid = req.params.id.toString();
-
-
     let vouchertype = req.params.vouchertype;
-
     let date = req.params.date;
+    let tallyformatdate = dateFormat(date,"dd-mmmm-yyyy");
+    console.log('date :::',tallyformatdate);
     let responseContent = [];
 
 
@@ -345,7 +352,7 @@ let responsedata = [];
                                 </DESC>
                                 <DATA>
                                     <TALLYMESSAGE>
-                                    <VOUCHER DATE = "01-April-2019" TAGNAME = "MASTER ID" TAGVALUE=" ${tallyid}" ACTION = "Cancel"  VCHTYPE = "${vouchertype}">
+                                    <VOUCHER DATE = "${tallyformatdate}" TAGNAME = "MASTER ID" TAGVALUE=" ${tallyid}" ACTION = "Cancel"  VCHTYPE = "${vouchertype}">
                                         <NARRATION>Cancelled by Madhavan</NARRATION>
                                     </VOUCHER>
                                     </TALLYMESSAGE>
@@ -363,11 +370,11 @@ let responsedata = [];
                                                 }
                                             })
                                         }).catch(err=>{console.log(err)
-                                                response.send(404).send("error in cancelling")
+
                                         });
 
                         }else{
-                            // console.log("not found")
+
                         }
 
                     })
@@ -409,16 +416,32 @@ function getTallyData(req,res,next){
 app.put('/cancelgsdata/:id/:vouchertype',(req,res)=>{
     console.log("entered route ",req.params.id,req.params.vouchertype);
     TallyMaster.find({tallyid:req.params.id,vouchertype:req.params.vouchertype}).then(result=>{
-        console.log('result is ',result);
-        result[0].cancelflag=true;
-         result[0].save().then(response=>{
-            console.log(response)
-        }).catch(err=>{
-            console.log(err);
-        })
+        try{
+            console.log('result is ',result);
+            if(result){
+                result[0].cancelflag=true;
+                result[0].save().then(response=>{
+                   console.log(response)
+               }).catch(err=>{
+                   console.log(err);
+               })
+            }
+        }catch(error){console.log('error',error)}
+
     }).catch(err=>console.log(err))
 })
 
+app.delete('/deletegsdata/:id/:vouchertype/:date/:vouchernumber',(req,res)=>{
+    console.log("entered route ",req.params.id,req.params.vouchertype,req.params.date,req.params.vouchernumber);
+    TallyMaster.findOneAndDelete({tallyid:req.params.id}).then(result=>{
+        try{
+           if(result){
+                res.send("successful");
+                }
+        }catch(error){console.log('error',error)}
+
+    }).catch(err=>console.log(err))
+})
 
 function updateDb(tallyid,vouchertype){
     console.log(tallyid,vouchertype);

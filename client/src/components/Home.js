@@ -1,4 +1,4 @@
-import React,{ useState,useEffect } from 'react';
+import React,{ useState } from 'react';
 import GsApp from '../components/GsApp';
 import Tally from '../components/Tally';
 import axios from 'axios';
@@ -17,8 +17,6 @@ const Home = () => {
 
     const [fromDate,setFromDate] = useState(new Date());
     const [toDate,setToDate] = useState(new Date());
-    const [formatFromDate,setFormatFromDate]=useState('');
-    const [formatToDate,setFormatToDate]=useState('');
     const [initialdata,setInitialData] = useState([]);
     const [option,setOption] = useState('Choose');
     const [loader,setLoader] = useState(false);
@@ -37,17 +35,7 @@ const handleOption=(e)=>{
     setLoader(false);
 }
 
-// useEffect(() => {
 
-//     if(toDate.getTime() > fromDate.getTime() || toDate.getTime() == fromDate.getTime()){
-//         const fortmattedfromdate= dateFormat(fromDate, "yyyymmdd");
-//         setFormatFromDate(fortmattedfromdate);
-//         const fortmattedtodate= dateFormat(toDate, "yyyymmdd");
-//         setFormatToDate(fortmattedtodate);
-
-//     }
-
-// }, [fromDate,toDate])
 
 const handleSubmit=()=>{
 
