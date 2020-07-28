@@ -83,7 +83,7 @@ const handleDelete =(id,vouchertype,date,vouchernumber)=>{
             <div className="row">
             <ToastContainer />
                 <div className="col-md-12">
-                <Link className="btn btn-primary" to={"/"}>RECONCILE</Link>
+                <Link className="btn bg-light text text-dark" to={"/"}>GO TO RECONCILE PAGE</Link>
                 </div>
                 <div className="col-md-12">
                 <div className="table-responsive" >

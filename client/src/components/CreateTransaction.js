@@ -40,10 +40,10 @@ class CreateTransaction extends Component {
 
     render() {
         return (
-            <div className="container card" style={{margin:"50px auto",minHeight:"600px",background:"#d8d9da",width:"50%"}}>
-                <h1 style={{margin:"10px auto"}}>GS APP</h1>
+        <div className="container card" style={{margin:"50px auto",minHeight:"600px",background:"#d8d9da",width:"50%"}}>
+             <h1 style={{margin:"10px auto"}}>GS APP</h1>
                 <form onSubmit={this.handleSubmit}>
-            <div className="form-row align-items-center">
+            <div classNameName="form-row align-items-center">
                 <div style={{width:"70%",position:"relative",left:"150px"}}>
                 <select
                 onChange={this.handleChange}

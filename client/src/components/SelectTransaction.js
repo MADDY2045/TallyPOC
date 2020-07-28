@@ -1,5 +1,5 @@
 import React from 'react';
-
+import '../App.css'
 
 const SelectTransaction = (props) => {
 
@@ -7,14 +7,13 @@ const SelectTransaction = (props) => {
 
     return (
         <div>
-             <div className="row"  >
-                <div className="col-md-4">
-                <div className="input-group" style={{position:"absolute",top:"30px",left:"60px"}}>
-                <select
+            <span>
+            <button  id="reconcile-btn" style={{position:"relative",left:"150px",top:"18px"}} onClick={props.onClick} className="btn btn-outline-secondary">RECONCILE</button>
+            <select
+                style={{position:"relative",left:"-190px",top:"-30px"}}
                onChange={props.onChange}
                 className="custom-select" id="inputGroupSelect04">
-
-                <option defaultValue>Choose</option>
+                    <option defaultValue>Choose</option>
                     <option value="All">All</option>
                     <option value="Sales">Sales Invoice</option>
                     <option value="Purchase">Purchase Invoice</option>
@@ -27,13 +26,7 @@ const SelectTransaction = (props) => {
                     <option value="Debit Note">Debit Note</option>
                     <option value="Stock Journal">Stock Journal</option>
                 </select>
-
-            <div className="input-group-append">
-                <button style={{position:"absolute",top:"-10px",left:"600px"}} onClick={props.onClick} className="btn btn-outline-secondary">RECONCILE</button>
-            </div>
-            </div>
-</div>
-</div>
+          </span>
         </div>
     );
 }

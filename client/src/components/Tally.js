@@ -186,7 +186,7 @@ useEffect(() => {
                                         <td>{listValue.vouchertype}</td>
                                         <td>{getdate(listValue.date)}</td>
                                         <td>{listValue.amount}</td>
-                                        <td><button className="btn btn-primary">Resync</button>|<button className="btn btn-danger">Delete</button></td>
+                                        <td><button className="btn btn-warning">Resync</button>|<button className="btn btn-danger">Delete</button></td>
                                         </tr>
                                     );
                                     }):null}

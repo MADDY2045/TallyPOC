@@ -35,6 +35,7 @@ td{
     text-align: center!important;
     vertical-align: middle!important;
     font-size: 16px!important;
+    background: white!important;
     }
 
 #tally-header{
@@ -49,4 +50,15 @@ td{
 
 #resync-header{
     min-width:300px!important;
+}
+#reconcile-btn{
+    color: white!important;
+}
+#reconcile-btn:hover{
+    background: white!important;
+    color: black!important;
+}
+
+body{
+    background:rgb(40, 63, 89)!important;
 }
