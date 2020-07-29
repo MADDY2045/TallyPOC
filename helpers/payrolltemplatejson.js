@@ -22,8 +22,8 @@ var payrolltallytemplate = {
     "DATE": "20190501",
     "GUID": "0bbd5096-36a4-4111-a30b-ffd161b46c91-00000531",
     "VOUCHERTYPENAME": "Payroll",
-    "VOUCHERNUMBER": "",
-    "PARTYLEDGERNAME": "",
+    "VOUCHERNUMBER": "3",
+    "PARTYLEDGERNAME": "Hdfc Bank Ltd",
     "CSTFORMISSUETYPE": "",
     "CSTFORMRECVTYPE": "",
     "FBTPAYMENTTYPE": "Default",
@@ -114,14 +114,8 @@ var payrolltallytemplate = {
     "LEDGERENTRIES.LIST":[],
     "CATEGORYENTRY.LIST":[
         {
-            "CATEGORY": "",
-            "EMPLOYEEENTRIES.LIST": [
-                     {
-                    "EMPLOYEENAME": "",
-                    "EMPLOYEESORTORDER": "1",
-                    "AMOUNT": "",
-                    "PAYHEADALLOCATIONS.LIST":[]
-                    }]
+            "CATEGORY": "Others",
+            "EMPLOYEEENTRIES.LIST": []
             }
 
     ],
@@ -197,13 +191,42 @@ var ledgerentrieslist = {
         "ADVANCETAXDETAILS.LIST": [],
         }
 
-var payheadentrylist =
-    {
-        "PAYHEADNAME": "",
-        "ISDEEMEDPOSITIVE": "",
-        "PAYHEADSORTORDER": "",
-        "AMOUNT": ""
+var payheadentrylist = {
+    "EMPLOYEENAME": "",
+    "EMPLOYEESORTORDER": "1",
+    "AMOUNT": "-4000",
+    "PAYHEADALLOCATIONS.LIST":[
+        {
+            "PAYHEADNAME": "",
+            "ISDEEMEDPOSITIVE": "",
+            "PAYHEADSORTORDER": "",
+            "AMOUNT": ""
+        }
+    ]
     }
 
 
-    module.exports = { payrolltallytemplate,payheadentrylist,ledgerentrieslist };
+ var bankallocationslist = {
+    "DATE":"20190501",
+    "INSTRUMENTDATE":"20190501",
+    "NAME":"e79fa682-b254-404b-b019-e0ce428a3ae0",
+    "TRANSACTIONTYPE":"Same Bank Transfer",
+    "IFSCODE":"HDFC0000847",
+    "BANKNAME":"Axis",
+    "ACCOUNTNUMBER":"977878787878787",
+    "PAYMENTFAVOURING":"M Prasad",
+    "UNIQUEREFERENCENUMBER":"4A5OAXXXenSOq7Bs",
+    "STATUS":"No",
+    "PAYMENTMODE":"Transacted",
+    "BANKEMPLOYEENAME":"M Prasad",
+    "ISCONNECTEDPAYMENT":"No",
+    "ISSPLIT":"No",
+    "ISCONTRACTUSED":"No",
+    "ISACCEPTEDWITHWARNING":"No",
+    "ISTRANSFORCED":"No",
+    "AMOUNT":"4000",
+    "CONTRACTDETAILS.LIST":[],
+    "BANKSTATUSINFO.LIST":[]
+ }
+
+    module.exports = { payrolltallytemplate,payheadentrylist,ledgerentrieslist,bankallocationslist };
