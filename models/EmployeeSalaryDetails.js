@@ -37,6 +37,10 @@ const employeeSalary = new Schema({
     tallyid:{
         type:String,
         default:null
+    },
+    netpay:{
+        type:Number,
+        default:0
     }
 
 })
