@@ -52,8 +52,9 @@ return (
         <div >
              <nav className="navbar" style={{background:"#283f59",color:"white"}}>
                 <a className="navbar-brand" href="http://localhost:3000/create" target="_blank" style={{position:"relative",left:"80px",textDecoration:"none",color:"white"}} rel='noopener noreferrer'>Create</a>
-                <a className="navbar-brand" href="http://localhost:3000/cancel" target="_blank" style={{position:"relative",left:"-80px",textDecoration:"none",color:"white"}} rel='noopener noreferrer'>Cancel</a>
-                <a className="navbar-brand" href="http://localhost:3000/createpayroll" target="_blank" style={{position:"relative",left:"-120px",textDecoration:"none",color:"white"}} rel='noopener noreferrer'>Payroll</a>
+                <a className="navbar-brand" href="http://localhost:3000/cancel" target="_blank" style={{position:"relative",left:"0px",textDecoration:"none",color:"white"}} rel='noopener noreferrer'>Cancel</a>
+                <a className="navbar-brand" href="http://localhost:3000/createpayroll" target="_blank" style={{position:"relative",left:"-60px",textDecoration:"none",color:"white"}} rel='noopener noreferrer'>Create Payroll</a>
+                <a className="navbar-brand" href="http://localhost:3000/disbursepayroll" target="_blank" style={{position:"relative",left:"-120px",textDecoration:"none",color:"white"}} rel='noopener noreferrer'>Disburse Payroll</a>
                 <span><SelectTransaction onChange={handleOption} onClick={handleSubmit}/></span>
                 <span style={{position:"relative",left:"0px",zIndex:"10"}}>
                 <label style={{position:"relative",left:"-10px"}} >From</label>
@@ -62,8 +63,8 @@ return (
                     onChange={handleFromDate}
                 />
                 </span>
-                <span style={{position:"relative",left:"-150px",zIndex:"10"}}>
-                <label style={{position:"relative",left:"-10px",zIndex:"10"}}>To</label>
+                <span style={{position:"relative",left:"-20px",zIndex:"10"}}>
+                <label style={{position:"relative",left:"-20px",zIndex:"10"}}>To</label>
                 <DatePicker
                    selected={toDate}
                     onChange={handleToDate}

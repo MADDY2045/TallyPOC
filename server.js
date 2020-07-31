@@ -7,7 +7,7 @@ const mongoose = require('mongoose');
 const Reconcilerouter = require('./routes/Reconcileroute');
 const CancelRouter = require('./routes/CancelTransaction');
 const DeleteRouter = require('./routes/DeleteTransaction');
-const PayrollRouter = require('./routes/Payroll');
+const PayrollCreationRouter = require('./routes/PayrollCreation');
 
 app.use(cors());
 app.use(express.json());
@@ -22,7 +22,7 @@ const port = 5050;
 app.use('/',Reconcilerouter);
 app.use('/',CancelRouter);
 app.use('/',DeleteRouter);
-app.use('/',PayrollRouter);
+app.use('/',PayrollCreationRouter);
 
 mongoose.connect('mongodb://localhost/tallyapp2',{useUnifiedTopology:true,useNewUrlParser:true},(err)=>{
     if(!err){

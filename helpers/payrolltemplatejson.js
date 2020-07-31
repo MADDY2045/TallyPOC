@@ -8,7 +8,7 @@ var payrolltallytemplate = {
     "REQUESTDESC": {
     "REPORTNAME": "All Masters",
     "STATICVARIABLES": {
-    "SVCURRENTCOMPANY": "Main"
+    "SVCURRENTCOMPANY": ""
     }
     },
     "REQUESTDATA": {
@@ -19,11 +19,11 @@ var payrolltallytemplate = {
             "OLDAUDITENTRYIDS": "-1",
             "_TYPE": "Number"
     }],
-    "DATE": "20190501",
+    "DATE": "",
     "GUID": "0bbd5096-36a4-4111-a30b-ffd161b46c91-00000531",
     "VOUCHERTYPENAME": "Payroll",
-    "VOUCHERNUMBER": "3",
-    "PARTYLEDGERNAME": "Hdfc Bank Ltd",
+    "VOUCHERNUMBER": "",
+    "PARTYLEDGERNAME": "",
     "CSTFORMISSUETYPE": "",
     "CSTFORMRECVTYPE": "",
     "FBTPAYMENTTYPE": "Default",
@@ -35,7 +35,7 @@ var payrolltallytemplate = {
     "AUDITED": "No",
     "FORJOBCOSTING": "No",
     "ISOPTIONAL": "No",
-    "EFFECTIVEDATE": "20190501",
+    "EFFECTIVEDATE": "",
     "USEFOREXCISE": "No",
     "ISFORJOBWORKIN": "No",
     "ALLOWCONSUMPTION": "No",
@@ -124,28 +124,14 @@ var payrolltallytemplate = {
     "GSTEWAYCONSIGNORADDRESS.LIST": [],
     "GSTEWAYCONSIGNEEADDRESS.LIST": [],
     "TEMPGSTRATEDETAILS.LIST": [],
-    "_REMOTEID": "0bbd5096-36a4-4111-a30b-ffd161b46c91-00000531",
+    "_REMOTEID": "",
     "_VCHKEY": "0bbd5096-36a4-4111-a30b-ffd161b46c91-0000aa41:00000018",
     "_VCHTYPE": "Payroll",
     "_ACTION": "Create",
     "_OBJVIEW": "PaySlip Voucher View"
     },
     "_xmlns:UDF": "TallyUDF"
-    },
-    {
-    "COMPANY": {
-    "REMOTECMPINFO.LIST": [
-        {
-    "NAME": "0bbd5096-36a4-4111-a30b-ffd161b46c91",
-    "REMOTECMPNAME": "Main",
-    "REMOTECMPSTATE": "Tamil Nadu",
-    "_MERGE": "Yes"
-    }
-]
-    },
-    "_xmlns:UDF": "TallyUDF"
-    }
-    ]
+    }]
     }
     }
     }
@@ -193,40 +179,39 @@ var ledgerentrieslist = {
 
 var payheadentrylist = {
     "EMPLOYEENAME": "",
-    "EMPLOYEESORTORDER": "1",
-    "AMOUNT": "-4000",
-    "PAYHEADALLOCATIONS.LIST":[
-        {
-            "PAYHEADNAME": "",
-            "ISDEEMEDPOSITIVE": "",
-            "PAYHEADSORTORDER": "",
-            "AMOUNT": ""
-        }
-    ]
+    "EMPLOYEESORTORDER": "",
+    "AMOUNT": "",
+    "PAYHEADALLOCATIONS.LIST":[]
     }
 
+var individualpayhead = {
+    "PAYHEADNAME": "",
+    "ISDEEMEDPOSITIVE": "",
+    "PAYHEADSORTORDER": "",
+    "AMOUNT": ""
+}
 
  var bankallocationslist = {
-    "DATE":"20190501",
-    "INSTRUMENTDATE":"20190501",
+    "DATE":"",
+    "INSTRUMENTDATE":"",
     "NAME":"e79fa682-b254-404b-b019-e0ce428a3ae0",
     "TRANSACTIONTYPE":"Same Bank Transfer",
-    "IFSCODE":"HDFC0000847",
+    "IFSCODE":"",
     "BANKNAME":"Axis",
-    "ACCOUNTNUMBER":"977878787878787",
-    "PAYMENTFAVOURING":"M Prasad",
+    "ACCOUNTNUMBER":"",
+    "PAYMENTFAVOURING":"",
     "UNIQUEREFERENCENUMBER":"4A5OAXXXenSOq7Bs",
     "STATUS":"No",
     "PAYMENTMODE":"Transacted",
-    "BANKEMPLOYEENAME":"M Prasad",
+    "BANKEMPLOYEENAME":"",
     "ISCONNECTEDPAYMENT":"No",
     "ISSPLIT":"No",
     "ISCONTRACTUSED":"No",
     "ISACCEPTEDWITHWARNING":"No",
     "ISTRANSFORCED":"No",
-    "AMOUNT":"4000",
+    "AMOUNT":"",
     "CONTRACTDETAILS.LIST":[],
     "BANKSTATUSINFO.LIST":[]
  }
 
-    module.exports = { payrolltallytemplate,payheadentrylist,ledgerentrieslist,bankallocationslist };
+    module.exports = { payrolltallytemplate,payheadentrylist,ledgerentrieslist,bankallocationslist,individualpayhead };

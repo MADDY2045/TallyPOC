@@ -41,6 +41,10 @@ const employeeSalary = new Schema({
     netpay:{
         type:Number,
         default:0
+    },
+    approved:{
+        type:Boolean,
+        default:false
     }
 
 })
