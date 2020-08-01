@@ -126,6 +126,12 @@ const getpayhead=(data,item)=>{
     }
 
 }
+
+const handleApproveAll=()=>{
+    axios.get("http://localhost:5050/approvepayrollbatch").then(response=>{
+        console.log(response.data);
+    }).catch(err=>console.log(err))
+}
     return (
         <div>
             <div className="row">
@@ -135,7 +141,8 @@ const getpayhead=(data,item)=>{
                 </div>
                 <div className="col-md-12">
                 <div className="table-responsive" >
-                            <table className="table table-hover bg-light table-striped table-bordered" style={{borderCollapse: 'collapse',borderRadius:'1em',overflow:'hidden',position:"absolute",top:"30px",left:"30px",width:"97%"}}>
+                            <table className="table table-hover bg-light table-striped table-bordered"
+                            style={{ boxShadow: '1px 6px 6px black',borderCollapse: 'collapse',borderRadius:'1em',overflow:'hidden',position:"absolute",top:"30px",left:"30px",width:"97%"}}>
                                 <thead>
                                     <tr className="bg-warning">
                                         <th colSpan="15" id="tally-header">Payroll Details</th>
@@ -155,7 +162,7 @@ const getpayhead=(data,item)=>{
                                         <th id="tally-header">Salary Advance</th>
                                         <th id="tally-header">Date</th>
                                         <th id="tally-header">NetPay</th>
-                                        <th id="tally-header">Action</th>
+                                        <th id="tally-header"><button onClick={handleApproveAll} className="btn btn-primary">APPROVE ALL</button></th>
                                     </tr>
                                 </thead>
                                 <tbody>

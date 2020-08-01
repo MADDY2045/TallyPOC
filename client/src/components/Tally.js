@@ -70,7 +70,9 @@ useEffect(() => {
                 <div className="row">
                 <div className="col-md-12  table-responsive" style={{maxWidth:"830px",overflow:"auto",position:"absolute",top:"100px"}}>
                 <h4 style={{position:"absolute",top:"10px",left:"200px"}}>TALLY APP TOTAL VOUCHERS-COUNT-WISE </h4>
-        <table className="table table-hover bg-warning table-striped mt-5 table-bordered" style={{borderCollapse: 'collapse',borderRadius:'1em',overflow:'hidden'}}>
+        <table
+        id="table-tally"
+        className="table table-hover bg-warning table-striped mt-5 table-bordered" style={{borderCollapse: 'collapse',borderRadius:'1em',overflow:'hidden'}}>
 
             <thead>
                 <tr>
@@ -98,7 +100,9 @@ useEffect(() => {
         </div>
         <div className="col-md-12  table-responsive" style={{maxWidth:"830px",overflow:"auto",position:"absolute",top:"400px"}}>
         <h4 style={{position:"absolute",top:"10px",left:"200px"}}>TALLY APP TOTAL AMOUNT-WISE </h4>
-        <table className="table table-hover bg-warning table-striped mt-5 table-bordered" style={{borderCollapse: 'collapse',borderRadius:'1em',overflow:'hidden'}}>
+        <table
+        id="table-tally"
+        className="table table-hover bg-warning table-striped mt-5 table-bordered" style={{borderCollapse: 'collapse',borderRadius:'1em',overflow:'hidden'}}>
             <thead>
                 <tr>
                 <th id="tally-header">Sales Invoice</th>
@@ -130,7 +134,9 @@ useEffect(() => {
                     <div className="col-md-6" style={{minHeight:"300px"}}>
                     <h4>TALLY APP</h4>
                         <div className="table-responsive">
-                            <table className="table table-hover bg-warning table-striped mt-5 table-bordered" style={{borderCollapse: 'collapse',borderRadius:'1em',overflow:'hidden'}}>
+                            <table
+                            id="table-tally"
+                            className="table table-hover bg-warning table-striped mt-5 table-bordered" style={{borderCollapse: 'collapse',borderRadius:'1em',overflow:'hidden'}}>
                                 <thead>
                                     <tr>
                                         <th id="tally-header">{props.option}</th>
@@ -146,8 +152,11 @@ useEffect(() => {
                     </div>
                     <div className="col-md-6" style={{minHeight:"300px"}}>
                     <h4 style={{visibility:"hidden"}}>TALLY APP</h4>
-                        <div className="table-responsive">
-                            <table className="table table-hover bg-warning table-striped mt-5 table-bordered" style={{borderCollapse: 'collapse',borderRadius:'1em',overflow:'hidden'}}>
+                        <div className="table-responsive" >
+                            <table
+                            id="table-tally"
+                            className="table table-hover bg-warning table-striped mt-5 table-bordered"
+                            style={{ borderCollapse: 'collapse',borderRadius:'1em',overflow:'hidden'}}>
                                 <thead>
                                     <tr>
                                         <th id="tally-header">{props.option}</th>
@@ -163,7 +172,9 @@ useEffect(() => {
                     </div>
                     <div className="col-md-12" style={{minHeight:"398px",maxHeight:"398px",overflowY:"auto"}}>
                         <div className="table-responsive" >
-                            <table className="table table-hover bg-light table-striped table-bordered" style={{borderCollapse: 'collapse',borderRadius:'1em',overflow:'hidden',position:"absolute",top:"30px",left:"12px",width:"97%"}}>
+                            <table
+                            id="table-tally"
+                            className="table table-hover bg-light table-striped table-bordered" style={{boxShadow:"6px 6px 6px grey",borderCollapse: 'collapse',borderRadius:'1em',overflow:'hidden',position:"absolute",top:"30px",left:"12px",width:"97%"}}>
                                 <thead>
                                     <tr className="bg-warning">
                                         <th colSpan="6" id="tally-header">Missing Vouchers</th>
