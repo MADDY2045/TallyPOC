@@ -22,6 +22,16 @@ const DisbursePayroll = () => {
         progress: undefined,
         });
 
+    const notifycancel = () => toast.success('Cancelled Successfully!!!!', {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        });
+
 useEffect(()=>{
     if(tallyerrormsg!==''){
         notifyerror();
@@ -38,7 +48,7 @@ const notifyerror = () => toast.warning(`${tallyerrormsg}`, {
     progress: undefined,
     });
 
-    useEffect(() => {
+    const loaddata =()=>{
         axios.get('http://localhost:5050/getallemployeesalarydetails',{cancelToken: source.token}).then(response=>{
 
             console.log(response.data);
@@ -50,10 +60,14 @@ const notifyerror = () => toast.warning(`${tallyerrormsg}`, {
                 console.log(err);
               }
         });
+    }
+
+    useEffect(() => {
+        loaddata()
         return () => {
             setCancelData([])
         };
-    }, [setCancelData]);
+    }, []);
 
 
     const getdate=(date)=>{
@@ -66,9 +80,7 @@ const notifyerror = () => toast.warning(`${tallyerrormsg}`, {
                             console.log(response.data);
                             if(response.data==="success"){
                                 notify();
-                                setTimeout(()=>{
-                                    window.location.reload();
-                                },1000)
+                                loaddata();
                             }else{
                                 setTallyerrormsg(response.data);
                                 setTallyerrormsgflag(!tallyerrormsgflag);
@@ -80,6 +92,28 @@ const notifyerror = () => toast.warning(`${tallyerrormsg}`, {
         }
 }
 
+const handleCancel=(id,vouchertype,date)=>{
+    try{
+        axios.get(`http://localhost:5050/cancelpayroll/${id}/${vouchertype}/${date}`).then(response=>{
+
+            console.log('response is',response.data);
+            if(response.data!==undefined && response.data!=='error' ){
+                let LASTVCHID = Number(response.data[0]['LASTVCHID']);
+                let tallyid = Number(id);
+               if(tallyid===LASTVCHID){
+                    console.log("cancelled and altered");
+                    notifycancel();
+                    loaddata();
+                  }
+                }else{
+                    alert('Oops!!error in cancelling')
+                }
+            }).catch(err=>{console.log('err',err);})
+
+    }catch(error){
+        console.log('error in catch',error);
+    }
+}
 
 
 const getpayhead=(data,item)=>{
@@ -145,8 +179,8 @@ const getpayhead=(data,item)=>{
                                                 onClick={()=>handleApprove(item.id)}
                                                 className="btn btn-secondary" disabled={item.approved}>Approve</button>
                                                 |<button
-
-                                                className="btn btn-danger">Cancel</button>
+                                                onClick={()=>handleCancel(item.tallyid,item.vouchertype,item.date)}
+                                                className="btn btn-danger" disabled={item.cancelflag}>Cancel</button>
                                                 </td>
                                         </tr>)
                                     })}

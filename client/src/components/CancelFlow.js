@@ -28,14 +28,17 @@ const CancelFlow = () => {
         progress: undefined,
         });;
 
-    useEffect(() => {
+    const loaddata=()=>{
         axios.get('http://localhost:5050/posttransaction').then(response=>{
-           setCancelData(response.data)
-        }).catch(err=>console.log(err));
+            setCancelData(response.data)
+         }).catch(err=>console.log(err));
+    }
+    useEffect(() => {
+        loaddata();
         return () => {
             setCancelData([])
         };
-    }, [setCancelData]);
+    }, []);
 
 
     const getdate=(date)=>{
@@ -54,8 +57,8 @@ const CancelFlow = () => {
                         console.log("cancelled and altered");
                         notify();
                         setTimeout(()=>{
-                            window.location.reload(true);
-                        },2000)
+                            loaddata();
+                        },100)
                       }
                     }else{
                         alert('Oops!!error in cancelling')
@@ -73,8 +76,8 @@ const handleDelete =(id,vouchertype,date,vouchernumber)=>{
         if(response.data==="successful"){
             notifydeletion();
             setTimeout(()=>{
-                window.location.reload()
-            },2000);
+                loaddata();
+            },100);
         }
     }).catch(err=>console.log(err));
 }

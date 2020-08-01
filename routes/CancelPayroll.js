@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const axios = require('axios');
 var parseString = require('xml2js').parseString;
-const TallyMaster = require('../models/TallyTransaction');
+const EmployeeMaster = require('../models/EmployeeSalaryDetails');
 var dateFormat = require('dateformat');
 
 function getTallyData(req,res,next){
@@ -36,8 +36,8 @@ function getTallyData(req,res,next){
 
 }
 
-router.get("/canceltally/:id/:vouchertype/:date/:vouchernumber",getTallyData, async(req,res)=>{
-
+router.get("/cancelpayroll/:id/:vouchertype/:date",getTallyData, async(req,res)=>{
+    console.log("entered main function",req.params.date);
     req.body.ENVELOPE.BODY[0].DATA[0].TALLYMESSAGE.pop();
     let exportData =  req.body.ENVELOPE.BODY[0].DATA[0].TALLYMESSAGE;
 
@@ -97,9 +97,9 @@ let responsedata = [];
                 })
 
 
-router.put('/cancelgsdata/:id/:vouchertype',(req,res)=>{
+router.put('/updatepayrolldata/:id/:vouchertype',async (req,res)=>{
                     console.log("entered route ",req.params.id,req.params.vouchertype);
-                    TallyMaster.find({tallyid:req.params.id,vouchertype:req.params.vouchertype}).then(result=>{
+                   await EmployeeMaster.find({tallyid:req.params.id,vouchertype:req.params.vouchertype}).then(result=>{
                         try{
                             console.log('result is ',result);
                             if(result){
@@ -118,7 +118,7 @@ router.put('/cancelgsdata/:id/:vouchertype',(req,res)=>{
 
 function updateDb(tallyid,vouchertype){
     console.log(tallyid,vouchertype);
-    axios.put(`http://localhost:5050/cancelgsdata/${tallyid}/${vouchertype}`).then(response=>{
+    axios.put(`http://localhost:5050/updatepayrolldata/${tallyid}/${vouchertype}`).then(response=>{
         console.log(response.data);
     }).catch(err=>{console.log(err)})
 }

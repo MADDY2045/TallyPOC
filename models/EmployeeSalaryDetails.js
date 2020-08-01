@@ -45,6 +45,14 @@ const employeeSalary = new Schema({
     approved:{
         type:Boolean,
         default:false
+    },
+    vouchertype:{
+        type:String,
+        default:"Payroll"
+    },
+    cancelflag:{
+        type:Boolean,
+        default:true
     }
 
 })

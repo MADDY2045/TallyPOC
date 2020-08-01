@@ -9,6 +9,7 @@ const CancelRouter = require('./routes/CancelTransaction');
 const DeleteRouter = require('./routes/DeleteTransaction');
 const PayrollCreationRouter = require('./routes/PayrollCreation');
 const PayrollDisburseRouter = require('./routes/Disbursepayroll');
+const CancelPayrollRouter = require('./routes/CancelPayroll');
 app.use(cors());
 app.use(express.json());
 app.set('views', path.join(__dirname, 'views'));
@@ -24,6 +25,7 @@ app.use('/',CancelRouter);
 app.use('/',DeleteRouter);
 app.use('/',PayrollCreationRouter);
 app.use('/',PayrollDisburseRouter);
+app.use('/',CancelPayrollRouter);
 
 mongoose.connect('mongodb://localhost/tallyapp2',{useUnifiedTopology:true,useNewUrlParser:true},(err)=>{
     if(!err){

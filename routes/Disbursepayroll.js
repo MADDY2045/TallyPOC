@@ -20,22 +20,26 @@ router.get('/approvesalary/:id',cleantemplates,createmaster,getEmployeesalary,as
     console.log(xmlstring);
     axios({url:'http://localhost:9000',method:'POST',headers:{ContentType: 'text/xml',charset:'UTF-8'},data:xmlstring})
     .then(response=>{
-        // console.log(response.data)
+        const jsonstring = x2js.xml2js(response.data);
         parseString(response.data,(issue,result)=>{
             if(!issue){
 
-                if(result["RESPONSE"]["ALTERED"][0]!=='0' || result["RESPONSE"]["ALTERED"][0]!=='0' || result["RESPONSE"]["CREATED"][0]!=='0'){
+                if(result["RESPONSE"]["ALTERED"][0]!=='0' || result["RESPONSE"]["COMBINED"][0]!=='0' || result["RESPONSE"]["CREATED"][0]!=='0'){
                     EmployeeSalaryMaster.find({id:req.params.id}).then(result=>{
                         if(result.length>0){
+                            console.log('tally response',jsonstring["RESPONSE"]["LASTVCHID"]);
                           result[0].approved = true;
+                          result[0].cancelflag = false;
+                          result[0].tallyid = jsonstring["RESPONSE"]["LASTVCHID"];
                             result[0].save().then(response=>{
                                 //console.log(response)
+                                res.send("success");
                             }).catch(err=>{
                                 console.log(err);
                             })
                         }
                     }).catch(err=>console.log(err))
-                    res.send("success");
+
                 }else{
                     res.send(result["RESPONSE"]["LINEERROR"][0]);
                 }
