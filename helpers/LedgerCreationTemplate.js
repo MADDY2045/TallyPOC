@@ -15,15 +15,15 @@ var ledgercreator = {
 					"TALLYMESSAGE": {
 						"LEDGER": {
 							"MAILINGNAME.LIST": {
-								"MAILINGNAME": "Hdfc Bank Ltd",
+								"MAILINGNAME": "",
 								"_TYPE": "String"
 							},
 							"PARENT": "Bank Accounts",
 							"NAME.LIST": {
-								"NAME": "HDFC BANK Ltd",
+								"NAME": "",
 								"_TYPE": "String"
 							},
-							"_NAME": "HDFC BANK Ltd",
+							"_NAME": "",
 							"_RESERVEDNAME": ""
 						},
 						"_xmlns:UDF": "TallyUDF"

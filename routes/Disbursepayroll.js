@@ -14,10 +14,10 @@ var { costcategory,costcentre } = require('../helpers/CostCentreTemplate');
 
 var { payrolltallytemplate,payheadentrylist,ledgerentrieslist,bankallocationslist,individualpayhead,companyname,date,partyledgername,ledgerentryarray,categoryentrylistarray,category,employeeentrieslist,remoteid,employeeentrieslistamount,payheadallocationslist } = require('../helpers/payrolltemplatejson');
 
-router.get('/approvesalary/:id',createmaster,cleantemplates,getEmployeesalary,async(req,res)=>{
+router.get('/approvesalary/:id',cleantemplates,createmaster,getEmployeesalary,async(req,res)=>{
     let x2js = new X2JS();
     const xmlstring = await x2js.js2xml(payrolltallytemplate);
-    // console.log(xmlstring);
+    console.log(xmlstring);
     axios({url:'http://localhost:9000',method:'POST',headers:{ContentType: 'text/xml',charset:'UTF-8'},data:xmlstring})
     .then(response=>{
         // console.log(response.data)
@@ -27,10 +27,9 @@ router.get('/approvesalary/:id',createmaster,cleantemplates,getEmployeesalary,as
                 if(result["RESPONSE"]["ALTERED"][0]!=='0' || result["RESPONSE"]["ALTERED"][0]!=='0' || result["RESPONSE"]["CREATED"][0]!=='0'){
                     EmployeeSalaryMaster.find({id:req.params.id}).then(result=>{
                         if(result.length>0){
-                            console.log(result[0].approved);
-                            result[0].approved = true;
+                          result[0].approved = true;
                             result[0].save().then(response=>{
-                                console.log(response)
+                                //console.log(response)
                             }).catch(err=>{
                                 console.log(err);
                             })
@@ -85,6 +84,7 @@ async function getEmployeesalary (req,res,next){
 
 
          employeesortorder += 1;
+         payrolltallytemplate["ENVELOPE"]["BODY"]["IMPORTDATA"]["REQUESTDATA"]["TALLYMESSAGE"][0]["VOUCHER"]["CATEGORYENTRY.LIST"][0]["CATEGORY"] = "Others";
         if(employeeentrieslist.length===0){
             employeeentrieslist.push(payheadentrylist);
         }
@@ -130,15 +130,80 @@ function getpayheaddetails(item,response){
 
         tempArray.push(tempobj);
     }
-    console.log('temparray is',tempArray);
+    // console.log('temparray is',tempArray);
     return tempArray;
 }
 
 
 
 function createmaster(req,res,next){
-    console.log("entered create mastres");
-    next();
+    console.log(req.params.id);
+    EmployeeSalaryMaster.find({id:req.params.id}).then(response=>{
+        if(response.length>0){
+            // console.log(response);
+            if(response[0].transactiontype || response[0].name ){
+
+                    if(response[0].transactiontype==='Cash'){
+                        ledgercreator["ENVELOPE"]["BODY"]["IMPORTDATA"]["REQUESTDESC"]["STATICVARIABLES"]["SVCURRENTCOMPANY"]="Main"
+                        ledgercreator["ENVELOPE"]["BODY"]["IMPORTDATA"]["REQUESTDATA"]["TALLYMESSAGE"]["LEDGER"]["MAILINGNAME.LIST"]["MAILINGNAME"]=response[0].transactiontype
+                        ledgercreator["ENVELOPE"]["BODY"]["IMPORTDATA"]["REQUESTDATA"]["TALLYMESSAGE"]["LEDGER"]["NAME.LIST"]["NAME"]=response[0].transactiontype
+                        ledgercreator["ENVELOPE"]["BODY"]["IMPORTDATA"]["REQUESTDATA"]["TALLYMESSAGE"]["LEDGER"]["PARENT"]="Cash-in-Hand"
+                        ledgercreator["ENVELOPE"]["BODY"]["IMPORTDATA"]["REQUESTDATA"]["TALLYMESSAGE"]["LEDGER"]["_NAME"]=response[0].transactiontype;
+                    }else{
+                        ledgercreator["ENVELOPE"]["BODY"]["IMPORTDATA"]["REQUESTDESC"]["STATICVARIABLES"]["SVCURRENTCOMPANY"]="Main"
+                        ledgercreator["ENVELOPE"]["BODY"]["IMPORTDATA"]["REQUESTDATA"]["TALLYMESSAGE"]["LEDGER"]["MAILINGNAME.LIST"]["MAILINGNAME"]=response[0].transactiontype
+                        ledgercreator["ENVELOPE"]["BODY"]["IMPORTDATA"]["REQUESTDATA"]["TALLYMESSAGE"]["LEDGER"]["NAME.LIST"]["NAME"]=response[0].transactiontype
+                        ledgercreator["ENVELOPE"]["BODY"]["IMPORTDATA"]["REQUESTDATA"]["TALLYMESSAGE"]["LEDGER"]["PARENT"]="Bank Accounts"
+                        ledgercreator["ENVELOPE"]["BODY"]["IMPORTDATA"]["REQUESTDATA"]["TALLYMESSAGE"]["LEDGER"]["_NAME"]=response[0].transactiontype;
+                    }
+
+                    let x2js = new X2JS();
+                    const xmlstring = x2js.js2xml(ledgercreator);
+                    axios({url:'http://localhost:9000',method:'POST',headers:{ContentType: 'text/xml',charset:'UTF-8'},data:xmlstring})
+                        .then(response=>{
+                            if(response.data){
+                                parseString(response.data,(issue,result)=>{
+                                    if(!issue){
+                                        // console.log(result);
+                                    }
+                                })
+                            }
+                        }).catch(err=>console.log(err));
+
+                    costcategory["ENVELOPE"]["BODY"]["IMPORTDATA"]["REQUESTDATA"]["TALLYMESSAGE"]["COSTCATEGORY"]["_NAME"]=response[0].role;
+                    costcategory["ENVELOPE"]["BODY"]["IMPORTDATA"]["REQUESTDATA"]["TALLYMESSAGE"]["COSTCATEGORY"]["LANGUAGENAME.LIST"]["NAME.LIST"]["NAME"]=response[0].role
+                    const xmlstringcostcategory = x2js.js2xml(costcategory);
+                    axios({url:'http://localhost:9000',method:'POST',headers:{ContentType: 'text/xml',charset:'UTF-8'},data:xmlstringcostcategory})
+                        .then(response=>{
+                            if(response.data){
+                                parseString(response.data,(issue,result)=>{
+                                    if(!issue){
+                                    //    console.log(result);
+                                    }
+                                })
+                            }
+                        }).catch(err=>console.log(err));
+
+                  costcentre["ENVELOPE"]["BODY"]["IMPORTDATA"]["REQUESTDATA"]["TALLYMESSAGE"]["COSTCENTRE"]["CATEGORY"]="Others";
+                  costcentre["ENVELOPE"]["BODY"]["IMPORTDATA"]["REQUESTDATA"]["TALLYMESSAGE"]["COSTCENTRE"]["LANGUAGENAME.LIST"]["NAME.LIST"]["NAME"]=response[0].name;
+                  costcentre["ENVELOPE"]["BODY"]["IMPORTDATA"]["REQUESTDATA"]["TALLYMESSAGE"]["COSTCENTRE"]["_NAME"]="Others";
+
+                  const xmlstringcostcentre = x2js.js2xml(costcentre);
+                    axios({url:'http://localhost:9000',method:'POST',headers:{ContentType: 'text/xml',charset:'UTF-8'},data:xmlstringcostcentre})
+                        .then(response=>{
+                            if(response.data){
+                                parseString(response.data,(issue,result)=>{
+                                    if(!issue){
+                                       console.log(result);
+                                    }
+                                })
+                            }
+                        }).catch(err=>console.log(err));
+            }
+        }
+       next();
+    }).catch(err=>console.log(err));
+
 }
 
 function cleantemplates(req,res,next){

@@ -11,10 +11,10 @@ var costcentre = {
 				"REQUESTDATA": {
 					"TALLYMESSAGE": {
 					"COSTCENTRE":{
-                        "_NAME":"Final Test",
+                        "_NAME":"",
                         "GUID":null,
                         "PARENT":null,
-                        "CATEGORY":"example",
+                        "CATEGORY":"",
                         "REVENUELEDFOROPBAL":null,
                         "ISUPDATINGTARGETID":null,
                         "ASORIGINAL":null,
@@ -27,7 +27,7 @@ var costcentre = {
                         "LANGUAGENAME.LIST":{
                             "NAME.LIST":{
                                 "_TYPE":"String",
-                                "NAME":"Final Test"
+                                "NAME":""
                                         },
                         "LANGUAGEID":1033
                                             },
@@ -61,7 +61,7 @@ var costcentre = {
                     "REQUESTDATA": {
                         "TALLYMESSAGE": {
                             "COSTCATEGORY": {
-                            "_NAME":"example",
+                            "_NAME":"",
                             "GUID":null,
                             "ISUPDATINGTARGETID":null,
                             "ASORIGINAL":"Yes",
@@ -72,7 +72,7 @@ var costcentre = {
                             "LANGUAGENAME.LIST":{
                                 "NAME.LIST":{
                                     "_TYPE":"String",
-                                    "NAME":"example"
+                                    "NAME":""
                                 },
                                 "LANGUAGEID":1033
                             },
@@ -85,4 +85,4 @@ var costcentre = {
     }
 }
 
-  var { costcategory,costcentre }= module.exports;
+   module.exports = { costcategory,costcentre }

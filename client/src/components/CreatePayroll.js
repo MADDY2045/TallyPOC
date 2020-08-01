@@ -166,6 +166,7 @@ class CreatePayroll extends Component {
                     <option defaultValue>Choose Transaction</option>
                     <option value="Cash">Cash</option>
                     <option value="Bank">Bank</option>
+                    <option value="Axis Bank">Axis Bank</option>
                 </select>
                 {this.state.txntypeflag ?
                 <div className="row" id="transactiontype">

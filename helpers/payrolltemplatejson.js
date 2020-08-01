@@ -114,7 +114,7 @@ var payrolltallytemplate = {
     "LEDGERENTRIES.LIST":[],
     "CATEGORYENTRY.LIST":[
         {
-            "CATEGORY": "Others",
+            "CATEGORY": "",
             "EMPLOYEEENTRIES.LIST": []
             }
 
