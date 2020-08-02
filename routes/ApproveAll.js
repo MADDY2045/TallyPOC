@@ -32,9 +32,10 @@ router.get("/approvepayrollbatch",createmaster,cleantemplates,async(req,res)=>{
 
         }
         payrolltallytemplate["ENVELOPE"]["BODY"]["IMPORTDATA"]["REQUESTDESC"]["STATICVARIABLES"]["SVCURRENTCOMPANY"] = "Main";
-        const formatteddate = dateFormat(bulkempsalary[0].date,"yyyymmdd");
-        payrolltallytemplate["ENVELOPE"]["BODY"]["IMPORTDATA"]["REQUESTDATA"]["TALLYMESSAGE"][0]["VOUCHER"]["DATE"]=formatteddate;
-
+        if(bulkempsalary && bulkempsalary[0] && bulkempsalary[0].date){
+            const formatteddate = dateFormat(bulkempsalary[0].date,"yyyymmdd");
+            payrolltallytemplate["ENVELOPE"]["BODY"]["IMPORTDATA"]["REQUESTDATA"]["TALLYMESSAGE"][0]["VOUCHER"]["DATE"]=formatteddate;
+        }
         payrolltallytemplate["ENVELOPE"]["BODY"]["IMPORTDATA"]["REQUESTDATA"]["TALLYMESSAGE"][0]["VOUCHER"]["_REMOTEID"]=uuidv4();
 
 
@@ -47,6 +48,7 @@ router.get("/approvepayrollbatch",createmaster,cleantemplates,async(req,res)=>{
             payrolltallytemplate["ENVELOPE"]["BODY"]["IMPORTDATA"]["REQUESTDATA"]["TALLYMESSAGE"][0]["VOUCHER"]["PARTYLEDGERNAME"]=filteredArray[0].transactiontype;
             ledgerentrieslist["LEDGERNAME"]=filteredArray[0].transactiontype;
             ledgerentrieslist["AMOUNT"]=payrollbatchnetamount
+            const formatteddate = dateFormat(filteredArray[0].date,"yyyymmdd");
             bankallocationslist["DATE"]=formatteddate;
             bankallocationslist["INSTRUMENTDATE"]=filteredArray[0].instrumentdate;
             bankallocationslist["IFSCODE"]=filteredArray[0].ifsc;
@@ -61,10 +63,12 @@ router.get("/approvepayrollbatch",createmaster,cleantemplates,async(req,res)=>{
            {
                if(payrolltallytemplate["ENVELOPE"]["BODY"]["IMPORTDATA"]["REQUESTDATA"]["TALLYMESSAGE"][0]["VOUCHER"]["LEDGERENTRIES.LIST"].length===0){
                 console.log("entered else also");
-                ledgerentrieslist["LEDGERNAME"]=bulkempsalary[0].transactiontype;
-                payrolltallytemplate["ENVELOPE"]["BODY"]["IMPORTDATA"]["REQUESTDATA"]["TALLYMESSAGE"][0]["VOUCHER"]["PARTYLEDGERNAME"]=bulkempsalary[0].transactiontype;
-                ledgerentrieslist["AMOUNT"]=payrollbatchnetamount;
-                payrolltallytemplate["ENVELOPE"]["BODY"]["IMPORTDATA"]["REQUESTDATA"]["TALLYMESSAGE"][0]["VOUCHER"]["LEDGERENTRIES.LIST"].push(ledgerentrieslist);
+                if(bulkempsalary && bulkempsalary[0] && bulkempsalary[0].transactiontype){
+                    ledgerentrieslist["LEDGERNAME"]=bulkempsalary[0].transactiontype;
+                    payrolltallytemplate["ENVELOPE"]["BODY"]["IMPORTDATA"]["REQUESTDATA"]["TALLYMESSAGE"][0]["VOUCHER"]["PARTYLEDGERNAME"]=bulkempsalary[0].transactiontype;
+                    ledgerentrieslist["AMOUNT"]=payrollbatchnetamount;
+                    payrolltallytemplate["ENVELOPE"]["BODY"]["IMPORTDATA"]["REQUESTDATA"]["TALLYMESSAGE"][0]["VOUCHER"]["LEDGERENTRIES.LIST"].push(ledgerentrieslist);
+                }
             }
            }
            payrolltallytemplate["ENVELOPE"]["BODY"]["IMPORTDATA"]["REQUESTDATA"]["TALLYMESSAGE"][0]["VOUCHER"]["CATEGORYENTRY.LIST"][0]["CATEGORY"] = "Others";
@@ -77,12 +81,41 @@ router.get("/approvepayrollbatch",createmaster,cleantemplates,async(req,res)=>{
 
         let x2js = new X2JS();
     const payrollbatchxmlstring = x2js.js2xml(payrolltallytemplate);
+    let responsetallyid = '';
+    let responsedate = '';
     //console.log(payrollbatchxmlstring);
     axios({url:'http://localhost:9000',method:'POST',headers:{ContentType: 'text/xml',charset:'UTF-8'},data:payrollbatchxmlstring})
     .then(response=>{
             if(response.data){
-                //console.log(response.data);
-                res.send(payrolltallytemplate);
+                const jsonstring = x2js.xml2js(response.data);
+        parseString(response.data,(issue,result)=>{
+            if(!issue){
+
+                if(result["RESPONSE"]["ALTERED"][0]!=='0' || result["RESPONSE"]["COMBINED"][0]!=='0' || result["RESPONSE"]["CREATED"][0]!=='0'){
+                    EmployeeSalaryMaster.find().then(result=>{
+                        if(result.length>0){
+                            console.log('tally response',jsonstring["RESPONSE"]["LASTVCHID"]);
+                            result.map(eachflag=>{
+                                eachflag.approved = true;
+                                eachflag.cancelflag = true;
+                                eachflag.tallyid = jsonstring["RESPONSE"]["LASTVCHID"];
+                                responsetallyid=jsonstring["RESPONSE"]["LASTVCHID"];
+                                responsedate = eachflag.date;
+                                eachflag.save().then(response=>{
+                                    //console.log(response)
+                                }).catch(err=>{
+                                    console.log(err);
+                                })
+                            })
+                        }
+                        return res.send({tallyid:responsetallyid,message:"success",date:responsedate});
+                    }).catch(err=>console.log(err))
+
+                }else{
+                    //res.send(result["RESPONSE"]["LINEERROR"][0]);
+                }
+            }
+        })
             }
     }).catch(err=>console.log(err))
 
@@ -216,9 +249,9 @@ function createmaster(req,res,next){
              })
 
         }
-       next();
-    }).catch(err=>console.log(err));
 
+    }).catch(err=>console.log(err));
+    next();
 }
 
 module.exports = router;

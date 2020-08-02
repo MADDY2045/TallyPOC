@@ -11,6 +11,10 @@ const DisbursePayroll = () => {
     const [ cancelData,setCancelData ] = useState([]);
     const [tallyerrormsg,setTallyerrormsg]=useState('');
     const [tallyerrormsgflag,setTallyerrormsgflag]=useState(false);
+    const [approveAllflag,setApproveAllflag]=useState(false);
+    const [tallyidAll,setTallyidAll]=useState(false);
+    const [approveAllCancelflag,setApproveAllCancelflag] = useState(true)
+    const [responsedate,setResponseDate] = useState('')
 
     const notify = () => toast.success('Approved Successfully!!!!', {
         position: "top-center",
@@ -102,6 +106,7 @@ const handleCancel=(id,vouchertype,date)=>{
                 let tallyid = Number(id);
                if(tallyid===LASTVCHID){
                     console.log("cancelled and altered");
+                    setApproveAllCancelflag(true);
                     notifycancel();
                     loaddata();
                   }
@@ -130,6 +135,14 @@ const getpayhead=(data,item)=>{
 const handleApproveAll=()=>{
     axios.get("http://localhost:5050/approvepayrollbatch").then(response=>{
         console.log(response.data);
+        if(response.data.message==='success'){
+            setApproveAllflag(true);
+            setApproveAllCancelflag(false);
+            setTallyidAll(response.data.tallyid);
+            setResponseDate(response.data.date)
+            notify();
+            loaddata();
+        }
     }).catch(err=>console.log(err))
 }
     return (
@@ -162,7 +175,13 @@ const handleApproveAll=()=>{
                                         <th id="tally-header">Salary Advance</th>
                                         <th id="tally-header">Date</th>
                                         <th id="tally-header">NetPay</th>
-                                        <th id="tally-header"><button onClick={handleApproveAll} className="btn btn-primary">APPROVE ALL</button></th>
+                                        <th id="tally-header"><button onClick={handleApproveAll}
+                                        disabled={approveAllflag}
+                                        className="btn btn-primary">APPROVE ALL</button>|
+                                        <button  onClick={()=>handleCancel(tallyidAll,'Payroll',responsedate)}
+                                        disabled={approveAllCancelflag}
+                                        className="btn btn-danger">CANCEL</button>
+                                        </th>
                                     </tr>
                                 </thead>
                                 <tbody>
