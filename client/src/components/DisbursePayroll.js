@@ -56,6 +56,15 @@ const notifyerror = () => toast.warning(`${tallyerrormsg}`, {
         axios.get('http://localhost:5050/getallemployeesalarydetails',{cancelToken: source.token}).then(response=>{
 
             console.log(response.data);
+            let count =0;
+            response.data.map(item=>{
+                if(item.approved===true){
+                    count += 1;
+                }
+            })
+            if (count===response.data.length){
+                setApproveAllflag(true);
+            }
             setCancelData(response.data)
         }).catch(err=>{
             if (axios.isCancel(err)) {
