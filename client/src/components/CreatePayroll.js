@@ -4,7 +4,7 @@ import axios from 'axios';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-let tempArr=[];
+let tempArr = [];
 class CreatePayroll extends Component {
 
     constructor(props){
@@ -62,6 +62,7 @@ class CreatePayroll extends Component {
     handlePayHead=(e)=>{
         e.preventDefault();
         let tempObj={};
+
         if(this.state.payheadvalue!=='' && this.state.payheadvalue!==undefined && this.state.payheadvalue!==null && this.state.payheadamount!=='' && this.state.payheadamount!==undefined && this.state.payheadamount!==null ){
             tempObj[this.state.payheadvalue]=this.state.payheadamount;
             tempArr.push(tempObj)
@@ -71,12 +72,20 @@ class CreatePayroll extends Component {
         }
     }
 
+    handlePayheadDelete=(element,item)=>{
+        this.state.payhead.splice(this.state.payhead.findIndex(item => Object.keys(item)[0] === element), 1)
+        console.log(this.state.payhead);
+        this.setState({
+            payhead:this.state.payhead
+        })
+    }
+
     render() {
 
         return (
             <div>
                <div className="row" style={{minHeight:"800px"}} >
-                    <div className="col-md-6 card row" style={{margin:"30px auto"}}>
+                    <div className="col-md-8 card row" style={{margin:"30px auto"}}>
                         <div className="row">
                         <div className="col-md-8 card" style={{minHeight:"740px"}}>
                         <form >
@@ -225,7 +234,9 @@ class CreatePayroll extends Component {
                         {this.state.payhead.length>0 ? <div>
                             {this.state.payhead.map((item,index)=>{
                                 return Object.keys(item).map(element=>{
-                                return <ul key={index}><li key={item}>{`${element}<--->${item[element]}`}</li></ul>
+                                return <ul key={index}><li key={item}>{`${element}<--->${item[element]}`}<button
+                                onClick={()=>this.handlePayheadDelete(element,item[element])}
+                                className="btn btn-danger">Delete</button></li></ul>
                                 })
                             })}
                         </div>:null}

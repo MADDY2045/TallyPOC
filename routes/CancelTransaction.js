@@ -107,12 +107,12 @@ router.put('/cancelgsdata/:id/:vouchertype',(req,res)=>{
                                 result[0].save().then(response=>{
                                    console.log(response)
                                }).catch(err=>{
-                                   console.log(err);
+                                   console.log("error same here",err);
                                })
                             }
                         }catch(error){console.log('error',error)}
 
-                    }).catch(err=>console.log(err))
+                    }).catch(err=>console.log("error here",err))
                 })
 
 

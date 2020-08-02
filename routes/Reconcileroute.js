@@ -1,5 +1,4 @@
 const express = require('express');
-const path = require('path');
 const router = express.Router();
 const axios = require('axios');
 var parseString = require('xml2js').parseString;
@@ -129,7 +128,7 @@ router.get('/getrecondetails/:id/:fromdate/:todate',getGsApp,(req,res)=>{
 
                                                         responseArray.push(tallyArrayObj);
                                                         responseArray.push(req.body);
-                                                       res.send(responseArray);
+                                                      return res.send(responseArray);
                                 }
 
 

@@ -132,7 +132,7 @@ useEffect(() => {
                 : <div>
                 <div className="row">
                     <div className="col-md-6" style={{minHeight:"300px"}}>
-                    <h4>TALLY APP</h4>
+                    <h4 >TALLY APP</h4>
                         <div className="table-responsive">
                             <table
                             id="table-tally"
