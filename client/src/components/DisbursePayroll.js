@@ -184,7 +184,7 @@ const handleApproveAll=()=>{
                                                 <td>{item.netpay}</td>
                                                 <td><button
                                                 onClick={()=>handleApprove(item.id)}
-                                                className="btn btn-secondary" disabled={item.approved}>Approve</button>
+                                                className="btn btn-primary" disabled={item.approved}>Approve</button>
                                                 |<button
                                                 onClick={()=>handleCancel(item.tallyid,item.vouchertype,item.date)}
                                                 className="btn btn-danger" disabled={item.cancelflag}>Cancel</button>
