@@ -54,6 +54,7 @@ async function getEmployeesalary (req,res,next){
     let employeesortorder = 0;
     let tempobj={}
     try{
+        payheadentrylist["PAYHEADALLOCATIONS.LIST"]
         tempobj= await EmployeeSalaryMaster.find({id:req.params.id}).exec().then(response=>{
         if(response.length>0){
            req.employeesalarydetail = response[0];
