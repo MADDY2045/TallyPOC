@@ -4,8 +4,12 @@ import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import dateformat from 'dateformat';
+import { payrolltallytemplate,payheadentrylist,ledgerentrieslist,bankallocationslist,individualpayhead,companyname,date,partyledgername,ledgerentryarray,categoryentrylistarray,category,employeeentrieslist,remoteid,employeeentrieslistamount,payheadallocationslist } from '../helpers/payrolltemplatejson' ;
 const CancelToken = axios.CancelToken;
 const source = CancelToken.source();
+
+
+
 const DisbursePayroll = () => {
 
     const [ cancelData,setCancelData ] = useState([]);
@@ -14,7 +18,13 @@ const DisbursePayroll = () => {
     const [approveAllflag,setApproveAllflag]=useState(false);
     const [tallyidAll,setTallyidAll]=useState(false);
     const [approveAllCancelflag,setApproveAllCancelflag] = useState(true)
-    const [responsedate,setResponseDate] = useState('')
+    const [responsedate,setResponseDate] = useState('');
+    /*start of approval */
+    const [ gsPayrollData,setGsPayrollData ] = useState([]);
+    const [approvalFlag,setApprovalFlag]=useState(false);
+    /*end of approval*/
+
+
 
     const notify = () => toast.success('Approved Successfully!!!!', {
         position: "top-center",
@@ -36,21 +46,24 @@ const DisbursePayroll = () => {
         progress: undefined,
         });
 
+    const notifyerror = () => toast.warning(`${tallyerrormsg}`, {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        });
+
+
 useEffect(()=>{
     if(tallyerrormsg!==''){
         notifyerror();
     }
 },[tallyerrormsgflag])
 
-const notifyerror = () => toast.warning(`${tallyerrormsg}`, {
-    position: "top-center",
-    autoClose: 5000,
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true,
-    progress: undefined,
-    });
+
 
     const loaddata =()=>{
         axios.get('http://localhost:5050/getallemployeesalarydetails',{cancelToken: source.token}).then(response=>{
@@ -77,6 +90,7 @@ const notifyerror = () => toast.warning(`${tallyerrormsg}`, {
 
     useEffect(() => {
         loaddata()
+        //console.log(payrolltallytemplate);
         return () => {
             setCancelData([])
         };
@@ -87,23 +101,45 @@ const notifyerror = () => toast.warning(`${tallyerrormsg}`, {
         return dateformat(date,"dd/mm/yyyy")
     }
 
-    const handleApprove=(id)=>{
+    const handleApprove= (id)=>{
         try{
             axios.get(`http://localhost:5050/approvesalary/${id}`).then(response=>{
-                            console.log(response.data);
-                            if(response.data==="success"){
-                                notify();
-                                loaddata();
-                            }else{
-                                setTallyerrormsg(response.data);
-                                setTallyerrormsgflag(!tallyerrormsgflag);
-                            }
-               }).catch(err=>{console.log('err',err);})
+                           if(response.data.length>0){
+                               //console.log(response.data);
+                                 setGsPayrollData(response.data);
+                                }
+
+                    }).catch(err=>{console.log('err',err);});
+
 
         }catch(error){
             console.log('error in catch',error);
         }
 }
+
+
+/* start of function */
+useEffect(()=>{
+        const result = createPayrollTemplate(gsPayrollData);
+        console.log(result);
+        approvePayroll(result);
+    },[gsPayrollData])
+
+const createPayrollTemplate=(input)=>{
+    console.log('input is::',input);
+
+    return payrolltallytemplate;
+}
+
+const  approvePayroll=(result)=>{
+    console.log("called result",result);
+};
+/* end of approval function */
+
+
+
+
+
 
 const handleCancel=(id,vouchertype,date)=>{
     try{
