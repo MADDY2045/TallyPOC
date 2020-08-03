@@ -4,6 +4,9 @@ import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import dateformat from 'dateformat';
+import uuid from 'react-uuid'
+import X2JS from 'x2js';
+import { payrolltallytemplateall } from '../helpers/PayrollAllTemplate';
 import { payrolltallytemplate,payheadentrylist,ledgerentrieslist,bankallocationslist,individualpayhead,companyname,date,partyledgername,ledgerentryarray,categoryentrylistarray,category,employeeentrieslist,remoteid,employeeentrieslistamount,payheadallocationslist } from '../helpers/payrolltemplatejson' ;
 const CancelToken = axios.CancelToken;
 const source = CancelToken.source();
@@ -21,6 +24,7 @@ const DisbursePayroll = () => {
     const [responsedate,setResponseDate] = useState('');
     /*start of approval */
     const [ gsPayrollData,setGsPayrollData ] = useState([]);
+    const [ gsPayrollAllData,setGsPayrollAllData ] = useState([]);
     const [approvalFlag,setApprovalFlag]=useState(false);
     /*end of approval*/
 
@@ -67,8 +71,6 @@ useEffect(()=>{
 
     const loaddata =()=>{
         axios.get('http://localhost:5050/getallemployeesalarydetails',{cancelToken: source.token}).then(response=>{
-
-            console.log(response.data);
             let count =0;
             response.data.map(item=>{
                 if(item.approved===true){
@@ -89,7 +91,7 @@ useEffect(()=>{
     }
 
     useEffect(() => {
-        loaddata()
+        loaddata();
         //console.log(payrolltallytemplate);
         return () => {
             setCancelData([])
@@ -101,15 +103,85 @@ useEffect(()=>{
         return dateformat(date,"dd/mm/yyyy")
     }
 
-    const handleApprove= (id)=>{
+    const handleApprove = (id)=>{
         try{
+            let employeesortorder = 0 ;
+            let payheadsortorder = 0;
+            ledgerentrieslist["BANKALLOCATIONS.LIST"]=[];
+            let temppayheadobj={}
+            payrolltallytemplate["ENVELOPE"]["BODY"]["IMPORTDATA"]["REQUESTDATA"]["TALLYMESSAGE"][0]["VOUCHER"]["LEDGERENTRIES.LIST"]=[];
+            payrolltallytemplate["ENVELOPE"]["BODY"]["IMPORTDATA"]["REQUESTDATA"]["TALLYMESSAGE"][0]["VOUCHER"]["CATEGORYENTRY.LIST"][0]["EMPLOYEEENTRIES.LIST"][0]["PAYHEADALLOCATIONS.LIST"]=[];
+            // console.log(ledgerentrieslist);
+            // console.log(bankallocationslist);
+
             axios.get(`http://localhost:5050/approvesalary/${id}`).then(response=>{
                            if(response.data.length>0){
                                //console.log(response.data);
                                  setGsPayrollData(response.data);
+
+                                 payrolltallytemplate["ENVELOPE"]["BODY"]["IMPORTDATA"]["REQUESTDESC"]["STATICVARIABLES"]["SVCURRENTCOMPANY"] = "Main";
+                                const formatteddate = dateformat(response.data[0].date,"yyyymmdd");
+                                payrolltallytemplate["ENVELOPE"]["BODY"]["IMPORTDATA"]["REQUESTDATA"]["TALLYMESSAGE"][0]["VOUCHER"]["DATE"]=formatteddate;
+                                payrolltallytemplate["ENVELOPE"]["BODY"]["IMPORTDATA"]["REQUESTDATA"]["TALLYMESSAGE"][0]["VOUCHER"]["EFFECTIVEDATE"]=formatteddate;
+                                console.log(payrolltallytemplate);
+                                payrolltallytemplate["ENVELOPE"]["BODY"]["IMPORTDATA"]["REQUESTDATA"]["TALLYMESSAGE"][0]["VOUCHER"]["PARTYLEDGERNAME"]=response.data[0].transactiontype;
+                                payrolltallytemplate["ENVELOPE"]["BODY"]["IMPORTDATA"]["REQUESTDATA"]["TALLYMESSAGE"][0]["VOUCHER"]["_REMOTEID"]=uuid();
+                                if(response.data[0].transactiontype==='Cash'){
+                                    ledgerentrieslist["LEDGERNAME"]=response.data[0].transactiontype;
+                                    ledgerentrieslist["AMOUNT"]=response.data[0].netpay;
+                                    payrolltallytemplate["ENVELOPE"]["BODY"]["IMPORTDATA"]["REQUESTDATA"]["TALLYMESSAGE"][0]["VOUCHER"]["LEDGERENTRIES.LIST"].push(ledgerentrieslist);
+                                }else{
+                                    /*bank allocation */
+                                    ledgerentrieslist["LEDGERNAME"]=response.data[0].transactiontype;
+                                    ledgerentrieslist["AMOUNT"]=response.data[0].netpay;
+                                    payrolltallytemplate["ENVELOPE"]["BODY"]["IMPORTDATA"]["REQUESTDATA"]["TALLYMESSAGE"][0]["VOUCHER"]["LEDGERENTRIES.LIST"].push(ledgerentrieslist);
+                                    bankallocationslist["DATE"]=formatteddate;
+                                    bankallocationslist["INSTRUMENTDATE"]=response.data[0].instrumentdate;
+                                    bankallocationslist["IFSCODE"]=response.data[0].ifsc;
+                                    bankallocationslist["ACCOUNTNUMBER"]=response.data[0].account;
+                                    bankallocationslist["PAYMENTFAVOURING"]=response.data[0].name;
+                                    bankallocationslist["AMOUNT"]=response.data[0].netpay;
+                                    payrolltallytemplate["ENVELOPE"]["BODY"]["IMPORTDATA"]["REQUESTDATA"]["TALLYMESSAGE"][0]["VOUCHER"]["LEDGERENTRIES.LIST"][0]["BANKALLOCATIONS.LIST"].push(bankallocationslist);
+                                    //console.log(tempobj)
+                                }
+                                employeesortorder += 1;
+                                payrolltallytemplate["ENVELOPE"]["BODY"]["IMPORTDATA"]["REQUESTDATA"]["TALLYMESSAGE"][0]["VOUCHER"]["CATEGORYENTRY.LIST"][0]["CATEGORY"] = "Others";
+                                payrolltallytemplate["ENVELOPE"]["BODY"]["IMPORTDATA"]["REQUESTDATA"]["TALLYMESSAGE"][0]["VOUCHER"]["CATEGORYENTRY.LIST"][0]["EMPLOYEEENTRIES.LIST"][0]["AMOUNT"]=-response.data[0].netpay
+                                payrolltallytemplate["ENVELOPE"]["BODY"]["IMPORTDATA"]["REQUESTDATA"]["TALLYMESSAGE"][0]["VOUCHER"]["CATEGORYENTRY.LIST"][0]["EMPLOYEEENTRIES.LIST"][0]["EMPLOYEENAME"]=response.data[0].name
+                                payrolltallytemplate["ENVELOPE"]["BODY"]["IMPORTDATA"]["REQUESTDATA"]["TALLYMESSAGE"][0]["VOUCHER"]["CATEGORYENTRY.LIST"][0]["EMPLOYEEENTRIES.LIST"][0]["EMPLOYEESORTORDER"]=employeesortorder;
                                 }
 
-                    }).catch(err=>{console.log('err',err);});
+                                response.data[0].payhead.map(eachpayhead=>{
+                                    temppayheadobj={}
+                                    if(Object.keys(eachpayhead)[0]==='Basic Pay' || Object.keys(eachpayhead)[0]==='DA' || Object.keys(eachpayhead)[0]==='TA' || Object.keys(eachpayhead)[0]==='HRA' || Object.keys(eachpayhead)[0]==='Medical Allowance'){
+                                        payheadsortorder += 1
+                                        // console.log('earnings',Object.keys(eachpayhead)[0],Object.values(eachpayhead)[0]);
+                                        temppayheadobj["PAYHEADNAME"]=Object.keys(eachpayhead)[0];
+                                        temppayheadobj["ISDEEMEDPOSITIVE"]="Yes";
+                                        temppayheadobj["PAYHEADSORTORDER"]=payheadsortorder;
+                                        temppayheadobj["AMOUNT"]=-Object.values(eachpayhead)[0];
+                                        payrolltallytemplate["ENVELOPE"]["BODY"]["IMPORTDATA"]["REQUESTDATA"]["TALLYMESSAGE"][0]["VOUCHER"]["CATEGORYENTRY.LIST"][0]["EMPLOYEEENTRIES.LIST"][0]["PAYHEADALLOCATIONS.LIST"].push(temppayheadobj);
+                                    }else{
+                                        payheadsortorder += 1
+                                        // console.log('deductions',Object.keys(eachpayhead)[0],Object.values(eachpayhead)[0]);
+                                        temppayheadobj["PAYHEADNAME"]=Object.keys(eachpayhead)[0];
+                                        temppayheadobj["ISDEEMEDPOSITIVE"]="No";
+                                        temppayheadobj["PAYHEADSORTORDER"]=payheadsortorder;
+                                        temppayheadobj["AMOUNT"]=Object.values(eachpayhead)[0];
+                                        payrolltallytemplate["ENVELOPE"]["BODY"]["IMPORTDATA"]["REQUESTDATA"]["TALLYMESSAGE"][0]["VOUCHER"]["CATEGORYENTRY.LIST"][0]["EMPLOYEEENTRIES.LIST"][0]["PAYHEADALLOCATIONS.LIST"].push(temppayheadobj);
+                                    }
+                                })
+                                let x2js = new X2JS();
+                                const xmlstring = x2js.js2xml(payrolltallytemplate);
+                                //console.log(xmlstring);
+                               axios.post(`http://localhost:5050/getapprovalresponse/${id}`,{data:xmlstring}).then(response=>{
+                                    console.log(response.data);
+                                    if(response.data==='success'){
+                                        notify();
+                                        loaddata();
+                                    }
+                                }).catch(err=>console.log(err));
+                            }).catch(err=>{console.log('err',err);});
 
 
         }catch(error){
@@ -119,21 +191,8 @@ useEffect(()=>{
 
 
 /* start of function */
-useEffect(()=>{
-        const result = createPayrollTemplate(gsPayrollData);
-        console.log(result);
-        approvePayroll(result);
-    },[gsPayrollData])
 
-const createPayrollTemplate=(input)=>{
-    console.log('input is::',input);
 
-    return payrolltallytemplate;
-}
-
-const  approvePayroll=(result)=>{
-    console.log("called result",result);
-};
 /* end of approval function */
 
 
@@ -178,18 +237,105 @@ const getpayhead=(data,item)=>{
 }
 
 const handleApproveAll=()=>{
+    let payheadsortorder=0;
+    let netbatchamount = 0;
+    let batchdate ='';
+    let temppayheadobj={};
+    let empsortorder = 0;
+    let employeecategorylist = {}
+    employeecategorylist["PAYHEADALLOCATIONS.LIST"]=[]
+    ledgerentrieslist["BANKALLOCATIONS.LIST"]=[];
+    payrolltallytemplateall["ENVELOPE"]["BODY"]["IMPORTDATA"]["REQUESTDATA"]["TALLYMESSAGE"][0]["VOUCHER"]["LEDGERENTRIES.LIST"]=[];payrolltallytemplateall["ENVELOPE"]["BODY"]["IMPORTDATA"]["REQUESTDATA"]["TALLYMESSAGE"][0]["VOUCHER"]["CATEGORYENTRY.LIST"][0]["EMPLOYEEENTRIES.LIST"]=[];
+
+
     axios.get("http://localhost:5050/approvepayrollbatch").then(response=>{
-        console.log(response.data);
-        if(response.data.message==='success'){
-            setApproveAllflag(true);
-            setApproveAllCancelflag(false);
-            setTallyidAll(response.data.tallyid);
-            setResponseDate(response.data.date)
-            notify();
-            loaddata();
+        response.data.map(item=>{
+            netbatchamount += item.netpay;
+            batchdate = item.date;
+        })
+        console.log(payrolltallytemplateall);
+
+        payrolltallytemplateall["ENVELOPE"]["BODY"]["IMPORTDATA"]["REQUESTDESC"]["STATICVARIABLES"]["SVCURRENTCOMPANY"] = "Main";
+        const formatteddate = dateformat(batchdate,"yyyymmdd");
+        payrolltallytemplateall["ENVELOPE"]["BODY"]["IMPORTDATA"]["REQUESTDATA"]["TALLYMESSAGE"][0]["VOUCHER"]["DATE"]=formatteddate;
+        payrolltallytemplateall["ENVELOPE"]["BODY"]["IMPORTDATA"]["REQUESTDATA"]["TALLYMESSAGE"][0]["VOUCHER"]["EFFECTIVEDATE"]=formatteddate;
+        payrolltallytemplateall["ENVELOPE"]["BODY"]["IMPORTDATA"]["REQUESTDATA"]["TALLYMESSAGE"][0]["VOUCHER"]["_REMOTEID"]=uuid();
+
+        let filteredarray = response.data.filter(element=> element.transactiontype!=='Cash');
+        console.log('filtered array',filteredarray);
+        if(filteredarray.length>0){
+
+            payrolltallytemplateall["ENVELOPE"]["BODY"]["IMPORTDATA"]["REQUESTDATA"]["TALLYMESSAGE"][0]["VOUCHER"]["PARTYLEDGERNAME"]=filteredarray[0].transactiontype;
+            ledgerentrieslist["LEDGERNAME"]=filteredarray[0].transactiontype;
+                ledgerentrieslist["AMOUNT"]=netbatchamount;
+                const formatteddate = dateformat(filteredarray[0].date,"yyyymmdd");
+                bankallocationslist["DATE"]=formatteddate;
+                bankallocationslist["INSTRUMENTDATE"]=filteredarray[0].instrumentdate;
+                bankallocationslist["IFSCODE"]=filteredarray[0].ifsc;
+                bankallocationslist["ACCOUNTNUMBER"]=filteredarray[0].account;
+                bankallocationslist["PAYMENTFAVOURING"]=filteredarray[0].name;
+                bankallocationslist["AMOUNT"]=netbatchamount;
+                payrolltallytemplateall["ENVELOPE"]["BODY"]["IMPORTDATA"]["REQUESTDATA"]["TALLYMESSAGE"][0]["VOUCHER"]["LEDGERENTRIES.LIST"].push(ledgerentrieslist);
+                payrolltallytemplateall["ENVELOPE"]["BODY"]["IMPORTDATA"]["REQUESTDATA"]["TALLYMESSAGE"][0]["VOUCHER"]["LEDGERENTRIES.LIST"][0]["BANKALLOCATIONS.LIST"].push(bankallocationslist);
+        }else{
+
+            payrolltallytemplateall["ENVELOPE"]["BODY"]["IMPORTDATA"]["REQUESTDATA"]["TALLYMESSAGE"][0]["VOUCHER"]["PARTYLEDGERNAME"]=response.data[0].transactiontype;
+            ledgerentrieslist["LEDGERNAME"]=response.data[0].transactiontype;
+            payrolltallytemplateall["ENVELOPE"]["BODY"]["IMPORTDATA"]["REQUESTDATA"]["TALLYMESSAGE"][0]["VOUCHER"]["PARTYLEDGERNAME"]=response.data[0].transactiontype;
+            ledgerentrieslist["AMOUNT"]=netbatchamount;
+            payrolltallytemplateall["ENVELOPE"]["BODY"]["IMPORTDATA"]["REQUESTDATA"]["TALLYMESSAGE"][0]["VOUCHER"]["LEDGERENTRIES.LIST"].push(ledgerentrieslist);
         }
+        payrolltallytemplateall["ENVELOPE"]["BODY"]["IMPORTDATA"]["REQUESTDATA"]["TALLYMESSAGE"][0]["VOUCHER"]["CATEGORYENTRY.LIST"][0]["CATEGORY"] = "Others";
+
+        response.data.map(element=>{
+            employeecategorylist={};
+            empsortorder += 1;
+            employeecategorylist["EMPLOYEENAME"] = element.name;
+            employeecategorylist["EMPLOYEESORTORDER"] = empsortorder;
+            employeecategorylist["AMOUNT"] = -element.netpay;
+            payrolltallytemplateall["ENVELOPE"]["BODY"]["IMPORTDATA"]["REQUESTDATA"]["TALLYMESSAGE"][0]["VOUCHER"]["CATEGORYENTRY.LIST"][0]["EMPLOYEEENTRIES.LIST"].push(employeecategorylist);
+
+            employeecategorylist["PAYHEADALLOCATIONS.LIST"]=[]
+
+           element.payhead.map(eachpayhead=>{
+            temppayheadobj={};
+               if(Object.keys(eachpayhead)[0] === 'Basic Pay' || Object.keys(eachpayhead)[0] === 'DA' || Object.keys(eachpayhead)[0] === 'HRA' || Object.keys(eachpayhead)[0] === 'TA' || Object.keys(eachpayhead)[0] === 'Medical Allowance'){
+                   payheadsortorder += 1;
+
+                temppayheadobj["PAYHEADNAME"]=Object.keys(eachpayhead)[0];
+                temppayheadobj["ISDEEMEDPOSITIVE"]="Yes";
+                temppayheadobj["PAYHEADSORTORDER"]=payheadsortorder;
+                temppayheadobj["AMOUNT"]=-Object.values(eachpayhead)[0];
+                employeecategorylist["PAYHEADALLOCATIONS.LIST"].push(temppayheadobj)
+
+               }else{
+                payheadsortorder += 1;
+
+                temppayheadobj["PAYHEADNAME"]=Object.keys(eachpayhead)[0];
+                temppayheadobj["ISDEEMEDPOSITIVE"]="No";
+                temppayheadobj["PAYHEADSORTORDER"]=payheadsortorder;
+                temppayheadobj["AMOUNT"]=Object.values(eachpayhead)[0];
+                employeecategorylist["PAYHEADALLOCATIONS.LIST"].push(temppayheadobj)
+               }
+
+           })
+
+        })
+        let x2js = new X2JS();
+        const xmlstringall = x2js.js2xml(payrolltallytemplateall);
+        console.log(xmlstringall);
+       axios.post(`http://localhost:5050/approveallpayroll`,{data:xmlstringall}).then(response=>{
+            console.log(response.data);
+            if(response.data==='success'){
+                notify();
+                setApproveAllCancelflag(false);
+                loaddata();
+            }
+           }).catch(err=>console.log(err));
+
     }).catch(err=>console.log(err))
 }
+
     return (
         <div>
             <div className="row">

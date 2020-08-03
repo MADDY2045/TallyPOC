@@ -25,6 +25,43 @@ router.get('/approvesalary/:id',createmaster,(req,res)=>{
     }
 })
 
+router.post('/getapprovalresponse/:id',(req,res)=>{
+    try{
+      // console.log(req.body.data);
+       axios({url:'http://localhost:9000',method:'POST',headers:{ContentType: 'text/xml',charset:'UTF-8'},data:req.body.data})
+    .then(response=>{
+        let x2js = new X2JS();
+        const jsonstring = x2js.xml2js(response.data);
+        parseString(response.data,(issue,result)=>{
+            if(!issue){
+                console.log('result is ',result)
+                if(result["RESPONSE"]["ALTERED"][0]!=='0' || result["RESPONSE"]["COMBINED"][0]!=='0' || result["RESPONSE"]["CREATED"][0]!=='0'){
+                    EmployeeSalaryMaster.find({id:req.params.id}).then(result=>{
+
+                        if(result.length>0){
+                            console.log('tally response',jsonstring["RESPONSE"]["LASTVCHID"]);
+                          result[0].approved = true;
+                          result[0].cancelflag = false;
+                          result[0].tallyid = jsonstring["RESPONSE"]["LASTVCHID"];
+                            result[0].save().then(response=>{
+                                console.log(response)
+                                res.send("success");
+                            }).catch(err=>{
+                                console.log(err);
+                            })
+                        }
+                    }).catch(err=>console.log(err))
+
+                }else{
+                    res.send(result["RESPONSE"]["LINEERROR"][0]);
+                }
+            }
+        })
+    }).catch(err=>console.log(err));
+    }catch(error){
+        console.log(error);
+    }
+})
 
 
 function createmaster(req,res,next){

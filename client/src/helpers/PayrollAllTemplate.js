@@ -1,4 +1,4 @@
-var payrolltallytemplate = {
+var payrolltallytemplateall = {
     "ENVELOPE": {
     "HEADER": {
     "TALLYREQUEST": "Import Data"
@@ -115,12 +115,7 @@ var payrolltallytemplate = {
     "CATEGORYENTRY.LIST":[
         {
             "CATEGORY": "",
-            "EMPLOYEEENTRIES.LIST": [
-                {"EMPLOYEENAME": "",
-                "EMPLOYEESORTORDER": "",
-                "AMOUNT": "",
-                "PAYHEADALLOCATIONS.LIST":[]}
-            ]
+            "EMPLOYEEENTRIES.LIST": []
             }
 
     ],
@@ -217,24 +212,6 @@ var individualpayhead = {
  }
 
 
- var companyname = payrolltallytemplate["ENVELOPE"]["BODY"]["IMPORTDATA"]["REQUESTDESC"]["STATICVARIABLES"]["SVCURRENTCOMPANY"];
 
- var date = payrolltallytemplate["ENVELOPE"]["BODY"]["IMPORTDATA"]["REQUESTDATA"]["TALLYMESSAGE"][0]["VOUCHER"]["DATE"];
 
- var partyledgername = payrolltallytemplate["ENVELOPE"]["BODY"]["IMPORTDATA"]["REQUESTDATA"]["TALLYMESSAGE"][0]["VOUCHER"]
-["PARTYLEDGERNAME"];
-
- var ledgerentryarray = payrolltallytemplate["ENVELOPE"]["BODY"]["IMPORTDATA"]["REQUESTDATA"]["TALLYMESSAGE"][0]["VOUCHER"]["LEDGERENTRIES.LIST"];
-
- var categoryentrylistarray = payrolltallytemplate["ENVELOPE"]["BODY"]["IMPORTDATA"]["REQUESTDATA"]["TALLYMESSAGE"][0]["VOUCHER"]["CATEGORYENTRY.LIST"];
-
- var category = payrolltallytemplate["ENVELOPE"]["BODY"]["IMPORTDATA"]["REQUESTDATA"]["TALLYMESSAGE"][0]["VOUCHER"]["CATEGORYENTRY.LIST"][0]["CATEGORY"];
-
- var employeeentrieslist = payrolltallytemplate["ENVELOPE"]["BODY"]["IMPORTDATA"]["REQUESTDATA"]["TALLYMESSAGE"][0]["VOUCHER"]["CATEGORYENTRY.LIST"][0]["EMPLOYEEENTRIES.LIST"];
-
-var employeeentrieslistamount = payrolltallytemplate["ENVELOPE"]["BODY"]["IMPORTDATA"]["REQUESTDATA"]["TALLYMESSAGE"][0]["VOUCHER"]["CATEGORYENTRY.LIST"][0]["EMPLOYEEENTRIES.LIST"]["AMOUNT"]
-var remoteid = payrolltallytemplate["ENVELOPE"]["BODY"]["IMPORTDATA"]["REQUESTDATA"]["TALLYMESSAGE"][0]["VOUCHER"]["_REMOTEID"];
-
-var payheadallocationslist = payrolltallytemplate["ENVELOPE"]["BODY"]["IMPORTDATA"]["REQUESTDATA"]["TALLYMESSAGE"][0]["VOUCHER"]["CATEGORYENTRY.LIST"][0]["EMPLOYEEENTRIES.LIST"]["PAYHEADALLOCATIONS.LIST"];
-
-module.exports = { payrolltallytemplate,payheadentrylist,ledgerentrieslist,bankallocationslist,individualpayhead,companyname,date,partyledgername,ledgerentryarray,categoryentrylistarray,category,employeeentrieslist,remoteid,employeeentrieslistamount,payheadallocationslist };
+module.exports = { payrolltallytemplateall };
