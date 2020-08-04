@@ -1,14 +1,17 @@
 import React,{useState,useEffect} from 'react';
-
+import { Button,Modal } from 'react-bootstrap';
 
 const GsApp = (props) => {
 
+    const [modalShow, setModalShow] = React.useState(false);
+    const [resyncShow, setResyncShow] = React.useState(false);
+    const [resyncAllShow, setResyncAllShow] = React.useState(false);
     const [gsalltxnArray,setgsAlltxnArray ] = useState([]);
     const [txnLoader,setTxnLoader] = useState(false);
     const [voucherArray,setVoucherArray]=useState([]);
     const [indigsArray,setindiGsArray] = useState([]);
     const [missingVoucherArray,setmissingVoucherArray] = useState([]);
-
+    const [detailsData,setDetailsData] = useState([]);
     useEffect(() => {
 
         if(props.response!==undefined && props.option!=='Choose' && props.option!==''){
@@ -60,6 +63,20 @@ useEffect(() => {
     setVoucherArray(tempArr);
    }, [gsalltxnArray]);
 
+const handleDetailsdata=(data)=>{
+        setModalShow(true);
+        setDetailsData(data);
+}
+
+const handleResyncdata=(data)=>{
+    setResyncShow(true);
+    setDetailsData(data);
+}
+
+const handleResyncAlldata=(data)=>{
+    setResyncAllShow(true);
+    setDetailsData(data);
+}
 
     return (
 
@@ -180,7 +197,9 @@ useEffect(() => {
                                         <th id="gs-header">Voucher Type</th>
                                         <th id="gs-header">Date</th>
                                         <th id="gs-header">Amount</th>
-                                        <th id="resync-header">{missingVoucherArray && missingVoucherArray.length> 0 ? <button className="btn btn-light">Resync All</button>:<button className="btn btn-light">Nothing to Resync</button>}</th>
+                                        <th id="resync-header">{missingVoucherArray && missingVoucherArray.length> 0 ? <button
+                                        onClick={()=>handleResyncAlldata(missingVoucherArray)}
+                                        className="btn btn-light">Resync All</button>:<button className="btn btn-light">Nothing to Resync</button>}</th>
                                      </tr>
                                 </thead>
                                 <tbody>
@@ -192,7 +211,12 @@ useEffect(() => {
                                         <td>{listValue.vouchertype}</td>
                                         <td>{listValue.date}</td>
                                         <td>{listValue.amount}</td>
-                                        <td><button className="btn btn-primary">Resync</button>|<button className="btn btn-danger">Delete</button></td>
+                                        <td><button
+                                        onClick={()=>handleResyncdata(listValue)}
+                                        className="btn btn-primary">Resync</button>|
+                                        <button  className="btn btn-danger" variant="danger"  onClick={()=>handleDetailsdata(listValue)}>
+                                           Details
+                                        </button></td>
                                         </tr>
                                     );
                                     }):null}
@@ -200,6 +224,21 @@ useEffect(() => {
                             </table>
                         </div>
                     </div>
+                    <MyVerticallyCenteredModal
+                        data={detailsData}
+                        show={modalShow}
+                        onHide={() => setModalShow(false)}
+                    />
+                     <ResyncModal
+                        data={detailsData}
+                        show={resyncShow}
+                        onHide={() => setResyncShow(false)}
+                    />
+                    <ResyncAllModal
+                        data={detailsData}
+                        show={resyncAllShow}
+                        onHide={() => setResyncAllShow(false)}
+                    />
                 </div>
             </div>
             }
@@ -213,5 +252,115 @@ useEffect(() => {
     );
 }
 
+function MyVerticallyCenteredModal(props) {
 
+    const handleProps=()=>{
+        console.log(props)
+    }
+    return (
+      <Modal
+        {...props}
+        size="lg"
+        aria-labelledby="contained-modal-title-vcenter"
+        centered
+      >
+        <Modal.Header closeButton>
+          <Modal.Title id="contained-modal-title-vcenter">
+          Detail Page
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <h4>Transaction Details</h4>
+         <div className="table-responsive">
+             <table className="table table-striped table-bordered bg-info">
+                <thead>
+                    <tr>
+                        <td>Voucher</td>
+                        <td>Created By</td>
+                        <td>Amount</td>
+                        <td>Date</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Pinv123</td>
+                        <td>Madhavan</td>
+                        <td>Rs. 3000</td>
+                        <td>2019/05/01</td>
+                    </tr>
+                </tbody>
+             </table>
+         </div>
+        </Modal.Body>
+        <Modal.Footer>
+         <button className="btn btn-success" onClick={handleProps}><i className="fa fa-share-alt" aria-hidden="true"></i>  Trace</button>
+        <Button onClick={props.onHide}>Close</Button>
+        </Modal.Footer>
+      </Modal>
+    );
+  }
+
+  function ResyncModal(props) {
+
+    const handleProps=()=>{
+        console.log(props)
+    }
+    return (
+      <Modal
+        {...props}
+        size="lg"
+        aria-labelledby="contained-modal-title-vcenter"
+        centered
+      >
+        <Modal.Header closeButton>
+        <h4>Are you sure to Resync ?</h4>
+        </Modal.Header>
+        <Modal.Body style={{minHeight:'100px'}}>
+            <div>
+            <button className="btn btn-success"
+          style={{position:"absolute",left:'250px'}}
+          onClick={handleProps}>Yes</button>
+        <Button
+        style={{position:"absolute",left:'400px'}}
+        onClick={props.onHide}>No</Button>
+            </div>
+        </Modal.Body>
+        <Modal.Footer>
+
+        </Modal.Footer>
+      </Modal>
+    );
+  }
+
+  function ResyncAllModal(props) {
+
+    const handleProps=()=>{
+        console.log(props)
+    }
+    return (
+      <Modal
+        {...props}
+        size="lg"
+        aria-labelledby="contained-modal-title-vcenter"
+        centered
+      >
+        <Modal.Header closeButton>
+        <h4>Are you sure to Resync All?</h4>
+        </Modal.Header>
+        <Modal.Body style={{minHeight:'100px'}}>
+            <div>
+            <button className="btn btn-success"
+          style={{position:"absolute",left:'250px'}}
+          onClick={handleProps}>Yes</button>
+        <Button
+        style={{position:"absolute",left:'400px'}}
+        onClick={props.onHide}>No</Button>
+            </div>
+        </Modal.Body>
+        <Modal.Footer>
+
+        </Modal.Footer>
+      </Modal>
+    );
+  }
 export default GsApp;
