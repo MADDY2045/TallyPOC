@@ -143,4 +143,228 @@ button{
   box-shadow: 6px 4px 4px grey!important;
 }
 
+#namelabel {
+  position:absolute!important;
+  top:26px!important;
+  left:190px!important;
+}
 
+
+#name {
+  position:absolute!important;
+  top:10px!important;
+  left:260px!important;
+  background: transparent!important;
+  border: none!important;
+  border-bottom: 1px solid grey!important;
+  outline:none!important;
+  box-shadow:none!important;
+  width: 200px!important;
+}
+
+#idlabel {
+  position:absolute!important;
+  top:26px!important;
+  left:630px!important;
+}
+
+
+#id {
+  position:absolute!important;
+  top:10px!important;
+  left:660px!important;
+  background: transparent!important;
+  border: none!important;
+  border-bottom: 1px solid grey!important;
+  outline:none!important;
+  box-shadow:none!important;
+  width: 200px!important;
+}
+
+#rolelabel {
+  position:absolute!important;
+  top:26px!important;
+  left:930px!important;
+}
+
+#selectrole{
+  position:absolute!important;
+  top:15px!important;
+  left:990px!important;
+  background: transparent!important;
+  border: none!important;
+  border-bottom: 1px solid grey!important;
+  outline:none!important;
+  box-shadow:none!important;
+  width: 200px!important;
+}
+
+#datelabel {
+  position:absolute!important;
+  top:6px!important;
+  left:0px!important;
+}
+
+#datepicker{
+  position:absolute!important;
+  top:20px!important;
+  left:1290px!important;
+  width: 200px!important;
+}
+
+#accountlabel{
+  position:absolute!important;
+  top:126px!important;
+  left:320px!important;
+}
+
+#account{
+  position:absolute!important;
+  top:110px!important;
+  left:400px!important;
+  background: transparent!important;
+  border: none!important;
+  border-bottom: 1px solid grey!important;
+  outline:none!important;
+  box-shadow:none!important;
+  width: 200px!important;
+}
+
+#ifsclabel{
+  position:absolute!important;
+  top:126px!important;
+  left:650px!important;
+}
+
+#ifsc{
+  position:absolute!important;
+  top:110px!important;
+  left:700px!important;
+  background: transparent!important;
+  border: none!important;
+  border-bottom: 1px solid grey!important;
+  outline:none!important;
+  box-shadow:none!important;
+  width: 200px!important;
+}
+
+#instrnolabel{
+  position:absolute!important;
+  top:126px!important;
+  left:950px!important;
+}
+
+#instrno{
+  position:absolute!important;
+  top:110px!important;
+  left:1030px!important;
+  background: transparent!important;
+  border: none!important;
+  border-bottom: 1px solid grey!important;
+  outline:none!important;
+  box-shadow:none!important;
+  width: 200px!important;
+}
+
+#bankdatelabel{
+  position:absolute!important;
+  top:126px!important;
+  left:1280px!important;
+}
+
+#bankdate{
+  position:absolute!important;
+  top:110px!important;
+  left:1330px!important;
+  background: transparent!important;
+  border: none!important;
+  border-bottom: 1px solid grey!important;
+  outline:none!important;
+  box-shadow:none!important;
+  width: 200px!important;
+}
+
+#transactiontypelabel{
+  position:absolute!important;
+  top:126px!important;
+  left:10px!important;
+}
+
+#selecttransactiontype{
+  position:absolute!important;
+  top:120px!important;
+  left:160px!important;
+  width: 130px!important;
+}
+#presentlabel{
+  position: relative;
+  left:10px;
+  top:10px;
+}
+#present{
+  width: 100px;
+  position: relative;
+  left:92px;
+  top:-30px;
+}
+#leavelabel{
+  position: relative;
+  left:10px;
+  top:-20px;
+}
+#leave{
+  width: 100px;
+  position: relative;
+  left:92px;
+  top:-60px;
+}
+#overtimelabel{
+  position: relative;
+  left:10px;
+  top:-50px;
+}
+#overtime{
+  width: 100px;
+  position: relative;
+  left:92px;
+  top:-90px;
+}
+#computebtn{
+  position: absolute;
+  left:600px;
+  top:130px;
+}
+
+#basicpaylabel{
+  position: relative;
+  left:10px;
+  top:10px;
+}
+#basicpay{
+  width: 100px;
+  position: relative;
+  left:92px;
+  top:-30px;
+}
+#dalabel{
+  position: relative;
+  left:10px;
+  top:-20px;
+}
+#da{
+  width: 100px;
+  position: relative;
+  left:92px;
+  top:-60px;
+}
+#hralabel{
+  position: relative;
+  left:10px;
+  top:-50px;
+}
+#hra{
+  width: 100px;
+  position: relative;
+  left:92px;
+  top:-90px;
+}

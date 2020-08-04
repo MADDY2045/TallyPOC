@@ -60,6 +60,7 @@ return (
                 <a className="navbar-brand" href="http://localhost:3000/create" target="_blank" rel='noopener noreferrer'><i className="fa fa-1x fa-plus" aria-hidden="true"></i>Create</a>
                 <a className="navbar-brand" href="http://localhost:3000/cancel" target="_blank" rel='noopener noreferrer'><i className="fa fa-ban" aria-hidden="true"></i>Cancel</a>
                 <a className="navbar-brand" href="http://localhost:3000/createpayroll" target="_blank" rel='noopener noreferrer'><i className="fa fa-usd" aria-hidden="true"></i>Create Payroll</a>
+                <a className="navbar-brand" href="http://localhost:3000/createpayrollnew" target="_blank" rel='noopener noreferrer'><i className="fa fa-usd" aria-hidden="true"></i>Create Payroll New</a>
                 <a className="navbar-brand" href="http://localhost:3000/disbursepayroll" target="_blank" rel='noopener noreferrer'><i className="fa fa-handshake-o" aria-hidden="true"></i>Disburse Payroll</a>
                 </div>
             </div>

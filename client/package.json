@@ -7,6 +7,7 @@
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
     "axios": "^0.19.2",
+    "custom-input-aslam": "^0.1.0",
     "dateformat": "^3.0.3",
     "mdbreact": "^4.27.0",
     "qs": "^6.9.4",
