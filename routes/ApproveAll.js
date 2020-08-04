@@ -43,7 +43,7 @@ router.post("/approveallpayroll", (req,res)=>{
                   console.log('result is ',result)
                   if(result["RESPONSE"]["ALTERED"][0]!=='0' || result["RESPONSE"]["COMBINED"][0]!=='0' || result["RESPONSE"]["CREATED"][0]!=='0'){
                       EmployeeSalaryMaster.find().then(result=>{
-
+                        let reponseobj = {}
                           if(result.length>0){
                               console.log('tally response',jsonstring["RESPONSE"]["LASTVCHID"]);
                               result.map(item=>{
@@ -52,7 +52,11 @@ router.post("/approveallpayroll", (req,res)=>{
                                 item.tallyid = jsonstring["RESPONSE"]["LASTVCHID"];
                                   item.save().then(response=>{
                                       console.log(response)
-                                      res.send("success");
+                                      reponseobj["message"]="success";
+                                      reponseobj["tallyid"]=item.tallyid;
+                                      reponseobj["date"]=item.date;
+                                      reponseobj["vouchertype"]=item.vouchertype;
+                                      res.send(reponseobj);
                                   }).catch(err=>{
                                       console.log(err);
                                   })

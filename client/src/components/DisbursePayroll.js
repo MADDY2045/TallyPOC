@@ -26,6 +26,9 @@ const DisbursePayroll = () => {
     const [ gsPayrollData,setGsPayrollData ] = useState([]);
     const [ gsPayrollAllData,setGsPayrollAllData ] = useState([]);
     const [approvalFlag,setApprovalFlag]=useState(false);
+    const [cancelAllTallyid,setCancelAllTallyid]=useState('');
+    const [cancelAllTallydate,setCancelAllTallydate]=useState('');
+    const [cancelAllTallyvchtype,setCancelAllTallyvchtype]=useState('');
     /*end of approval*/
 
 
@@ -77,10 +80,12 @@ useEffect(()=>{
                     count += 1;
                 }
             })
+
             if (count===response.data.length){
                 setApproveAllflag(true);
             }
-            setCancelData(response.data)
+            setCancelData(response.data);
+
         }).catch(err=>{
             if (axios.isCancel(err)) {
                 console.log('Request canceled', err.message);
@@ -263,7 +268,7 @@ const handleApproveAll=()=>{
 
         let filteredarray = response.data.filter(element=> element.transactiontype!=='Cash');
         console.log('filtered array',filteredarray);
-        if(filteredarray.length>0){
+        if(filteredarray && filteredarray!==undefined && filteredarray.length>0){
 
             payrolltallytemplateall["ENVELOPE"]["BODY"]["IMPORTDATA"]["REQUESTDATA"]["TALLYMESSAGE"][0]["VOUCHER"]["PARTYLEDGERNAME"]=filteredarray[0].transactiontype;
             ledgerentrieslist["LEDGERNAME"]=filteredarray[0].transactiontype;
@@ -326,9 +331,12 @@ const handleApproveAll=()=>{
         console.log(xmlstringall);
        axios.post(`http://localhost:5050/approveallpayroll`,{data:xmlstringall}).then(response=>{
             console.log(response.data);
-            if(response.data==='success'){
+            if(response.data.message==='success'){
                 notify();
                 setApproveAllCancelflag(false);
+                setCancelAllTallyid(response.data.tallyid);
+                setCancelAllTallydate(response.data.date);
+                setCancelAllTallyvchtype(response.data.vouchertype);
                 loaddata();
             }
            }).catch(err=>console.log(err));
@@ -369,7 +377,7 @@ const handleApproveAll=()=>{
                                         <th id="tally-header"><button onClick={handleApproveAll}
                                         disabled={approveAllflag}
                                         className="btn btn-primary">APPROVE ALL</button>|
-                                        <button  onClick={()=>handleCancel(tallyidAll,'Payroll',responsedate)}
+                                    <button  onClick={()=>handleCancel(cancelAllTallyid,cancelAllTallyvchtype,cancelAllTallydate)}
                                         disabled={approveAllCancelflag}
                                         className="btn btn-danger">CANCEL</button>
                                         </th>
