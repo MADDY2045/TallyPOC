@@ -1,95 +1,147 @@
 import React,{ useState,useEffect } from 'react';
-import GsApp from '../components/GsApp';
-import Tally from '../components/Tally';
 import axios from 'axios';
-import SelectTransaction from '../components/SelectTransaction';
-import '@fortawesome/fontawesome-free/css/all.min.css';
-import 'bootstrap-css-only/css/bootstrap.min.css';
-import 'mdbreact/dist/css/mdb.css';
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
-import '../App.css';
+import dateformat from 'dateformat'
+    // const username = '2ecc6220-e7a1-4dc4-9928-4a78b990e407';
+    // const password = '4667110b-67a1-4b98-a3dd-7045ac56c796';
+    // const token = Buffer.from(`${username}:${password}`, 'utf8').toString('base64')
 
+    const url = 'http://localhost:6050/sendmessage';
+    const url2 = 'http://localhost:6050/getdetails';
 
 const Home = () => {
 
+    const [mobile,setMobile] = useState('9894948839');
+    const [karixMobile,setKarixMobile]=useState('');
+    const [text,setText]=useState('');
+    const [loaderFlag,setLoaderFlag]=useState(false);
+    const [mainResponse,setMainResponse]=useState([]);
+    const [callUid,setCallUid] = useState([])
 
-    const [fromDate,setFromDate] = useState(new Date());
-    const [toDate,setToDate] = useState(new Date());
-    const [initialdata,setInitialData] = useState([]);
-    const [option,setOption] = useState('Choose');
-    const [loader,setLoader] = useState(false);
-
-    const handleFromDate=(date)=>{
-        setFromDate(date);
+    const handleSubmit = (evt) => {
+        evt.preventDefault();
+        setKarixMobile(`+91${mobile}`)
     }
 
-    const handleToDate=(date)=>{
-        setToDate(date);
+    const handleDetails=()=>{
+            axios.get(url2).then(response=>{
+                console.log('details response',response.data);
+            }).catch(err=>console.log(err));
     }
 
-const handleOption=(e)=>{
-    e.preventDefault();
-    setOption(e.target.value);
-    setLoader(false);
-}
+    useEffect(()=>{
 
-useEffect(() => {
-   console.log(initialdata);
-}, [initialdata]);
+        if(karixMobile!==''){
+            let data = {
+                "channel": "whatsapp",
+                "source": "+13253077759",
+                "destination": [
+                `${karixMobile}`
+                ],
+                "content": {
+                "text": `${text}`
+
+            },
+            "events_url": "http://4ff9712ba35a.ngrok.io/geteventcallback"
+                }
+                axios({url,method:'POST',data:data})
+                .then(response=>{
+                    // console.log(response.data);
+                    setMainResponse(response.data);
+                }).catch(err=>console.log(err));
+            }
+
+          },[karixMobile,text]);
 
 
-const handleSubmit=()=>{
-
-if(option ==='' || option ==='Choose'){
-    // console.log('not allowed');
-}else{
-    axios.get(`http://localhost:5050/getrecondetails/${option}/${fromDate}/${toDate}`).then(response=>{
-            setInitialData(response.data);
-            setLoader(true)
-         }).catch(err=>console.log(err));
+    useEffect(()=>{
+        let tempArray = []
+        if(mainResponse.length!==0){
+            setLoaderFlag(true)
+            console.log('main',mainResponse);
+            tempArray.push(mainResponse["meta"]["request_uuid"]);
+            setCallUid(tempArray)
         }
-}
+       },[mainResponse])
 
-return (
-        <div >
-             <nav className="navbar" style={{background:"#283f59",color:"white"}}>
-             <div className="dropdown">
-                <button style={{position:"relative",left:"50px"}}className="dropbtn">Action <i className="fa fa-angle-double-down" aria-hidden="true"></i></button>
-                <div className="dropdown-content">
-                <a className="navbar-brand" href="http://localhost:3000/create" target="_blank" rel='noopener noreferrer'><i className="fa fa-1x fa-plus" aria-hidden="true"></i>Create</a>
-                <a className="navbar-brand" href="http://localhost:3000/cancel" target="_blank" rel='noopener noreferrer'><i className="fa fa-ban" aria-hidden="true"></i>Cancel</a>
-                <a className="navbar-brand" href="http://localhost:3000/createpayroll" target="_blank" rel='noopener noreferrer'><i className="fa fa-usd" aria-hidden="true"></i>Create Payroll</a>
-                <a className="navbar-brand" href="http://localhost:3000/createpayrollnew" target="_blank" rel='noopener noreferrer'><i className="fa fa-usd" aria-hidden="true"></i>Create Payroll New</a>
-                <a className="navbar-brand" href="http://localhost:3000/disbursepayroll" target="_blank" rel='noopener noreferrer'><i className="fa fa-handshake-o" aria-hidden="true"></i>Disburse Payroll</a>
+useEffect(()=>{
+if(callUid!=='' && callUid.length > 0){
+   console.log('call uid array is',callUid);
+}
+},[callUid])
+
+    return (
+        <div className="card" style={{minHeight:'600px',maxWidth:'70%',position:"relative",top:"80px",left:"300px"}}>
+            <div className="row">
+                <div className="col-md-5">
+                <div className="form-group">
+                <label style={{position:"relative",left:"40px",top:"40px"}}>Mobile: </label>
+
+                <input
+                style={{width:'40%',position:"absolute",left:"40px",top:"70px"}}
+                    className="form-control"
+                    type="text"
+                    value={mobile}
+                    onChange={e => setMobile(e.target.value)}
+                    />
+                    <label style={{position:"relative",left:"-10px",top:"140px"}}>Text: </label>
+
+                    <input
+                    style={{width:'40%',position:"absolute",left:"40px",top:"170px"}}
+                        className="form-control"
+                        type="text"
+                        value={text}
+                        onChange={e => setText(e.target.value)}
+                        />
+                    <button
+                    style={{position:"absolute",top:"400px"}}
+                    className="btn btn-primary" onClick={handleSubmit}>Submit</button>
+                     <button
+                    style={{position:"absolute",top:"400px",left:"200px"}}
+                    className="btn btn-warning" onClick={handleDetails}>Get Details</button>
                 </div>
             </div>
-                <span><SelectTransaction onChange={handleOption} onClick={handleSubmit}/></span>
-                <span style={{position:"relative",left:"200px",zIndex:"10"}}>
-                <label style={{position:"relative",left:"-10px"}} >From</label>
-                <DatePicker
-                    selected={fromDate}
-                    onChange={handleFromDate}
-                />
-                </span>
-                <span style={{position:"relative",left:"-60px",zIndex:"10"}}>
-                <label style={{position:"relative",left:"-20px",zIndex:"10"}}>To</label>
-                <DatePicker
-                   selected={toDate}
-                    onChange={handleToDate}
-                />
-                </span>
-            </nav>
-            <div className="row container">
-                <div className="col-md-6 card" style={{minHeight:'700px',position:"absolute",top:"120px",maxWidth:'840px',left:"40px",border:"1px solid grey",borderRadius:"30px"}}>
-                    <GsApp response={initialdata} option={option} loader={loader}/>
-                </div>
-                <div className="col-md-6 card" style={{minHeight:'700px',position:"absolute",top:"120px",left:"900px",maxWidth:'840px',border:"1px solid grey",borderRadius:"30px"}}>
-                <Tally response={initialdata} option={option} loader={loader}/>
-                </div>
-           </div>
+
+            { loaderFlag ?
+            <div className="col-md-7" style={{overflow:"auto",position:"relative",top:"90px",left:"-100px"}}>
+            <div className="table-responsive">
+            <table className="table table-striped table-bordered table-success">
+            <thead >
+                <tr >
+                <th scope="col">Uid</th>
+                <th scope="col">Message</th>
+                <th scope="col">To</th>
+                <th scope="col">Status</th>
+                <th scope="col">Whatsappfee</th>
+                <th scope="col">Platform fee</th>
+                <th scope="col">Sent On</th>
+                <th scope="col">Total Cost</th>
+                <th scope="col">Balance Credits</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                <td>{mainResponse["meta"]["request_uuid"]}</td>
+                <td>{mainResponse["objects"][0]["content"]["text"]}</td>
+                <td>{mainResponse["objects"][0]["destination"]}</td>
+                <td>{mainResponse["objects"][0]["status"]}</td>
+                <td>{mainResponse["objects"][0]["channel_details"]["whatsapp"]["whatsapp_fee"]}</td>
+                <td>{mainResponse["objects"][0]["channel_details"]["whatsapp"]["platform_fee"]}</td>
+            <td>{dateformat(mainResponse["objects"][0]["created_time"],"dd/mm/yyyy")}</td>
+                <td>{mainResponse["objects"][0]["total_cost"]}</td>
+                <td>{mainResponse["meta"]["available_credits"]}</td>
+                </tr>
+               </tbody>
+        </table>
+            </div>
+
         </div>
-            );
+            :null}
+            {/* end */}
+            </div>
+
+
+        </div>
+    );
 }
 
 export default Home;
