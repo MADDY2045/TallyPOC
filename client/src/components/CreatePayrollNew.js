@@ -116,7 +116,12 @@ class CreatePayroll extends Component {
     }
 
     handleComputeSubmit=()=>{
-        let { present,leave } = this.state;
+
+        let { present,leave,payhead,basicpay,da,ta,hra,medicalallowance,loans,salaryadvance,it,pf } = this.state;
+        this.setState({
+            payhead:[]
+        })
+
         let netdays = 0;
         netdays = Number(present)+Number(leave);
         console.log(netdays);
@@ -128,8 +133,30 @@ class CreatePayroll extends Component {
             this.setState({
                 errordayscount:false
             })
+            let tempobj = {};
+            let temppayheadarray =[]
             console.log("can be approved");
-            console.log('basic',this.state.basicpay);
+
+            let basiccalculatedpay = Math.round((basicpay*present)/30);
+            tempobj["Basic Pay"]=basiccalculatedpay
+            let calculatedda = Math.round((basiccalculatedpay*da)/100);
+            tempobj["DA"]=calculatedda;
+            let calculatedhra = Math.round((basiccalculatedpay*hra)/100);
+            tempobj["HRA"]=calculatedhra;
+            tempobj["TA"]=ta;
+            tempobj["Medical Allowance"]=medicalallowance;
+            tempobj["PF"]=Math.round((basiccalculatedpay*pf)/100);
+            tempobj["IT"]=Math.round((basiccalculatedpay*it)/100);
+            tempobj["Loans"]=loans;
+            tempobj["Salary Advance"]=salaryadvance;
+            temppayheadarray.push(tempobj);
+            setTimeout(() => {
+                console.log('thisstate',this.state);
+            }, 100);
+            this.setState({
+                payhead:temppayheadarray
+            })
+
         }
 
     }
@@ -421,16 +448,41 @@ style={{position:"absolute",top:"650px",left:"180px"}} className="btn btn-primar
                                <div className="col-md-6">
                                <div className="form-group " >
                                 <label id="basicpaylabel">Basic Pay</label>
-                                <input onChange={this.handleCompute} type="number" name="basicpay" className="form-control" id="basicpay" required max="30"/>
+                                <input onChange={this.handleCompute} type="number" name="basicpay" className="form-control" id="basicpay" required />
                                 </div>
                                 <div className="form-group " >
                                 <label id="dalabel">DA</label>
-                                <input onChange={this.handleCompute} type="number" name="da" className="form-control" id="da" required max="100"/>
+                                <input onChange={this.handleCompute} type="number" name="da" className="form-control" id="da"  max="100" placeholder="%"/>
                                 </div>
 
                                 <div className="form-group " >
                                 <label id="hralabel">HRA</label>
-                                <input onChange={this.handleCompute} type="number" name="hra" className="form-control" id="hra" required max="8"/>
+                                <input onChange={this.handleCompute} type="number" name="hra" className="form-control" id="hra"  max="100" placeholder="%"/>
+                                </div>
+                                <div className="form-group " >
+                                <label id="talabel">TA</label>
+                                <input onChange={this.handleCompute} type="number" name="ta" className="form-control" id="ta"  />
+                                </div>
+                                <div className="form-group " >
+                                <label id="medicalallowancelabel">MA</label>
+                                <input onChange={this.handleCompute} type="number" name="medicalallowance" className="form-control" id="medicalallowance" />
+                                </div>
+
+                                <div className="form-group " >
+                                <label id="pflabel">PF</label>
+                                <input onChange={this.handleCompute} type="number" name="pf" className="form-control" id="pf"  max="100" placeholder="%"/>
+                                </div>
+                                <div className="form-group " >
+                                <label id="itlabel">IT</label>
+                                <input onChange={this.handleCompute} type="number" name="it" className="form-control" id="it"  max="100" placeholder="%"/>
+                                </div>
+                                <div className="form-group " >
+                                <label id="loanlabel">Loans</label>
+                                <input onChange={this.handleCompute} type="number" name="loans" className="form-control" id="loan"/>
+                                <div className="form-group " >
+                                <label id="advancelabel">Advance</label>
+                                <input onChange={this.handleCompute} type="number" name="salaryadvance" className="form-control" id="advance"  />
+                                </div>
                                 </div>
                                </div>
                            </div>

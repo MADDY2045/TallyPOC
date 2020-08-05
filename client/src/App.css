@@ -368,3 +368,73 @@ button{
   left:92px;
   top:-90px;
 }
+
+#talabel{
+  position: relative;
+  left:220px;
+  top:-245px;
+}
+#ta{
+  width: 100px;
+  position: relative;
+  left:260px;
+  top:-285px;
+}
+#medicalallowancelabel{
+  position: relative;
+  left:220px;
+  top:-278px;
+}
+#medicalallowance{
+  width: 100px;
+  position: relative;
+  left:260px;
+  top:-315px;
+}
+#pflabel{
+  position: relative;
+  left:220px;
+  top:-308px;
+}
+#pf{
+  width: 100px;
+  position: relative;
+  left:260px;
+  top:-347px;
+}
+
+#itlabel{
+  position: relative;
+  left:430px;
+  top:-502px;
+}
+#it{
+  width: 100px;
+  position: relative;
+  left:470px;
+  top:-542px;
+}
+
+#loanlabel{
+  position: relative;
+  left:400px;
+  top:-532px;
+}
+#loan{
+  width: 100px;
+  position: relative;
+  left:470px;
+  top:-572px;
+}
+
+#advancelabel{
+  position: relative;
+  left:400px;
+  top:-550px;
+}
+#advance{
+  width: 100px;
+  position: relative;
+  left:470px;
+  top:-590px;
+}
