@@ -134,7 +134,9 @@ class CreatePayroll extends Component {
                 errordayscount:false
             })
             let tempobj = {};
-            let temppayheadarray =[]
+            let assigningobject ={}
+            let temppayheadarray =[];
+            let assigningarray = [];
             console.log("can be approved");
 
             let basiccalculatedpay = Math.round((basicpay*present)/30);
@@ -150,11 +152,20 @@ class CreatePayroll extends Component {
             tempobj["Loans"]=loans;
             tempobj["Salary Advance"]=salaryadvance;
             temppayheadarray.push(tempobj);
+            console.log('temppayheadarray',temppayheadarray);
+            Object.keys(temppayheadarray[0]).map(eachkey=>{
+                console.log('eachkey::',eachkey);
+                assigningobject={};
+                assigningobject[eachkey]= temppayheadarray[0][eachkey];
+                assigningarray.push(assigningobject);
+            })
+
+            console.log('assigningarray',assigningarray);
             setTimeout(() => {
                 console.log('thisstate',this.state);
             }, 100);
             this.setState({
-                payhead:temppayheadarray
+                payhead:assigningarray
             })
 
         }
