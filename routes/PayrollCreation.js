@@ -27,18 +27,18 @@ router.post("/createpayheadmaster",async(req,res)=>{
  })
 
 
- router.post('/createemployeesalary',getnetamount,(req,res)=>{
+ router.post('/createemployeesalary',getnetamount,async(req,res)=>{
      try{
-
-        const { name,role,id,payhead,date,transactiontype,account,instrumentnumber,instrumentdate,ifsc,txntypeflag } = req.body.data;
+        console.log('for attendance',req.body.data);
+        const { name,role,id,payhead,date,transactiontype,account,instrumentnumber,instrumentdate,ifsc,txntypeflag,present,leave,overtime } = req.body.data;
         const formatteddate = dateFormat(date,"yyyy-mm-dd");
 
-        EmployeeSalaryMaster.find({id}).exec().then(docs=>{
+       await EmployeeSalaryMaster.find({id}).exec().then(docs=>{
             if(docs.length>0){
                     console.log("id already exists!!!");
             }else{
                 let netpay = req.netAmount;
-                const newSalaryData = new EmployeeSalaryMaster({account,date:formatteddate,id,ifsc,instrumentdate,instrumentnumber,name,payhead,role,transactiontype,netpay });
+                const newSalaryData = new EmployeeSalaryMaster({account,date:formatteddate,id,ifsc,instrumentdate,instrumentnumber,name,payhead,role,transactiontype,netpay,present,leave,overtime });
                 setTimeout(()=>{
                     const saveddata = newSalaryData.save().then(result=>{
                         if(result){

@@ -37,7 +37,8 @@ class CreatePayroll extends Component {
             pf:0,
             it:0,
             salaryadvance:0,
-            errordayscount:false
+            errordayscount:false,
+            computetableflag:false
         }
     }
 
@@ -116,7 +117,9 @@ class CreatePayroll extends Component {
     }
 
     handleComputeSubmit=()=>{
-
+        this.setState({
+            computetableflag:true
+        })
         let { present,leave,payhead,basicpay,da,ta,hra,medicalallowance,loans,salaryadvance,it,pf } = this.state;
         this.setState({
             payhead:[]
@@ -174,7 +177,7 @@ class CreatePayroll extends Component {
     render() {
 
         return (
-            <div className="card row" style={{minHeight:"740px",maxheight:"740px",margin:"50px"}}>
+            <div className="card row " style={{width:"98%",margin:"20px auto",minHeight:"700px"}}>
                    <div className="col-md-12">
                     <button onClick={this.handlePayrollManualView} className="btn btn-secondary" disabled={this.state.manualmode}>Manual</button>
                     <button onClick={this.handlePayrollComputedView} className="btn btn-info" disabled={this.state.computedmode}>Computed</button>
@@ -342,7 +345,7 @@ style={{position:"absolute",top:"650px",left:"180px"}} className="btn btn-primar
  </div>
                 </div>:
             //    { /* start of computed */ }
-                <div className="row" >
+                <div className="row" style={{overflow:"hidden"}}>
                     <div className="col-md-12" style={{minHeight:"200px",border: '1px solid grey',maxWidth:"97%",position:"relative",left:"22px"}}>
                     <div className="form-group " >
                         <label id="namelabel">Name</label>
@@ -500,7 +503,29 @@ style={{position:"absolute",top:"650px",left:"180px"}} className="btn btn-primar
                            <button onClick={this.handleComputeSubmit} id="computebtn" className="btn btn-purple">COMPUTE</button>
                     </div>
                     <div className="col-md-12 " style={{minHeight:"200px",border: '1px solid grey',maxWidth:"97%",position:"relative",left:"22px"}}>
+                        {this.state.computetableflag && this.state.payhead.length > 0 ?
+                        <div className="table-responsive">
+                            <table className="table table-bordered mt-3" id="computetable">
+                            <thead>
+                                <tr>
+                                    {this.state.payhead.map((item,index)=>{
+                                        return <td key={index}>{Object.keys(item)}</td>
+                                    })}
+                                </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                {this.state.payhead.map((item,index)=>{
+                                        return <td key={index}>{Object.values(item)}</td>
+                                    })}
+                                </tr>
+                            </tbody>
+                        </table>
+                        </div>
+                        :null}
+
                     <button
+                    style={{position:"absolute",top:"130px",left:"750px"}}
                     onClick={this.handleSubmit}
                     className="btn btn-primary">SUBMIT</button>
                     </div>

@@ -53,7 +53,19 @@ const employeeSalary = new Schema({
     cancelflag:{
         type:Boolean,
         default:true
-    }
+    },
+    present:{
+        type:Number,
+        default:0
+    },
+    leave:{
+        type:Number,
+        default:0
+    },
+    overtime:{
+        type:Number,
+        default:0
+    },
 
 })
 

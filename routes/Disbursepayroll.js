@@ -11,8 +11,9 @@ const { v4: uuidv4 } = require('uuid');
 
 var { ledgercreator } = require('../helpers/LedgerCreationTemplate');
 var { costcategory,costcentre} = require('../helpers/CostCentreTemplate');
+var { attendance } = require('../helpers/Attendance');
 
-router.get('/approvesalary/:id',createmaster,(req,res)=>{
+router.get('/approvesalary/:id',createmaster,createattendance,(req,res)=>{
     try{
         EmployeeSalaryMaster.find({id:req.params.id}).exec().then(result=>{
             if(result.length>0){
@@ -70,7 +71,7 @@ function createmaster(req,res,next){
         if(response.length>0){
             // console.log(response);
             if(response[0].transactiontype || response[0].name ){
-
+                req.body = response;
                     if(response[0].transactiontype==='Cash'){
                         ledgercreator["ENVELOPE"]["BODY"]["IMPORTDATA"]["REQUESTDESC"]["STATICVARIABLES"]["SVCURRENTCOMPANY"]="Main"
                         ledgercreator["ENVELOPE"]["BODY"]["IMPORTDATA"]["REQUESTDATA"]["TALLYMESSAGE"]["LEDGER"]["MAILINGNAME.LIST"]["MAILINGNAME"]=response[0].transactiontype
@@ -132,10 +133,63 @@ function createmaster(req,res,next){
                         }).catch(err=>console.log(err));
             }
         }
+
        next();
     }).catch(err=>console.log(err));
 
 }
 
+function createattendance(req,res,next){
+    let tempobj={}
+    let templeave={}
+    let tempovertime={}
+    attendance["ENVELOPE"]["BODY"]["IMPORTDATA"]["REQUESTDATA"]["TALLYMESSAGE"]["VOUCHER"]["ATTENDANCEENTRIES.LIST"]=[];
+    attendance["ENVELOPE"]["BODY"]["IMPORTDATA"]["REQUESTDATA"]["TALLYMESSAGE"]["VOUCHER"]["EFFECTIVEDATE"]='';
+    attendance["ENVELOPE"]["BODY"]["IMPORTDATA"]["REQUESTDATA"]["TALLYMESSAGE"]["VOUCHER"]["DATE"]='';
+    attendance["ENVELOPE"]["BODY"]["IMPORTDATA"]["REQUESTDATA"]["TALLYMESSAGE"]["VOUCHER"]["_REMOTEID"]='';
+if(req.body[0].present !== 0 ){
+    console.log("entered attendance");
+    console.log(req.body);
+    attendance["ENVELOPE"]["BODY"]["IMPORTDATA"]["REQUESTDATA"]["TALLYMESSAGE"]["VOUCHER"]["EFFECTIVEDATE"]=dateFormat(req.body[0].date,"yyyymmdd");
+    attendance["ENVELOPE"]["BODY"]["IMPORTDATA"]["REQUESTDATA"]["TALLYMESSAGE"]["VOUCHER"]["DATE"]=dateFormat(req.body[0].date,"yyyymmdd");
+    attendance["ENVELOPE"]["BODY"]["IMPORTDATA"]["REQUESTDATA"]["TALLYMESSAGE"]["VOUCHER"]["_REMOTEID"]=uuidv4();
+    tempobj["NAME"] = req.body[0].name;
+    tempobj["ATTENDANCETYPE"] = "Present";
+    tempobj["ATTDTYPETIMEVALUE"] = ` ${req.body[0].present}`;
+    tempobj["NAME"] = req.body[0].name;
+    attendance["ENVELOPE"]["BODY"]["IMPORTDATA"]["REQUESTDATA"]["TALLYMESSAGE"]["VOUCHER"]["ATTENDANCEENTRIES.LIST"].push(tempobj)
+    if(req.body[0].leave!== 0){
+        templeave["NAME"] = req.body[0].name;
+        templeave["ATTENDANCETYPE"] = "Leave";
+        templeave["ATTDTYPETIMEVALUE"] = ` ${req.body[0].leave}`;
+        templeave["NAME"] = req.body[0].name;
+        attendance["ENVELOPE"]["BODY"]["IMPORTDATA"]["REQUESTDATA"]["TALLYMESSAGE"]["VOUCHER"]["ATTENDANCEENTRIES.LIST"].push(templeave)
+    }
+    if(req.body[0].overtime!== 0){
+        tempovertime["NAME"] = req.body[0].name;
+        tempovertime["ATTENDANCETYPE"] = "overtime";
+        tempovertime["ATTDTYPEVALUE"] = ` ${req.body[0].overtime} hrs`;
+        tempovertime["NAME"] = req.body[0].name;
+        attendance["ENVELOPE"]["BODY"]["IMPORTDATA"]["REQUESTDATA"]["TALLYMESSAGE"]["VOUCHER"]["ATTENDANCEENTRIES.LIST"].push(tempovertime)
+    }
 
+    let x2js = new X2JS();
+    const xmlattendance = x2js.js2xml(attendance);
+    console.log(xmlattendance);
+    axios({url:'http://localhost:9000',method:'POST',headers:{ContentType: 'text/xml',charset:'UTF-8'},data:xmlattendance})
+        .then(response=>{
+            if(response.data){
+                parseString(response.data,(issue,result)=>{
+                    if(!issue){
+                       console.log('attendance :::',result);
+                    }
+                })
+            }
+        }).catch(err=>console.log(err));
+    next()
+}else{
+    console.log("entered manual");
+    next();
+}
+}
 module.exports = router;

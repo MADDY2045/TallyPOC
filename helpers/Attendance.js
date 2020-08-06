@@ -1,0 +1,132 @@
+var attendance = {
+	"ENVELOPE": {
+		"HEADER": {
+			"TALLYREQUEST": "Import Data"
+		},
+		"BODY": {
+			"IMPORTDATA": {
+				"REQUESTDESC": {
+					"REPORTNAME": "Vouchers",
+					"STATICVARIABLES": {
+						"SVCURRENTCOMPANY": "Main"
+					}
+				},
+				"REQUESTDATA": {
+					"TALLYMESSAGE": {
+						"VOUCHER": {
+							"OLDAUDITENTRYIDS.LIST": {
+								"OLDAUDITENTRYIDS": "-1",
+								"_TYPE": "Number"
+							},
+							"DATE": "",
+							"GUID": "0bbd5096-36a4-4111-a30b-ffd161b46c91-00000501",
+							"VOUCHERTYPENAME": "Attendance",
+							"VOUCHERNUMBER": "",
+							"CSTFORMISSUETYPE": "",
+							"CSTFORMRECVTYPE": "",
+							"FBTPAYMENTTYPE": "Default",
+							"PERSISTEDVIEW": "Accounting Voucher View",
+							"VCHGSTCLASS": "",
+							"DIFFACTUALQTY": "No",
+							"ISMSTFROMSYNC": "No",
+							"ASORIGINAL": "No",
+							"AUDITED": "No",
+							"FORJOBCOSTING": "No",
+							"ISOPTIONAL": "No",
+							"EFFECTIVEDATE": "",
+							"USEFOREXCISE": "No",
+							"ISFORJOBWORKIN": "No",
+							"ALLOWCONSUMPTION": "No",
+							"USEFORINTEREST": "No",
+							"USEFORGAINLOSS": "No",
+							"USEFORGODOWNTRANSFER": "No",
+							"USEFORCOMPOUND": "No",
+							"USEFORSERVICETAX": "No",
+							"ISEXCISEVOUCHER": "No",
+							"EXCISETAXOVERRIDE": "No",
+							"USEFORTAXUNITTRANSFER": "No",
+							"IGNOREPOSVALIDATION": "No",
+							"EXCISEOPENING": "No",
+							"USEFORFINALPRODUCTION": "No",
+							"ISTDSOVERRIDDEN": "No",
+							"ISTCSOVERRIDDEN": "No",
+							"ISTDSTCSCASHVCH": "No",
+							"INCLUDEADVPYMTVCH": "No",
+							"ISSUBWORKSCONTRACT": "No",
+							"ISVATOVERRIDDEN": "No",
+							"IGNOREORIGVCHDATE": "No",
+							"ISVATPAIDATCUSTOMS": "No",
+							"ISDECLAREDTOCUSTOMS": "No",
+							"ISSERVICETAXOVERRIDDEN": "No",
+							"ISISDVOUCHER": "No",
+							"ISEXCISEOVERRIDDEN": "No",
+							"ISEXCISESUPPLYVCH": "No",
+							"ISGSTOVERRIDDEN": "No",
+							"GSTNOTEXPORTED": "No",
+							"IGNOREGSTINVALIDATION": "No",
+							"ISVATPRINCIPALACCOUNT": "No",
+							"ISBOENOTAPPLICABLE": "No",
+							"ISSHIPPINGWITHINSTATE": "No",
+							"ISOVERSEASTOURISTTRANS": "No",
+							"ISDESIGNATEDZONEPARTY": "No",
+							"ISCANCELLED": "No",
+							"HASCASHFLOW": "No",
+							"ISPOSTDATED": "No",
+							"USETRACKINGNUMBER": "No",
+							"ISINVOICE": "No",
+							"MFGJOURNAL": "No",
+							"HASDISCOUNTS": "No",
+							"ASPAYSLIP": "No",
+							"ISCOSTCENTRE": "No",
+							"ISSTXNONREALIZEDVCH": "No",
+							"ISEXCISEMANUFACTURERON": "No",
+							"ISBLANKCHEQUE": "No",
+							"ISVOID": "No",
+							"ISONHOLD": "No",
+							"ORDERLINESTATUS": "No",
+							"VATISAGNSTCANCSALES": "No",
+							"VATISPURCEXEMPTED": "No",
+							"ISVATRESTAXINVOICE": "No",
+							"VATISASSESABLECALCVCH": "No",
+							"ISVATDUTYPAID": "Yes",
+							"ISDELIVERYSAMEASCONSIGNEE": "No",
+							"ISDISPATCHSAMEASCONSIGNOR": "No",
+							"ISDELETED": "No",
+							"CHANGEVCHMODE": "No",
+							"ALTERID": "",
+							"MASTERID": "",
+							"VOUCHERKEY": "187458142601224",
+							"EXCLUDEDTAXATIONS.LIST": "",
+							"OLDAUDITENTRIES.LIST": "",
+							"ACCOUNTAUDITENTRIES.LIST": "",
+							"AUDITENTRIES.LIST": "",
+							"DUTYHEADDETAILS.LIST": "",
+							"SUPPLEMENTARYDUTYHEADDETAILS.LIST": "",
+							"EWAYBILLDETAILS.LIST": "",
+							"INVOICEDELNOTES.LIST": "",
+							"INVOICEORDERLIST.LIST": "",
+							"INVOICEINDENTLIST.LIST": "",
+							"ATTENDANCEENTRIES.LIST": [],
+							"ORIGINVOICEDETAILS.LIST": "",
+							"INVOICEEXPORTLIST.LIST": "",
+							"ALLLEDGERENTRIES.LIST": "",
+							"PAYROLLMODEOFPAYMENT.LIST": "",
+							"ATTDRECORDS.LIST": "",
+							"GSTEWAYCONSIGNORADDRESS.LIST": "",
+							"GSTEWAYCONSIGNEEADDRESS.LIST": "",
+							"TEMPGSTRATEDETAILS.LIST": "",
+							"_REMOTEID": "0bbd5096-36a4-4111-a30b-ffd161b46c91-00000501",
+							"_VCHKEY": "0bbd5096-36a4-4111-a30b-ffd161b46c91-0000aa7e:00000008",
+							"_VCHTYPE": "Attendance",
+							"_ACTION": "Create",
+							"_OBJVIEW": "Accounting Voucher View"
+						},
+						"_xmlns:UDF": "TallyUDF"
+					}
+				}
+			}
+		}
+	}
+}
+
+module.exports = { attendance }
