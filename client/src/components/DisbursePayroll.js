@@ -7,7 +7,7 @@ import dateformat from 'dateformat';
 import uuid from 'react-uuid'
 import X2JS from 'x2js';
 import { payrolltallytemplateall } from '../helpers/PayrollAllTemplate';
-import { payrolltallytemplate,payheadentrylist,ledgerentrieslist,bankallocationslist,individualpayhead,companyname,date,partyledgername,ledgerentryarray,categoryentrylistarray,category,employeeentrieslist,remoteid,employeeentrieslistamount,payheadallocationslist } from '../helpers/payrolltemplatejson' ;
+import { payrolltallytemplate,ledgerentrieslist,bankallocationslist } from '../helpers/payrolltemplatejson' ;
 const CancelToken = axios.CancelToken;
 const source = CancelToken.source();
 
@@ -16,16 +16,9 @@ const source = CancelToken.source();
 const DisbursePayroll = () => {
 
     const [ cancelData,setCancelData ] = useState([]);
-    const [tallyerrormsg,setTallyerrormsg]=useState('');
-    const [tallyerrormsgflag,setTallyerrormsgflag]=useState(false);
     const [approveAllflag,setApproveAllflag]=useState(false);
-    const [tallyidAll,setTallyidAll]=useState(false);
     const [approveAllCancelflag,setApproveAllCancelflag] = useState(true)
-    const [responsedate,setResponseDate] = useState('');
     /*start of approval */
-    const [ gsPayrollData,setGsPayrollData ] = useState([]);
-    const [ gsPayrollAllData,setGsPayrollAllData ] = useState([]);
-    const [approvalFlag,setApprovalFlag]=useState(false);
     const [cancelAllTallyid,setCancelAllTallyid]=useState('');
     const [cancelAllTallydate,setCancelAllTallydate]=useState('');
     const [cancelAllTallyvchtype,setCancelAllTallyvchtype]=useState('');
@@ -35,7 +28,7 @@ const DisbursePayroll = () => {
 
     const notify = () => toast.success('Approved Successfully!!!!', {
         position: "top-center",
-        autoClose: 5000,
+        autoClose: 2000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -45,32 +38,13 @@ const DisbursePayroll = () => {
 
     const notifycancel = () => toast.success('Cancelled Successfully!!!!', {
         position: "top-center",
-        autoClose: 5000,
+        autoClose: 2000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
         });
-
-    const notifyerror = () => toast.warning(`${tallyerrormsg}`, {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        });
-
-
-useEffect(()=>{
-    if(tallyerrormsg!==''){
-        notifyerror();
-    }
-},[tallyerrormsgflag])
-
-
 
     const loaddata =()=>{
         axios.get('http://localhost:5050/getallemployeesalarydetails',{cancelToken: source.token}).then(response=>{
@@ -121,10 +95,7 @@ useEffect(()=>{
 
             axios.get(`http://localhost:5050/approvesalary/${id}`).then(response=>{
                            if(response.data.length>0){
-                               //console.log(response.data);
-                                 setGsPayrollData(response.data);
-
-                                 payrolltallytemplate["ENVELOPE"]["BODY"]["IMPORTDATA"]["REQUESTDESC"]["STATICVARIABLES"]["SVCURRENTCOMPANY"] = "Main";
+                                payrolltallytemplate["ENVELOPE"]["BODY"]["IMPORTDATA"]["REQUESTDESC"]["STATICVARIABLES"]["SVCURRENTCOMPANY"] = "Main";
                                 const formatteddate = dateformat(response.data[0].date,"yyyymmdd");
                                 payrolltallytemplate["ENVELOPE"]["BODY"]["IMPORTDATA"]["REQUESTDATA"]["TALLYMESSAGE"][0]["VOUCHER"]["DATE"]=formatteddate;
                                 payrolltallytemplate["ENVELOPE"]["BODY"]["IMPORTDATA"]["REQUESTDATA"]["TALLYMESSAGE"][0]["VOUCHER"]["EFFECTIVEDATE"]=formatteddate;

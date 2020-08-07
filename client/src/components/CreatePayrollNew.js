@@ -120,7 +120,7 @@ class CreatePayroll extends Component {
         this.setState({
             computetableflag:true
         })
-        let { present,leave,payhead,basicpay,da,ta,hra,medicalallowance,loans,salaryadvance,it,pf } = this.state;
+        let { present,leave,basicpay,da,ta,hra,medicalallowance,loans,salaryadvance,it,pf } = this.state;
         this.setState({
             payhead:[]
         })
