@@ -32,16 +32,15 @@ const Home = () => {
 
         if(karixMobile!==''){
             let data = {
-                "channel": "whatsapp",
+                "channel": "sms",
                 "source": "+13253077759",
                 "destination": [
                 `${karixMobile}`
                 ],
-                "content": {
-                "text": `${text}`
-
-            },
-            "events_url": "http://4ff9712ba35a.ngrok.io/geteventcallback"
+                "content":{
+                    "text":`OTP requested by you on 1 is 2345`
+                },
+                "events_url": "https://717aa183626f.ngrok.io/geteventcallback"
                 }
                 axios({url,method:'POST',data:data})
                 .then(response=>{
@@ -119,7 +118,7 @@ if(callUid!=='' && callUid.length > 0){
                 </tr>
             </thead>
             <tbody>
-                <tr>
+                {/* <tr>
                 <td>{mainResponse["meta"]["request_uuid"]}</td>
                 <td>{mainResponse["objects"][0]["content"]["text"]}</td>
                 <td>{mainResponse["objects"][0]["destination"]}</td>
@@ -129,7 +128,7 @@ if(callUid!=='' && callUid.length > 0){
             <td>{dateformat(mainResponse["objects"][0]["created_time"],"dd/mm/yyyy")}</td>
                 <td>{mainResponse["objects"][0]["total_cost"]}</td>
                 <td>{mainResponse["meta"]["available_credits"]}</td>
-                </tr>
+                </tr> */}
                </tbody>
         </table>
             </div>

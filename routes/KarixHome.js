@@ -24,8 +24,14 @@ router.post("/sendmessage",async (req,res)=>{
     await axios({url,method:'POST',headers:{ContentType: 'application/xml',charset:'UTF-8', 'Authorization': `Basic ${token}`},data:req.body})
         .then(response=>{
             res.send(response.data);
+            console.log('--------response is-----------')
             console.log(response.data);
-          }).catch(err=>console.log(err));
+            console.log(':::errormsg:::');
+            console.log(response.data.objects[0].error);
+          }).catch(err=>{
+            console.log('-------error-----------')
+            console.log(err.response)
+          });
 
     })
 

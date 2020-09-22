@@ -1,370 +1,119 @@
-.card:hover{
-    box-shadow: 5px 10px 20px 1px rgba(0,0,0,0.253)!important;
+.navbar{
+  background-color: #2a78be;
 }
 
-
-#table-tally{
-    box-shadow: 1px 6px 6px grey!important;
+.navbar-brand{
+  color: whitesmoke;
 }
 
-#table-gs{
-    box-shadow: 1px 6px 6px grey!important;
-}
-
-th{
-    text-align: center!important;
-    font-size: 12px!important;
-    color:black;
-    vertical-align: middle!important;
-}
-
-#table-header-fixed th{
-    text-align: center!important;
-    font-size: 12px!important;
-    max-width:131px!important;
-    min-width:131px!important;
-    background: #838C93!important;
-    border-width:5px!important;
-    border-style:outset!important;
-}
-
-#missing-voucher-data{
-    max-width:131px!important;
-    min-width:131px!important;
-    min-height: 10px!important;
-    max-height: 10px!important;
-}
-
-#missing-data-row{
-    max-width: 100px!important;
-}
-td{
-    text-align: center!important;
-    vertical-align: middle!important;
-    font-size: 16px!important;
-    background: white!important;
-    }
-
-#tally-header{
-    color:black!important;
-    font-size: 16px!important;
-}
-
-#gs-header{
-    color:white!important;
-    font-size: 15px!important;
-}
-
-#resync-header{
-    min-width:300px!important;
-}
-#reconcile-btn{
-    color: white!important;
-}
-#reconcile-btn:hover{
-    background: white!important;
-    color: black!important;
+h1{
+  font-size: large;
 }
 
 body{
-    background:rgb(40, 63, 89)!important;
+  background-color:#eeeff5;
 }
 
-.dropbtn {
-    background-color: rgb(40, 63, 89);
-    color: white;
-    padding: 16px;
-    font-size: 16px;
-    border: 1px solid white;
-    border-radius: 10px;
+.card{
+  min-height: 800px!important;
+  border: 3px solid grey;
   }
-
-  .dropdown {
-    position: relative;
-    display: inline-block;
-
-  }
-
-  .dropdown-content {
-    box-sizing: border-box;
-    border-radius: 10px;
-    display: none;
-    position: absolute;
-    left: 120px;
-    top:38px;
-    background-color: #f1f1f1;
-    min-width: 160px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 1;
-  }
-
-  .dropdown-content a {
-    color: black;
-    padding: 10px 10px!important;
-    text-decoration: none;
-    display: block;
-    position: relative;
-    left:10px;
-    }
-
-  .dropdown-content a:hover {background-color: #ddd;}
-
-  .dropdown:hover .dropdown-content {display: block;}
-
-  .dropdown:hover .dropbtn {background-color:rgb(40, 63, 89);}
-
-  i {
-    display: inline-block;
-    margin-right: 0.8em;
-  }
-
-  option {
-    color: black;
-    padding: 10px 10px!important;
-    text-decoration: none;
-    display: block;
-    position: relative;
-    left:10px;
-  }
-
-  #inputGroupSelect04 {
-    position: relative!important;
-    font-family: Arial!important;
-    font-size: medium!important;
-  }
-
-  #inputGroupSelect04 #option{
-    font-family: 'Lucida Sans Unicode', Geneva, Verdana, sans-serif!important;
-
-  }
-
-
-button{
-  box-shadow: 6px 4px 4px grey!important;
+.card:hover{
+  box-shadow: 5px 10px 20px 1px rgba(0,0,0,0.253)!important;
 }
 
-#namelabel {
-  position:absolute!important;
-  top:26px!important;
-  left:190px!important;
-}
-
-
-#name {
-  position:absolute!important;
-  top:10px!important;
-  left:260px!important;
-  background: transparent!important;
-  border: none!important;
-  border-bottom: 1px solid grey!important;
-  outline:none!important;
-  box-shadow:none!important;
-  width: 200px!important;
-}
-
-#idlabel {
-  position:absolute!important;
-  top:26px!important;
-  left:630px!important;
-}
-
-
-#id {
-  position:absolute!important;
-  top:10px!important;
-  left:660px!important;
-  background: transparent!important;
-  border: none!important;
-  border-bottom: 1px solid grey!important;
-  outline:none!important;
-  box-shadow:none!important;
-  width: 200px!important;
-}
-
-#rolelabel {
-  position:absolute!important;
-  top:26px!important;
-  left:930px!important;
-}
-
-#selectrole{
-  position:absolute!important;
-  top:15px!important;
-  left:990px!important;
-  background: transparent!important;
-  border: none!important;
-  border-bottom: 1px solid grey!important;
-  outline:none!important;
-  box-shadow:none!important;
-  width: 200px!important;
-}
-
-#datelabel {
-  position:absolute!important;
-  top:6px!important;
-  left:0px!important;
-}
-
-#datepicker{
-  position:absolute!important;
-  top:20px!important;
-  left:1290px!important;
-  width: 200px!important;
-}
-
-#accountlabel{
-  position:absolute!important;
-  top:126px!important;
-  left:320px!important;
-}
-
-#account{
-  position:absolute!important;
-  top:110px!important;
-  left:400px!important;
-  background: transparent!important;
-  border: none!important;
-  border-bottom: 1px solid grey!important;
-  outline:none!important;
-  box-shadow:none!important;
-  width: 200px!important;
-}
-
-#ifsclabel{
-  position:absolute!important;
-  top:126px!important;
-  left:650px!important;
-}
-
-#ifsc{
-  position:absolute!important;
-  top:110px!important;
-  left:700px!important;
-  background: transparent!important;
-  border: none!important;
-  border-bottom: 1px solid grey!important;
-  outline:none!important;
-  box-shadow:none!important;
-  width: 200px!important;
-}
-
-#instrnolabel{
-  position:absolute!important;
-  top:126px!important;
-  left:950px!important;
-}
-
-#instrno{
-  position:absolute!important;
-  top:110px!important;
-  left:1030px!important;
-  background: transparent!important;
-  border: none!important;
-  border-bottom: 1px solid grey!important;
-  outline:none!important;
-  box-shadow:none!important;
-  width: 200px!important;
-}
-
-#bankdatelabel{
-  position:absolute!important;
-  top:126px!important;
-  left:1280px!important;
-}
-
-#bankdate{
-  position:absolute!important;
-  top:110px!important;
-  left:1330px!important;
-  background: transparent!important;
-  border: none!important;
-  border-bottom: 1px solid grey!important;
-  outline:none!important;
-  box-shadow:none!important;
-  width: 200px!important;
-}
-
-#transactiontypelabel{
-  position:absolute!important;
-  top:126px!important;
-  left:10px!important;
-}
-
-#selecttransactiontype{
-  position:absolute!important;
-  top:120px!important;
-  left:160px!important;
-  width: 130px!important;
-}
-#presentlabel{
+#notification-settings{
   position: relative;
-  left:10px;
-  top:10px;
+  left:134px;
+  top:32px;
 }
-#present{
-  width: 100px;
+
+#notification-display{
   position: relative;
-  left:92px;
-  top:-30px;
+  left:194px;
+  top:32px;
 }
-#leavelabel{
+
+#choose-whatsapp-template{
+position: relative;
+top:-38px;
+left:450px;
+}
+
+.switch {
   position: relative;
-  left:10px;
-  top:-20px;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
 }
-#leave{
-  width: 100px;
-  position: relative;
-  left:92px;
-  top:-60px;
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
 }
-#overtimelabel{
-  position: relative;
-  left:10px;
-  top:-50px;
-}
-#overtime{
-  width: 100px;
-  position: relative;
-  left:92px;
-  top:-90px;
-}
-#computebtn{
+
+.slider {
   position: absolute;
-  left:600px;
-  top:130px;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
 }
 
-#basicpaylabel{
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+#enable-sms-label{
   position: relative;
   left:10px;
-  top:10px;
+  top:5px;
 }
-#basicpay{
-  width: 100px;
-  position: relative;
-  left:92px;
-  top:-30px;
-}
-#dalabel{
+
+#enable-whatsapp-label{
   position: relative;
   left:10px;
-  top:-20px;
+  top:5px;
 }
-#da{
-  width: 100px;
+
+.enable-whatsapp{
   position: relative;
-  left:92px;
-  top:-60px;
-}
-#hralabel{
-  position: relative;
-  left:10px;
-  top:-50px;
-}
-#hra{
-  width: 100px;
-  position: relative;
-  left:92px;
-  top:-90px;
+  left:300px;
+  top:-36px;
 }
