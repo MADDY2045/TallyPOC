@@ -9,6 +9,7 @@
     "axios": "^0.19.2",
     "custom-input-aslam": "^0.1.0",
     "dateformat": "^3.0.3",
+    "faker": "^5.1.0",
     "mdbreact": "^4.27.0",
     "qs": "^6.9.4",
     "querystring": "^0.2.0",

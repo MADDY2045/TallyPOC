@@ -10,6 +10,8 @@
       content="Web site created using create-react-app"
     />
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://js.pusher.com/4.1/pusher.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
@@ -23,6 +25,54 @@
     crossorigin="anonymous"
     />
     <title>React App</title>
+    <script>
+      var pusher = new Pusher('dd4362aebc1d1cf00ed3', { cluster: 'ap2' });
+
+      // retrieve the socket ID once we're connected
+      pusher.connection.bind('connected', function () {
+          // attach the socket ID to all outgoing Axios requests
+          axios.defaults.headers.common['X-Socket-Id'] = pusher.connection.socket_id;
+      });
+
+      // request permission to display notifications, if we don't alreay have it
+      Notification.requestPermission();
+      pusher.subscribe('notifications')
+              .bind('sms', function (status) {
+                 if(status === "delivered"){
+                    var element = document.getElementById('sms-delivered');
+                    element.style.visibility = "visible";
+                    }
+                if(status === "read"){
+                    var element = document.getElementById('sms-read');
+                    element.style.visibility = "visible";
+                    }
+
+                  var notification = new Notification("sms status was just updated. Check it out.");
+                  notification.onclick = function (event) {
+                      window.location.href = 'http://localhost:3000';
+                      event.preventDefault();
+                      notification.close();
+                  }
+              });
+      pusher.subscribe('notifications')
+              .bind('whatsapp', function (status) {
+                 if(status === "delivered"){
+                    var element = document.getElementById('whatsapp-delivered');
+                    element.style.visibility = "visible";
+                    }
+                if(status === "read"){
+                    var element = document.getElementById('whatsapp-read');
+                    element.style.visibility = "visible";
+                    }
+
+                  var notification = new Notification("sms status was just updated. Check it out.");
+                  notification.onclick = function (event) {
+                      window.location.href = 'http://localhost:3000';
+                      event.preventDefault();
+                      notification.close();
+                  }
+              });
+  </script>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>

@@ -5,6 +5,7 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 
 const KarixWhatsappRouter = require('./routes/KarixHome');
+const SendNotificationRouter = require('./routes/SendNotification');
 
 app.use(cors());
 app.use(express.json());
@@ -12,8 +13,8 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 //setup public folder
 
-app.use('/',KarixWhatsappRouter);
-
+// app.use('/',KarixWhatsappRouter);
+app.use('/',SendNotificationRouter);
 app.use(express.static('./public'));
 
 const port = 6050;
