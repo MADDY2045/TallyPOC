@@ -95,6 +95,7 @@ if(req.body.data.channel==='whatsapp'){
 res.send(`req.body`)
 
 })
+
 module.exports = router;
 
 function sendSms(smsArray){

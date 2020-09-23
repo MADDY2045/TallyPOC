@@ -46,7 +46,10 @@
                     var element = document.getElementById('sms-read');
                     element.style.visibility = "visible";
                     }
-
+                if(status === "failed"){
+                    var element = document.getElementById('sms-failed');
+                    element.style.visibility = "visible";
+                    }
                   var notification = new Notification("sms status was just updated. Check it out.");
                   notification.onclick = function (event) {
                       window.location.href = 'http://localhost:3000';
@@ -64,15 +67,20 @@
                     var element = document.getElementById('whatsapp-read');
                     element.style.visibility = "visible";
                     }
+                if(status === "failed"){
+                    var element = document.getElementById('whatsapp-failed');
+                    element.style.visibility = "visible";
+                    }
 
-                  var notification = new Notification("sms status was just updated. Check it out.");
+                  var notification = new Notification("whatsapp status was just updated. Check it out.");
                   notification.onclick = function (event) {
                       window.location.href = 'http://localhost:3000';
                       event.preventDefault();
                       notification.close();
                   }
               });
-  </script>
+
+    </script>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>

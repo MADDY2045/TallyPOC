@@ -130,6 +130,7 @@ const KarixHome = () => {
                                     <label>SMS</label>
                                     <span className="dot" style={{visibility:"hidden"}} id="sms-delivered"><label className="sms-delivered-label">delivered</label></span>
                                     <span className="dot" style={{visibility:"hidden"}} id="sms-read"><label className="sms-read-label">read</label></span>
+                                    <span className="dot" style={{visibility:"hidden"}} id="sms-failed"><label className="sms-failed-label">failed</label></span>
                                 </span>
                            </div>
                            <div className="row" id="whatsapp-pusher-div">
@@ -137,6 +138,7 @@ const KarixHome = () => {
                                     <label>Whatsapp</label>
                                     <span className="dot" style={{visibility:"hidden"}} id="whatsapp-delivered"><label className="whatsapp-delivered-label">delivered</label></span>
                                     <span className="dot" style={{visibility:"hidden"}} id="whatsapp-read"><label className="whatsapp-read-label">read</label></span>
+                                    <span className="dot" style={{visibility:"hidden"}} id="whatsapp-failed"><label className="whatsapp-failed-label">failed</label></span>
                                 </span>
                            </div>
                     </div>
