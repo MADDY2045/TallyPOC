@@ -96,6 +96,17 @@ res.send(`req.body`)
 
 })
 
+router.post('/receiveinboundmessage',(req,res)=>{
+    console.log('inbound message',req.body);
+    let pusher = new Pusher({
+        appId: "1076100",
+        key: "dd4362aebc1d1cf00ed3",
+        secret: "af7ccdba7b909702b8cc",
+        cluster: "ap2"
+    });
+    pusher.trigger('notifications', 'whatsapp', req.body.data.status, req.headers['x-socket-id']);
+})
+
 module.exports = router;
 
 function sendSms(smsArray){

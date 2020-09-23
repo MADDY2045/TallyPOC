@@ -71,7 +71,9 @@
                     var element = document.getElementById('whatsapp-failed');
                     element.style.visibility = "visible";
                     }
-
+                    if(status === "received"){
+                      alert("you have an incoming message");
+                    }
                   var notification = new Notification("whatsapp status was just updated. Check it out.");
                   notification.onclick = function (event) {
                       window.location.href = 'http://localhost:3000';
