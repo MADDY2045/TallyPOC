@@ -5,7 +5,8 @@ const axios = require('axios');
 
 const username = '2ecc6220-e7a1-4dc4-9928-4a78b990e407';
 const password = '4667110b-67a1-4b98-a3dd-7045ac56c796';
-const token = Buffer.from(`${username}:${password}`, 'utf8').toString('base64')
+const token = Buffer.from(`${username}:${password}`, 'utf8').toString('base64');
+console.log(`token is ${token}`);
 const url = 'https://api.karix.io/message/';
 const url2 = 'https://api.karix.io/message/';
 // const data = {

@@ -128,17 +128,27 @@ const KarixHome = () => {
                            <div className="row" id="sms-pusher-div">
                                 <span>
                                     <label>SMS</label>
-                                    <span className="dot" style={{visibility:"hidden"}} id="sms-delivered"><label className="sms-delivered-label">delivered</label></span>
-                                    <span className="dot" style={{visibility:"hidden"}} id="sms-read"><label className="sms-read-label">read</label></span>
-                                    <span className="dot" style={{visibility:"hidden"}} id="sms-failed"><label className="sms-failed-label">failed</label></span>
+                                    <span className="dot" style={{visibility:"hidden"}} id="sms-sent"></span>
+                                    <label className="sms-sent-label">sent</label>
+                                    <span className="dot" style={{visibility:"hidden"}} id="sms-delivered"></span>
+                                    <label className="sms-delivered-label">delivered</label>
+                                    {/* <span className="dot" style={{visibility:"hidden"}} id="sms-read"></span>
+                                    <label className="sms-read-label">read</label> */}
+                                    <span className="dot" style={{visibility:"hidden"}} id="sms-failed"></span>
+                                    <label className="sms-failed-label">failed</label>
                                 </span>
                            </div>
                            <div className="row" id="whatsapp-pusher-div">
                                 <span>
                                     <label>Whatsapp</label>
-                                    <span className="dot" style={{visibility:"hidden"}} id="whatsapp-delivered"><label className="whatsapp-delivered-label">delivered</label></span>
-                                    <span className="dot" style={{visibility:"hidden"}} id="whatsapp-read"><label className="whatsapp-read-label">read</label></span>
-                                    <span className="dot" style={{visibility:"hidden"}} id="whatsapp-failed"><label className="whatsapp-failed-label">failed</label></span>
+                                    <span className="dot" style={{visibility:"hidden"}} id="whatsapp-sent"></span>
+                                    <label className="whatsapp-sent-label">sent</label>
+                                    <span className="dot" style={{visibility:"hidden"}} id="whatsapp-delivered"></span>
+                                    <label className="whatsapp-delivered-label">delivered</label>
+                                    <span className="dot" style={{visibility:"hidden"}} id="whatsapp-read"></span>
+                                    <label className="whatsapp-read-label">read</label>
+                                    <span className="dot" style={{visibility:"hidden"}} id="whatsapp-failed"></span>
+                                    <label className="whatsapp-failed-label">failed</label>
                                 </span>
                            </div>
                     </div>

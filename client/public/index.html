@@ -38,10 +38,15 @@
       Notification.requestPermission();
       pusher.subscribe('notifications')
               .bind('sms', function (status) {
+                console.log(`sms status ${status}`);
+                if(status === "sent"){
+                    var element = document.getElementById('sms-sent');
+                    element.style.visibility = "visible";
+                    }
                  if(status === "delivered"){
                     var element = document.getElementById('sms-delivered');
                     element.style.visibility = "visible";
-                    }
+                   }
                 if(status === "read"){
                     var element = document.getElementById('sms-read');
                     element.style.visibility = "visible";
@@ -59,10 +64,14 @@
               });
       pusher.subscribe('notifications')
               .bind('whatsapp', function (status) {
+                if(status === "sent"){
+                    var element = document.getElementById('whatsapp-sent');
+                    element.style.visibility = "visible";
+                   }
                  if(status === "delivered"){
                     var element = document.getElementById('whatsapp-delivered');
                     element.style.visibility = "visible";
-                    }
+                   }
                 if(status === "read"){
                     var element = document.getElementById('whatsapp-read');
                     element.style.visibility = "visible";

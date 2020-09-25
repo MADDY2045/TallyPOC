@@ -27,7 +27,7 @@ router.post('/sendnotification',async (req,res)=>{
                 "content":{
                     "text":`${req.body.dataobj["body"]}`
                 },
-                "events_url": "https://bbcbc8aafd88.ngrok.io/geteventcallback"
+                "events_url": "https://84882cd1c4f7.ngrok.io/geteventcallback"
                 }
                 smsArray.push(smsdata);
             }
@@ -42,7 +42,7 @@ router.post('/sendnotification',async (req,res)=>{
                 "content":{
                     "text":`${req.body.dataobj["whatsappbody"]}`
                 },
-                "events_url": "https://bbcbc8aafd88.ngrok.io/geteventcallback"
+                "events_url": "https://84882cd1c4f7.ngrok.io/geteventcallback"
                 }
                 whatsappArray.push(whatsappdata);
             }
@@ -66,6 +66,24 @@ router.post('/sendnotification',async (req,res)=>{
         }
 
         if(smsresult !== undefined || whatsappresult !== undefined){
+            if(smsresult === 'failure'){
+                let pusher = new Pusher({
+                    appId: "1076100",
+                    key: "dd4362aebc1d1cf00ed3",
+                    secret: "af7ccdba7b909702b8cc",
+                    cluster: "ap2"
+                });
+                pusher.trigger('notifications', 'sms', 'failed', req.headers['x-socket-id']);
+            }
+            if(whatsappresult === 'failure'){
+                let pusher = new Pusher({
+                    appId: "1076100",
+                    key: "dd4362aebc1d1cf00ed3",
+                    secret: "af7ccdba7b909702b8cc",
+                    cluster: "ap2"
+                });
+                pusher.trigger('notifications', 'whatsapp', 'failed', req.headers['x-socket-id']);
+            }
             res.send({message:{sms:smsresult,whatsapp:whatsappresult}})
         }else{
             res.send("something went wrong");
@@ -117,9 +135,9 @@ function sendSms(smsArray){
                 console.log(response.data.objects[0].status);
                 console.log(':::errormsg:::');
                 console.log(response.data.objects[0].error);
-                // if(response.data.objects[0].error !== undefined){
-                //     return "failure"
-                // }
+                if(response.data.objects[0].error !==null || response.data.objects[0].error !==null){
+                   return "failure"
+                }
                 if(response.data.objects[0].status !== 'failed'){
                     return "success"
                 }else{
@@ -137,9 +155,9 @@ function sendWhatsapp(whatsappArray){
             .then(response=>{
                 console.log('--------response is-----------')
                 console.log(response.data.objects[0].status);
-                // if(response.data.objects[0].error !== undefined){
+                // if(response.data.objects[0].error !==null || response.data.objects[0].error !==null){
                 //     return "failure"
-                // }
+                //  }
                 if(response.data.objects[0].status !== 'failed'){
                     return "success"
                 }else{

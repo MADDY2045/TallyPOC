@@ -162,13 +162,13 @@ input:checked + .slider:before {
   border-radius: 50%;
   display: inline-block;
   position: absolute;
-  left:100px;
+  left:320px;
   top:0px;
 }
 
 .sms-delivered-label{
   position: absolute;
-  left:30px;
+  left:350px;
 }
 
 #sms-pusher-div{
@@ -176,6 +176,37 @@ input:checked + .slider:before {
   top:100px;
 }
 
+#sms-sent{
+  height: 25px;
+  width: 25px;
+  background-color: navy;
+  border-radius: 50%;
+  display: inline-block;
+  position: absolute;
+  left:200px;
+  top:0px;
+}
+
+.sms-sent-label{
+  position: absolute;
+  left:230px
+}
+
+#whatsapp-sent{
+  height: 25px;
+  width: 25px;
+  background-color: navy;
+  border-radius: 50%;
+  display: inline-block;
+  position: absolute;
+  left:200px;
+  top:0px;
+}
+
+.whatsapp-sent-label{
+  position: absolute;
+  left:230px
+}
 #sms-read{
   height: 25px;
   width: 25px;
@@ -183,13 +214,15 @@ input:checked + .slider:before {
   border-radius: 50%;
   display: inline-block;
   position: absolute;
-  left:300px;
+  left:450px;
   top:0px;
 }
 
+
+
 .sms-read-label{
   position: absolute;
-  left:30px;
+  left:480px;
 }
 
 #whatsapp-pusher-div{
@@ -204,13 +237,13 @@ input:checked + .slider:before {
   border-radius: 50%;
   display: inline-block;
   position: absolute;
-  left:100px;
+  left:320px;
   top:0px;
 }
 
 .whatsapp-delivered-label{
   position: absolute;
-  left:30px;
+  left:350px;
 }
 
 #whatsapp-read{
@@ -220,13 +253,13 @@ input:checked + .slider:before {
   border-radius: 50%;
   display: inline-block;
   position: absolute;
-  left:300px;
+  left:450px;
   top:0px;
 }
 
 .whatsapp-read-label{
   position: absolute;
-  left:30px;
+  left:480px;
 }
 
 #sms-failed{
@@ -236,13 +269,13 @@ input:checked + .slider:before {
   border-radius: 50%;
   display: inline-block;
   position: absolute;
-  left:450px;
+  left:560px;
   top:0px;
 }
 
 .sms-failed-label{
   position: absolute;
-  left:30px;
+  left:590px;
 }
 
 #whatsapp-failed{
@@ -252,11 +285,11 @@ input:checked + .slider:before {
   border-radius: 50%;
   display: inline-block;
   position: absolute;
-  left:450px;
+  left:560px;
   top:0px;
 }
 
 .whatsapp-failed-label{
   position: absolute;
-  left:30px;
+  left:590px;
 }
