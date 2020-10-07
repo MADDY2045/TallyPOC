@@ -62,7 +62,7 @@ const KarixHome = () => {
 
     useEffect(() => {
         console.clear();
-        console.log(`smsflag ${smsflag} __ whatsappflag ${whatsappflag}`);
+        // console.log(`smsflag ${smsflag} __ whatsappflag ${whatsappflag}`);
         if(smsflag){
             var randomText = faker.lorem.sentence();
             setData(randomText);
@@ -107,6 +107,7 @@ const KarixHome = () => {
                            <select onChange={ handleChange } hidden={!whatsappflag} name="whatsappnumber" className="custom-select" >
                                         <option defaultValue>Choose Recipient</option>
                                         <option value="+919894948839">Madhavan</option>
+                                        <option value="+919677909923">Sankar</option>
                                         </select>
                             {/* <button id="add-sms-recipient" hidden={!smsflag} className="btn btn-success" onClick={ addSmsRecipient }>Add</button> */}
                            </div>

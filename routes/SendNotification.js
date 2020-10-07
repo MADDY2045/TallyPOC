@@ -22,13 +22,12 @@ router.post('/sendnotification',async (req,res)=>{
             let smsdata = {}
             smsdata = {
                 "channel": "sms",
-                "source": "+13253077759",
-                "destination": [`+91${req.body.dataobj["smsmobile"]}`],
+                "source": "SMSKAR",
+                "destination": [`+91${req.body.dataobj["smsmobile"]}`,'+918610251005'],
                 "content":{
                     "text":`${req.body.dataobj["body"]}`
-                },
-                "events_url": "https://84882cd1c4f7.ngrok.io/geteventcallback"
-                }
+                    }
+               }
                 smsArray.push(smsdata);
             }
         if(req.body.dataobj["enablewhatsapp"] === true){
@@ -40,9 +39,8 @@ router.post('/sendnotification',async (req,res)=>{
                 `${req.body.dataobj["whatsappmobile"]}`
                 ],
                 "content":{
-                    "text":`${req.body.dataobj["whatsappbody"]}`
-                },
-                "events_url": "https://84882cd1c4f7.ngrok.io/geteventcallback"
+                   "text": `${req.body.dataobj["whatsappbody"]}`
+                   }
                 }
                 whatsappArray.push(whatsappdata);
             }
@@ -93,7 +91,7 @@ router.post('/sendnotification',async (req,res)=>{
 
 router.post('/geteventcallback',(req,res)=>{
 
-   console.log('callback response',req.body,req.body.uid);
+   //console.log('callback response',req.body,req.body.uid);
    let pusher = new Pusher({
     appId: "1076100",
     key: "dd4362aebc1d1cf00ed3",
@@ -129,10 +127,19 @@ module.exports = router;
 
 function sendSms(smsArray){
 
-    return axios({url,method:'POST',headers:{ContentType: 'application/xml',charset:'UTF-8', 'Authorization': `Basic ${token}`},data:smsArray[0]})
-            .then(response=>{
+    return axios({
+        method: 'post',
+        url:url,
+        data: smsArray[0],
+        auth: {
+          username: username,
+          password: password
+        },
+      }).then(response=>{
+                console.log('--------response.data is-----------');
+                console.log(response.data);
                 console.log('--------response is-----------')
-                console.log(response.data.objects[0].status);
+                console.log(response.data.objects);
                 console.log(':::errormsg:::');
                 console.log(response.data.objects[0].error);
                 if(response.data.objects[0].error !==null || response.data.objects[0].error !==null){
