@@ -6,7 +6,7 @@ let Pusher = require('pusher');
 const username = '2ecc6220-e7a1-4dc4-9928-4a78b990e407';
 const password = '4667110b-67a1-4b98-a3dd-7045ac56c796';
 const token = Buffer.from(`${username}:${password}`, 'utf8').toString('base64')
-const url = 'https://api.karix.io/message/';
+const url = `https://${username}:${password}@api.karix.io/message/`;
 const url2 = 'https://api.karix.io/message/';
 
 router.get('/',(req,res)=>{
@@ -23,10 +23,11 @@ router.post('/sendnotification',async (req,res)=>{
             smsdata = {
                 "channel": "sms",
                 "source": "SMSKAR",
-                "destination": [`+91${req.body.dataobj["smsmobile"]}`,'+918610251005'],
+                "destination": [`+919894948839`],
                 "content":{
                     "text":`${req.body.dataobj["body"]}`
-                    }
+                    },
+                "events_url": "https://77ba8ec7327a.ngrok.io/geteventcallback"
                }
                 smsArray.push(smsdata);
             }
@@ -36,11 +37,12 @@ router.post('/sendnotification',async (req,res)=>{
                 "channel": "whatsapp",
                 "source": "+13253077759",
                 "destination": [
-                `${req.body.dataobj["whatsappmobile"]}`
+                `+919894948839`
                 ],
                 "content":{
                    "text": `${req.body.dataobj["whatsappbody"]}`
-                   }
+                   },
+                "events_url": "https://77ba8ec7327a.ngrok.io/geteventcallback"
                 }
                 whatsappArray.push(whatsappdata);
             }
@@ -129,20 +131,23 @@ function sendSms(smsArray){
 
     return axios({
         method: 'post',
-        url:url,
-        data: smsArray[0],
-        auth: {
-          username: username,
-          password: password
-        },
-      }).then(response=>{
+        url:`https://${username}:${password}@api.karix.io/message/`,
+        data: {
+            "channel": "sms",
+            "source": "SMSKAR",
+            "destination": ['+919894948839','+918610251005'],
+            "content":{
+                "text":`OTP requested by you on 1 is 2345`
+                }
+           }
+       }).then(response=>{
                 console.log('--------response.data is-----------');
                 console.log(response.data);
                 console.log('--------response is-----------')
                 console.log(response.data.objects);
                 console.log(':::errormsg:::');
                 console.log(response.data.objects[0].error);
-                if(response.data.objects[0].error !==null || response.data.objects[0].error !==null){
+                if(response.data.objects[0].error !==null ){
                    return "failure"
                 }
                 if(response.data.objects[0].status !== 'failed'){

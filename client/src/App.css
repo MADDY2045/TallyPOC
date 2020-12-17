@@ -65,7 +65,7 @@ left:250px;
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgb(219, 45, 45);
+  background-color:#dec0ce;
   -webkit-transition: .4s;
   transition: .4s;
 }
@@ -82,12 +82,13 @@ left:250px;
   transition: .6s;
 }
 
+
 input:checked + .slider {
-  background-color: #60a55c;
+  background-color: #1b11a9;
 }
 
 input:focus + .slider {
-  box-shadow: 0 0 1px  #60a55c;
+  box-shadow: 0 0 1px  #1b11a9;
 }
 
 input:checked + .slider:before {
