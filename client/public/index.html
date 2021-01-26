@@ -10,7 +10,6 @@
       content="Web site created using create-react-app"
     />
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="https://js.pusher.com/4.1/pusher.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
@@ -24,103 +23,10 @@
     integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
     crossorigin="anonymous"
     />
-    <title>React App</title>
-    <script>
-      var pusher = new Pusher('dd4362aebc1d1cf00ed3', { cluster: 'ap2' });
-
-      // retrieve the socket ID once we're connected
-      pusher.connection.bind('connected', function () {
-          // attach the socket ID to all outgoing Axios requests
-          axios.defaults.headers.common['X-Socket-Id'] = pusher.connection.socket_id;
-      });
-
-      // request permission to display notifications, if we don't alreay have it
-      Notification.requestPermission();
-      pusher.subscribe('notifications')
-              .bind('sms', function (status) {
-                console.log(`sms status ${status}`);
-                var smssent = document.getElementById('sms-sent');
-                var smsdelivered = document.getElementById('sms-delivered');
-                var smsread = document.getElementById('sms-read');
-                var smsfailed = document.getElementById('sms-failed');
-
-                if(status === "sent"){
-                    smssent.style.visibility = "visible";
-                    smsdelivered.style.visibility = "hidden";
-                    smsread.style.visibility = "hidden";
-                    smsfailed.style.visibility = "hidden";
-                    }
-                 if(status === "delivered"){
-                    smsdelivered.style.visibility = "visible";
-                    smssent.style.visibility = "hidden";
-                    smsread.style.visibility = "hidden";
-                    smsfailed.style.visibility = "hidden";
-                   }
-                if(status === "read"){
-                    smsread.style.visibility = "visible";
-                    smsdelivered.style.visibility = "hidden";
-                    smssent.style.visibility = "hidden";
-                    smsfailed.style.visibility = "hidden";
-                    }
-                if(status === "failed"){
-                    smsfailed.style.visibility = "visible";
-                    smssent.style.visibility = "hidden";
-                    smsdelivered.style.visibility = "hidden";
-                    smsread.style.visibility = "hidden";
-                    }
-                  var notification = new Notification("sms status was just updated. Check it out.");
-                  notification.onclick = function (event) {
-                      window.location.href = 'http://localhost:3000';
-                      event.preventDefault();
-                      notification.close();
-                  }
-              });
-      pusher.subscribe('notifications')
-              .bind('whatsapp', function (status) {
-                var whatsappsent = document.getElementById('whatsapp-sent');
-                var whatsappdelivered = document.getElementById('whatsapp-delivered');
-                var whatsappread = document.getElementById('whatsapp-read');
-                var whatsappfailed = document.getElementById('whatsapp-failed');
-                if(status === "sent"){
-                    whatsappsent.style.visibility = "visible";
-                    whatsappdelivered.style.visibility = "hidden";
-                    whatsappread.style.visibility = "hidden";
-                    whatsappfailed.style.visibility = "hidden";
-                   }
-                 if(status === "delivered"){
-                    whatsappdelivered.style.visibility = "visible";
-                    whatsappsent.style.visibility = "hidden";
-                    whatsappread.style.visibility = "hidden";
-                    whatsappfailed.style.visibility = "hidden";
-                   }
-                if(status === "read"){
-                    whatsappread.style.visibility = "visible";
-                    whatsappdelivered.style.visibility = "hidden";
-                    whatsappsent.style.visibility = "hidden";
-                    whatsappfailed.style.visibility = "hidden";
-                    }
-                if(status === "failed"){
-                    whatsapfailed.style.visibility = "visible";
-                    whatsapsent.style.visibility = "hidden";
-                    whatsapdelivered.style.visibility = "hidden";
-                    whatsapread.style.visibility = "hidden";
-                    }
-                    if(status === "received"){
-                      alert("you have an incoming message");
-                    }
-                  var notification = new Notification("whatsapp status was just updated. Check it out.");
-                  notification.onclick = function (event) {
-                      window.location.href = 'http://localhost:3000';
-                      event.preventDefault();
-                      notification.close();
-                  }
-              });
-
-    </script>
+    <title>Karix whatsapp</title>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
-
   </body>
 </html>

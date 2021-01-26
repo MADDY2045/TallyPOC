@@ -1,296 +1,93 @@
+body, html {
+  height: 100%;
+}
 .navbar{
-  background-color: #2a78be;
+  background-color:rgb(33 84 140)!important;
 }
-
-.navbar-brand{
-  color: whitesmoke;
-}
-
-h1{
-  font-size: large;
-}
-
-body{
-  background-color:#eeeff5;
-}
-
-.card{
-  min-height: 800px!important;
-  border: 3px solid grey;
-  }
-.card:hover{
-  box-shadow: 5px 10px 20px 1px rgba(0,0,0,0.253)!important;
-}
-
-#notification-settings{
-  position: relative;
-  left:134px;
-  top:32px;
-}
-
-#notification-display{
-  position: relative;
-  left:194px;
-  top:32px;
-}
-
-#choose-whatsapp-template{
-position: absolute;
-top:48px;
-left:250px;
-}
-
-.enable-sms{
-  position: absolute;
-  top:140px;
-}
-
-.switch {
-  position: relative;
-  display: inline-block;
-  width: 60px;
-  height: 34px;
-}
-
-.switch input {
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
-
-.slider {
-  position: absolute;
+ul > li {
+  list-style-type: none;
   cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color:#dec0ce;
-  -webkit-transition: .4s;
-  transition: .4s;
 }
 
-.slider:before {
-  position: absolute;
-  content: "";
-  height: 26px;
-  width: 26px;
-  left: 4px;
-  bottom: 4px;
-  background-color: white;
-  -webkit-transition: .6s;
-  transition: .6s;
+.dropdown-item:hover{
+background-color:#a083ce;
 }
 
 
-input:checked + .slider {
-  background-color: #1b11a9;
+.bg {
+  /* The image used */
+  background-image: url("https://www.bunnypants.co.za/images/portfolio/alex-tracy/alex-tracy-wedding-web-design-1.jpg");
+
+  /* Full height */
+  min-height: 700px;
+
+  /* Center and scale the image nicely */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  z-index: 4;
 }
 
-input:focus + .slider {
-  box-shadow: 0 0 1px  #1b11a9;
+.container1 {
+  padding: 110px;
+
 }
 
-input:checked + .slider:before {
-  -webkit-transform: translateX(26px);
-  -ms-transform: translateX(26px);
-  transform: translateX(26px);
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: #ffffff!important;
+  opacity: 1; /* Firefox */
+  font-size:18px!important;
+}
+.form-login {
+  opacity: 1!important;
+  background-color: rgb(33 84 140);
+  padding-top: 40px;
+  padding-bottom: 20px;
+  padding-left: 20px;
+  padding-right: 20px;
+  border-radius: 15px;
+  border-color:#d2d2d2;
+  border-width: 5px;
+  color:white;
+  box-shadow:0 1px 0 #cfcfcf;
+}
+.form-control{
+  background:transparent!important;
+  color:white!important;
+  font-size: 18px!important;
+}
+h1{
+  color:white!important;
+}
+h4 {
+border:0 solid #fff;
+border-bottom-width:1px;
+padding-bottom:10px;
+text-align: center;
 }
 
-/* Rounded sliders */
-.slider.round {
-  border-radius: 34px;
+.form-control {
+  border-radius: 10px;
+  width: 95%;
+}
+.text-white{
+  color: white!important;
+}
+.wrapper {
+  text-align: center;
+}
+.footer p{
+  font-size: 18px;
 }
 
-.slider.round:before {
-  border-radius: 50%;
+input{
+  margin:10px;
 }
 
-#enable-sms-label{
-  position: absolute;
-  left:90px;
-  top:8px;
-}
-
-#enable-whatsapp-label{
-  position: relative;
-  left:10px;
-  top:5px;
-}
-
-.enable-whatsapp{
-  position: absolute;
-  top:140px;
-  left:300px;
-}
-
-#sms-phone{
-  position: absolute;
-  top:220px;
-}
-
-#whatsapp-phone{
-  position: absolute;
-  top:220px;
-  left:300px;
-}
-#add-sms-recipient{
-  position: absolute;
-  left:180px;
-}
-
-#send-notification{
-  position: absolute;
-  top:350px;
-  left:200px;
-}
-
-/* #sms-delivered{
-  min-height: 50px;
-  max-height: 50px;
-  width: 10%;
-  background: red;
-  border-radius: 100%;
-  position: absolute;
-  left:100px;
-} */
-
-
-#sms-delivered{
-  height: 25px;
-  width: 25px;
-  background-color: orange;
-  border-radius: 50%;
-  display: inline-block;
-  position: absolute;
-  left:320px;
-  top:0px;
-}
-
-.sms-delivered-label{
-  position: absolute;
-  left:350px;
-}
-
-#sms-pusher-div{
-  position: absolute;
-  top:100px;
-}
-
-#sms-sent{
-  height: 25px;
-  width: 25px;
-  background-color: navy;
-  border-radius: 50%;
-  display: inline-block;
-  position: absolute;
-  left:200px;
-  top:0px;
-}
-
-.sms-sent-label{
-  position: absolute;
-  left:230px
-}
-
-#whatsapp-sent{
-  height: 25px;
-  width: 25px;
-  background-color: navy;
-  border-radius: 50%;
-  display: inline-block;
-  position: absolute;
-  left:200px;
-  top:0px;
-}
-
-.whatsapp-sent-label{
-  position: absolute;
-  left:230px
-}
-#sms-read{
-  height: 25px;
-  width: 25px;
-  background-color: green;
-  border-radius: 50%;
-  display: inline-block;
-  position: absolute;
-  left:450px;
-  top:0px;
-}
-
-
-
-.sms-read-label{
-  position: absolute;
-  left:480px;
-}
-
-#whatsapp-pusher-div{
-  position: absolute;
-  top:200px;
-}
-
-#whatsapp-delivered{
-  height: 25px;
-  width: 25px;
-  background-color: orange;
-  border-radius: 50%;
-  display: inline-block;
-  position: absolute;
-  left:320px;
-  top:0px;
-}
-
-.whatsapp-delivered-label{
-  position: absolute;
-  left:350px;
-}
-
-#whatsapp-read{
-  height: 25px;
-  width: 25px;
-  background-color: green;
-  border-radius: 50%;
-  display: inline-block;
-  position: absolute;
-  left:450px;
-  top:0px;
-}
-
-.whatsapp-read-label{
-  position: absolute;
-  left:480px;
-}
-
-#sms-failed{
-  height: 25px;
-  width: 25px;
-  background-color: red;
-  border-radius: 50%;
-  display: inline-block;
-  position: absolute;
-  left:560px;
-  top:0px;
-}
-
-.sms-failed-label{
-  position: absolute;
-  left:590px;
-}
-
-#whatsapp-failed{
-  height: 25px;
-  width: 25px;
-  background-color: red;
-  border-radius: 50%;
-  display: inline-block;
-  position: absolute;
-  left:560px;
-  top:0px;
-}
-
-.whatsapp-failed-label{
-  position: absolute;
-  left:590px;
+.custom-select{
+  border-radius: 10px;
+  font-size: 18px!important;
+  width: 95%;
+  color:white;
+  background: #5b5b5b8c;
 }

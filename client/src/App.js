@@ -1,22 +1,24 @@
-import React, { Component } from 'react';
-import Home from '../src/components/Home';
+import React,{ useState } from 'react';
 import  './App.css';
-import KarixHome from '../src/components/KarixHome';
-import Navbar from '../src/components/Navbar';
+import Navbar from './components/Navbar';
+import Content from './components/Content';
+// eslint-disable-next-line
 import { Route,Switch } from 'react-router-dom';
 
-class App extends Component {
-  render() {
+const App =()=> {
+
+  const [ createNew,setCreateNew ] = useState(false);
+
+  const createNewTemplate=()=>{
+    setCreateNew(true);
+  }
     return (
       <div>
-        <Navbar/>
-        <Switch>
-          {/* <Route exact path='/' component={Home}/> */}
-          <Route exact path='/' component={KarixHome}/>
-        </Switch>
+        <Navbar createNewTemplate={createNewTemplate} />
+        <Content style={{ opacity:0.2 }} createNew={createNew}/>
       </div>
     );
-  }
+
 }
 
 export default App;
