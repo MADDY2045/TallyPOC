@@ -37,7 +37,7 @@ router.post('/sendnotification',async (req,res)=>{
                 "channel": "whatsapp",
                 "source": "+13253077759",
                 "destination": [
-                `+919894948839`
+                `+919677491619`,'+919894948839'
                 ],
                 "content":{
                    "text": `${req.body.dataobj["whatsappbody"]}`
