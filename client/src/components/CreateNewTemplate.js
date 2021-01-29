@@ -1,4 +1,7 @@
 import React,{ useEffect,useState } from 'react'
+import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const CreateNewTemplate=(props)=>{
 
@@ -18,6 +21,20 @@ const CreateNewTemplate=(props)=>{
 
     const handleTemplateCreation =()=>{
         console.log(inputsValue);
+        axios.post("http://localhost:7045/createtemplates",{inputsValue})
+        .then(response=>{
+            console.log(response.data);
+            if(response.data.message === 'failure'){
+                toast.error(`Failure!! ${response.data.data}`, {
+                    // Set to 15sec
+                    position: toast.POSITION.TOP_RIGHT, autoClose:3000})
+                //toast.warning(`Failure!! ${response.data.data}`);
+            }
+            if(response.data.message === 'success'){
+                toast.success("posted successfully");
+            }
+        })
+        .catch(err=>console.log(err))
     }
 
     return (
@@ -27,7 +44,9 @@ const CreateNewTemplate=(props)=>{
             <div className="col-md-offset-6 col-md-6 text-center">
                 <h1 className='text-dark'>Create New Template</h1>
                 <div className="form-login">
-                    <select className="custom-select" id="inputGroupSelect01">
+                    <select
+                    onChange={(e)=>setValues({...inputsValue,[e.target.name]: e.target.value})}
+                    className="custom-select" name="category" id="inputGroupSelect01">
                         <option defaultValue>Choose Category</option>
                         <option value="account_update">Account Update</option>
                         <option value="payment_update">Payment Update</option>
@@ -85,6 +104,7 @@ const CreateNewTemplate=(props)=>{
             </div>
         </div>
     </div>:null}
+    <ToastContainer />
        </div>
     )
 }
