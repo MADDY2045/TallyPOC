@@ -1,4 +1,4 @@
-import React,{ useState } from 'react';
+import React,{ useState,useEffect } from 'react';
 import  './App.css';
 import Navbar from './components/Navbar';
 import Content from './components/Content';
@@ -63,9 +63,23 @@ const App =()=> {
   const createNewTemplate=()=>{
     setCreateNew(true);
   }
+
+  const listAllTemplates=()=>{
+    setCreateNew(false);
+  }
+
+  const getStatus =()=>{
+    setCreateNew(false);
+  }
+
+  useEffect(()=>{
+    if(!loggedIn && createNew){
+      setCreateNew(false);
+    }
+  },[loggedIn,createNew])
     return (
       <div>
-        <Navbar signIn={ signIn } signOut={ signOut } useremail={ useremail }  loggedIn={ loggedIn } createNewTemplate={createNewTemplate} />
+        <Navbar signIn={ signIn } signOut={ signOut } useremail={ useremail }  loggedIn={ loggedIn } createNewTemplate={createNewTemplate} listAllTemplates={ listAllTemplates } getStatus={ getStatus }/>
         <Content style={{ opacity:0.2 }} useremail={ useremail } createNew={createNew} loggedIn={ loggedIn }/>
       </div>
     );

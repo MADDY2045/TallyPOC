@@ -6,6 +6,7 @@ const Navbar=(props)=>{
 const [sid,setSid] = useState('');
 const [ token,setToken ] = useState('');
 const [ email,setEmail ] = useState('');
+const [ classtype,setClassType ] = useState('nav-link active');
 
 const handleSubmit =()=>{
     console.log(`sid is ${sid}`);
@@ -22,13 +23,20 @@ const handleSubmit =()=>{
 useEffect(()=>{
     setSid('');
     setToken('');
-},[])
+    if(props.loggedIn){
+        setClassType('nav-link');
+    }else{
+        setClassType('nav-link active');
+    }
+},[props.loggedIn])
 
 useEffect(()=>{
     if(props.useremail.length>0){
         setEmail(props.useremail)
     }
 },[props.useremail])
+
+
 
     return (
         <div className="main">
@@ -39,16 +47,16 @@ useEffect(()=>{
                     {props.loggedIn ? 'Menu':null}
                     </span>
                     <div className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <span onClick={props.createNewTemplate} className="dropdown-item" >Create New</span>
-                        <span className="dropdown-item" >List All Templates</span>
-                        <span className="dropdown-item" >Get Templates by id</span>
+                        <span onClick={ props.createNewTemplate } className="dropdown-item" >Create New</span>
+                        <span onClick={ props.listAllTemplates } className="dropdown-item" >List All Templates</span>
+                        <span onClick={ props.getStatus } className="dropdown-item" >Get Templates by id</span>
                     </div>
                 </li>
                 <li className="nav-item">
                     <span className="nav-link" data-toggle="modal" data-target="#exampleModalCenter">{props.loggedIn ? 'Set Credentials':null}</span>
                 </li>
                 <li className="nav-item">
-                    <span onClick={ props.signIn } className="nav-link" style={{visibility:props.loggedIn ? 'hidden':'visible'}}>{props.loggedIn ? 'Logged In':'Login'}</span>
+                    <span onClick={ props.signIn } className={ classtype } style={{visibility:props.loggedIn ? 'hidden':'visible'}}>{props.loggedIn ? 'Logged In':'Login'}</span>
                 </li>
                 <li className="nav-item">
                     <span onClick={ props.signOut } className="nav-link">{props.loggedIn ? 'Log out':null}</span>
@@ -59,7 +67,6 @@ useEffect(()=>{
   <div className="modal-dialog modal-dialog-centered" role="document">
     <div className="modal-content">
       <div className="modal-header">
-        <h5 className="modal-title" id="exampleModalLongTitle">Modal title</h5>
         <button type="button" className="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
