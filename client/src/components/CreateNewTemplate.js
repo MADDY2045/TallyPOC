@@ -11,14 +11,6 @@ const CreateNewTemplate=(props)=>{
         console.log('props are....',props);
     },[props])
 
-    // const inputOnChange=(event)=>{
-    //     const { name, value } = event.target
-    //     setValues({
-    //         ...inputsValue,
-    //         [name]: value
-    //     })
-    // }
-
     const handleTemplateCreation =()=>{
         console.log(inputsValue);
         axios.post("http://localhost:7045/createtemplates",{inputsValue})
@@ -26,10 +18,8 @@ const CreateNewTemplate=(props)=>{
             console.log(response.data);
             if(response.data.message === 'failure'){
                 toast.error(`Failure!! ${response.data.data}`, {
-                    // Set to 15sec
                     position: toast.POSITION.TOP_RIGHT, autoClose:3000})
-                //toast.warning(`Failure!! ${response.data.data}`);
-            }
+                }
             if(response.data.message === 'success'){
                 toast.success("posted successfully");
             }
