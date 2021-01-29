@@ -3,7 +3,7 @@ import CreateNewTemplate from './CreateNewTemplate';
 const Content=(props)=>{
     return (
         <div className="bg">
-            <CreateNewTemplate userEmail={props.useremail} canShow={props.createNew}/>
+            <CreateNewTemplate userEmail={props.useremail} loggedIn={ props.loggedIn } canShow={props.createNew}/>
         </div>
     )
 }

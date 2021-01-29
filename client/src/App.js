@@ -66,7 +66,7 @@ const App =()=> {
     return (
       <div>
         <Navbar signIn={ signIn } signOut={ signOut } useremail={ useremail }  loggedIn={ loggedIn } createNewTemplate={createNewTemplate} />
-        <Content style={{ opacity:0.2 }} useremail={ useremail } createNew={createNew}/>
+        <Content style={{ opacity:0.2 }} useremail={ useremail } createNew={createNew} loggedIn={ loggedIn }/>
       </div>
     );
 

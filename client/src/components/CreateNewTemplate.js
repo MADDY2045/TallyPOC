@@ -29,7 +29,7 @@ const CreateNewTemplate=(props)=>{
 
     return (
         <div>
-        { props.canShow ? <div className="container1 col-md-offset-9 col-md-9 text-center">
+        { props.canShow && props.loggedIn ? <div className="container1 col-md-offset-9 col-md-9 text-center">
         <div className="row">
             <div className="col-md-offset-6 col-md-6 text-center">
                 <h1 className='text-dark'>Create New Template</h1>
