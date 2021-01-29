@@ -1,10 +1,24 @@
-import React,{ useEffect } from 'react'
+import React,{ useEffect,useState } from 'react'
 
 const CreateNewTemplate=(props)=>{
+
+    const [inputsValue, setValues] = useState({})
 
     useEffect(()=>{
         console.log('props are....',props);
     },[props])
+
+    // const inputOnChange=(event)=>{
+    //     const { name, value } = event.target
+    //     setValues({
+    //         ...inputsValue,
+    //         [name]: value
+    //     })
+    // }
+
+    const handleTemplateCreation =()=>{
+        console.log(inputsValue);
+    }
 
     return (
         <div>
@@ -13,7 +27,6 @@ const CreateNewTemplate=(props)=>{
             <div className="col-md-offset-6 col-md-6 text-center">
                 <h1 className='text-dark'>Create New Template</h1>
                 <div className="form-login">
-
                     <select className="custom-select" id="inputGroupSelect01">
                         <option defaultValue>Choose Category</option>
                         <option value="account_update">Account Update</option>
@@ -28,14 +41,44 @@ const CreateNewTemplate=(props)=>{
                         <option value="alert_update">Alert Update</option>
                         <option value="auto_reply">Auto Reply</option>
                     </select>
-                    <input type="text" id="userPassword" className="form-control " placeholder="whatsapp_account_uid"/>
-                    <input type="text" id="userName" className="form-control " placeholder="name"/>
-                    <input type="text" id="userPassword" className="form-control " placeholder="language_code"/>
-                    <input type="text" id="userName" className="form-control " placeholder="attachment"/>
-                    <input type="text" id="userPassword" className="form-control " placeholder="text"/>
+                    <input
+                   onChange={(e)=>setValues({...inputsValue,[e.target.name]: e.target.value})}
+                    type="text"
+                    id="userPassword"
+                    className="form-control "
+                    name="whatsapp_account_uid"
+                    placeholder="whatsapp_account_uid"/>
+                    <input
+                   onChange={(e)=>setValues({...inputsValue,[e.target.name]: e.target.value})}
+                    type="text"
+                    id="userName"
+                    className="form-control "
+                    name="name"
+                    placeholder="name"/>
+                    <input
+                   onChange={(e)=>setValues({...inputsValue,[e.target.name]: e.target.value})}
+                    type="text"
+                    id="userPassword"
+                    className="form-control "
+                    name="language_code"
+                    placeholder="language_code"/>
+                    <input
+                   onChange={(e)=>setValues({...inputsValue,[e.target.name]: e.target.value})}
+                    type="text"
+                    id="userName"
+                    className="form-control "
+                    name="attachment"
+                    placeholder="attachment"/>
+                    <input
+                   onChange={(e)=>setValues({...inputsValue,[e.target.name]: e.target.value})}
+                    type="text"
+                    id="userPassword"
+                    className="form-control "
+                    name="text"
+                    placeholder="text"/>
                     <div className="wrapper">
                             <span className="group-btn">
-                                <button href="#" className="btn btn-danger btn-md">CREATE <i className="fa fa-sign-in"></i></button>
+                                <button onClick={ handleTemplateCreation } className="btn btn-danger btn-md">CREATE <i className="fa fa-sign-in"></i></button>
                             </span>
                     </div>
                 </div>
