@@ -33,8 +33,8 @@ const CreateNewTemplate=(props)=>{
                     <select
                     onChange={(e)=>setValues({...inputsValue,[e.target.name]: e.target.value})}
                     className="custom-select" name="category" id="inputGroupSelect01">
-                        { Object.keys(options).map(item=>{
-                            return <option value={item}>{options[item]}</option>
+                        { Object.keys(options).map( (item,index)=>{
+                            return <option key = {index} value={item}>{options[item]}</option>
                         })}
                     </select>
                     <input
