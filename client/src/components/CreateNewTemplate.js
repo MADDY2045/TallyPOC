@@ -2,14 +2,10 @@ import React,{ useEffect,useState } from 'react'
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
+import options from '../DropdownOptions';
 const CreateNewTemplate=(props)=>{
 
     const [inputsValue, setValues] = useState({})
-
-    useEffect(()=>{
-        console.log('props are....',props);
-    },[props])
 
     const handleTemplateCreation =()=>{
         console.log(inputsValue);
@@ -37,18 +33,9 @@ const CreateNewTemplate=(props)=>{
                     <select
                     onChange={(e)=>setValues({...inputsValue,[e.target.name]: e.target.value})}
                     className="custom-select" name="category" id="inputGroupSelect01">
-                        <option defaultValue>Choose Category</option>
-                        <option value="account_update">Account Update</option>
-                        <option value="payment_update">Payment Update</option>
-                        <option value="personal_finance_update">Personal Finance Update</option>
-                        <option value="shipping_update">Shipping Update</option>
-                        <option value="reservation_update">Reservation Update</option>
-                        <option value="issue_resolution">Issue Resolution</option>
-                        <option value="appointment_update">Appointment Update</option>
-                        <option value="transportation_update">Transportation Update</option>
-                        <option value="ticket_update">Ticket Update</option>
-                        <option value="alert_update">Alert Update</option>
-                        <option value="auto_reply">Auto Reply</option>
+                        { Object.keys(options).map(item=>{
+                            return <option value={item}>{options[item]}</option>
+                        })}
                     </select>
                     <input
                    onChange={(e)=>setValues({...inputsValue,[e.target.name]: e.target.value})}

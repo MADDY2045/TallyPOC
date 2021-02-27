@@ -6,7 +6,6 @@ import Content from './components/Content';
 import { Route,Switch } from 'react-router-dom';
 import axios from 'axios';
 import { useGoogleLogin,useGoogleLogout } from 'react-google-login';
-
 const clientId = '485008776010-mj3o94klbaj6kq2885u72lft8v999p7s.apps.googleusercontent.com';
 
 const App =()=> {
@@ -23,13 +22,11 @@ const App =()=> {
     const refreshToken= async()=>{
       const newAuthRes = await res.reloadAuthResponse();
       refreshTiming = (newAuthRes.expires_in || 3600-5 * 60) * 1000;
-      console.log(`newAuthRes: ${JSON.stringify(newAuthRes,null,2)}`);
       setTimeout(refreshToken,refreshTiming);
     }
     setTimeout(refreshToken,refreshTiming);
     axios.post('http://localhost:7045/handleuser',{data:reloadResponse.id_token})
     .then(response=>{
-        console.log('response....',response.data);
         if(response.data.userId){
             setLoggedIn(true);
             setUserEmail(response.data.email);

@@ -9,8 +9,6 @@ const [ email,setEmail ] = useState('');
 const [ classtype,setClassType ] = useState('nav-link active');
 
 const handleSubmit =()=>{
-    console.log(`sid is ${sid}`);
-    console.log(`token is ${token}`);
     let data = {sid,token,email }
 
     axios.post('http://localhost:7045/setcredentials',data)
