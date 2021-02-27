@@ -13,7 +13,9 @@ const App =()=> {
 
   const [ createNew,setCreateNew ] = useState(false);
   const [loggedIn,setLoggedIn] = useState(false);
-  const [ useremail,setUserEmail ] = useState('')
+  const [ useremail,setUserEmail ] = useState('');
+  const [ userName,setUserName ] = useState('');
+  const [ imageUrl,setImageUrl ] = useState('');
 
   const onSuccess = async (res)=>{
     var reloadResponse = await res.reloadAuthResponse();
@@ -27,10 +29,12 @@ const App =()=> {
     setTimeout(refreshToken,refreshTiming);
     axios.post('http://localhost:7045/handleuser',{data:reloadResponse.id_token})
     .then(response=>{
-        console.log(response.data);
+        console.log('response....',response.data);
         if(response.data.userId){
             setLoggedIn(true);
-            setUserEmail(response.data.email)
+            setUserEmail(response.data.email);
+            setUserName(response.data.fullname);
+            setImageUrl(response.data.pictureurl);
         }
     })
     .catch(err=>console.log(`error in handling token id ${err}`))
@@ -43,6 +47,8 @@ const App =()=> {
   const onLogoutSuccess = ()=>{
     console.log(`Logged out successfully!! `);
     setLoggedIn(false);
+    setUserName('');
+    setImageUrl('');
   }
 
   const { signIn } = useGoogleLogin({
@@ -79,7 +85,16 @@ const App =()=> {
   },[loggedIn,createNew])
     return (
       <div>
-        <Navbar signIn={ signIn } signOut={ signOut } useremail={ useremail }  loggedIn={ loggedIn } createNewTemplate={createNewTemplate} listAllTemplates={ listAllTemplates } getStatus={ getStatus }/>
+        <Navbar
+        userName = { userName }
+        imageUrl = { imageUrl }
+        signIn={ signIn }
+        signOut={ signOut }
+        useremail={ useremail }
+        loggedIn={ loggedIn }
+        createNewTemplate={createNewTemplate}
+        listAllTemplates={ listAllTemplates }
+        getStatus={ getStatus }/>
         <Content style={{ opacity:0.2 }} useremail={ useremail } createNew={createNew} loggedIn={ loggedIn }/>
       </div>
     );

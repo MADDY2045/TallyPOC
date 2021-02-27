@@ -62,6 +62,10 @@ useEffect(()=>{
                     <span onClick={ props.signOut } className="nav-link">{props.loggedIn ? 'Log out':null}</span>
                 </li>
                 </ul>
+                <ul className="nav navbar-nav ml-auto" >
+                    <li className="nav-item" style={{color:"white",margin: "5px 10px"}}>{ props.userName.length > 0 ? `welcome! ${props.userName}`:null}</li>
+                    <li className="nav-item">{ props.imageUrl.length > 0 ? <img style={{borderRadius:"100%",width: "36px"}} src={props.imageUrl} alt="test"/>:null}</li>
+                </ul>
             </nav>
             <div className="modal fade" id="exampleModalCenter" tabIndex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div className="modal-dialog modal-dialog-centered" role="document">
