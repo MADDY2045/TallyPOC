@@ -49,18 +49,14 @@ const App=()=>{
       tempObj.email = email;
       console.log(tempObj);
       tempArray.push(tempObj);
-      console.log('temparray is ...',tempArray)
+      //console.log('temparray is ...',tempArray)
       setUserArray([...userArray,...tempArray]);
       setFormFlag(true);
       setShow(false);
     }
   }
 
-  useEffect(()=>{
-    console.log('userArray changed..',userArray)
-  },[userArray])
-
-  const handleChange=(param,value)=>{
+   const handleChange=(param,value)=>{
     switch(param){
       case 'firstname':
         setFirstName(value);
