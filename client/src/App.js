@@ -36,10 +36,10 @@ const App=()=>{
     console.log("...........submitted.........");
     let createdDate = dateformat(new Date(),"dd/mm/yyyy");
     setCreateDate(createdDate);
-    var pattern=/^(0|[+91]{3})?[7-9][0-9]{9}$/;
+    let pattern=/^([+91]{3})?[7-9]{1}[0-9]{9}$/;
     if(!pattern.test(mobile)) setValidMobile(false);
     else{
-
+      console.log('entered valid pattern...')
       setId(uuidv4());
       tempObj.id = id;
       tempObj.createdate = createDate;
