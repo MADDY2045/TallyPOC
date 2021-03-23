@@ -33,13 +33,11 @@ const App=()=>{
     e.preventDefault();
     let tempArray = [];
     let tempObj = {};
-    console.log("...........submitted.........");
     let createdDate = dateformat(new Date(),"dd/mm/yyyy");
     setCreateDate(createdDate);
     let pattern=/^([+91]{3})?[7-9]{1}[0-9]{9}$/;
     if(!pattern.test(mobile)) setValidMobile(false);
     else{
-      console.log('entered valid pattern...')
       setId(uuidv4());
       tempObj.id = id;
       tempObj.createdate = createDate;
@@ -47,9 +45,7 @@ const App=()=>{
       tempObj.lastName = lastName;
       tempObj.mobile = mobile;
       tempObj.email = email;
-      console.log(tempObj);
       tempArray.push(tempObj);
-      //console.log('temparray is ...',tempArray)
       setUserArray([...userArray,...tempArray]);
       setFormFlag(true);
       setShow(false);
@@ -78,7 +74,6 @@ const App=()=>{
 
   const callTablebody = ()=>{
     if(userArray.length > 0){
-      console.log('inside function...',userArray)
       return userArray.map( (item,index)=>{
         return(<tr key={index}>
             <td>{item.firstname}</td>
