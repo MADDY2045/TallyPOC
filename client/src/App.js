@@ -1,93 +1,107 @@
 import React,{ useState,useEffect } from 'react'
 import { v4 as uuidv4 } from 'uuid';
+import UserModal from './components/UserModal';
 import './App.css';
 import dateformat from 'dateformat';
-var validator = require("email-validator");
-
 
 const App=()=>{
-  const [id,setId] = useState('');
+  const [id,setId] = useState(uuidv4());
   const [firstname,setFirstName] = useState('');
   const [lastName,setLastName] = useState('');
   const [mobile,setMobile] = useState('');
   const [email,setEmail] = useState('');
   const [formFlag,setFormFlag] = useState(false);
-  const [emailFlag,setEmailFlag] = useState(false);
-  const [mobileFlag,setMobileFlag ] = useState(false)
-  const [ createDate,setCreateDate ] = useState('');
+  const [validMobile,setValidMobile ] = useState(true)
+  const [ createDate,setCreateDate ] = useState(dateformat(new Date(),"dd/mm/yyyy"));
   const [ userArray,setUserArray ] = useState([]);
+  const [ addUserButtonFlag,setAddUserButtonFlag ] = useState(false)
+
+  //modal
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
   useEffect(()=>{
-    console.log(`uuid is ${uuidv4()}`);
-    setId(id);
-  },[])
-
-  useEffect(()=>{
-    console.log('value changeg',firstname);
-    console.log('value changeg',lastName);
-
-  },[firstname,lastName]);
-
-  let tempArray = [];
-  const handleSubmit=()=>{
-
-    let tempObj = {};
-    tempObj.id = id;
-    tempObj.firstname = firstname;
-    tempObj.lastName = lastName;
-    tempObj.mobile = mobile;
-    tempObj.email = email;
-
-    let createdDate = dateformat(new Date(),"dd/MM/yy");
-
-    console.log(`created date is ${createdDate} `)
-    tempObj.createdate = setCreateDate(createdDate);
-    console.log(tempObj);
-    validateFormValues(mobile,email);
-    setTimeout(()=>{
-      if(emailFlag && mobileFlag) {
-        tempArray.push(tempObj);
-        setUserArray([tempObj]);
-        setFormFlag(true);
-      }else{
-        return alert("please enter mandatory fields");
-      }
-    },0)
-  }
-
-  const validateFormValues=(mobile,email)=>{
-    setEmailFlag(validator.validate(email));
-    if(mobile.length !== 10){
-      return setMobileFlag(false)
+    if(!firstname || !lastName || !mobile || !email){
+      setAddUserButtonFlag(false);
     }else{
-      setMobileFlag(true)
-    };
+      setAddUserButtonFlag(true);
+    }
+  },[firstname,lastName,mobile,email]);
+
+  const handleSubmit=(e)=>{
+    e.preventDefault();
+    let tempArray = [];
+    let tempObj = {};
+    console.log("...........submitted.........");
+    let createdDate = dateformat(new Date(),"dd/mm/yyyy");
+    setCreateDate(createdDate);
+    var pattern=/^(0|[+91]{3})?[7-9][0-9]{9}$/;
+    if(!pattern.test(mobile)) setValidMobile(false);
+    else{
+
+      setId(uuidv4());
+      tempObj.id = id;
+      tempObj.createdate = createDate;
+      tempObj.firstname = firstname;
+      tempObj.lastName = lastName;
+      tempObj.mobile = mobile;
+      tempObj.email = email;
+      console.log(tempObj);
+      tempArray.push(tempObj);
+      console.log('temparray is ...',tempArray)
+      setUserArray([...userArray,...tempArray]);
+      setFormFlag(true);
+      setShow(false);
+    }
   }
+
+  useEffect(()=>{
+    console.log('userArray changed..',userArray)
+  },[userArray])
+
+  const handleChange=(param,value)=>{
+    switch(param){
+      case 'firstname':
+        setFirstName(value);
+        break;
+      case 'lastname':
+        setLastName(value);
+        break;
+      case 'mobile':
+        setValidMobile(true);
+        setMobile(value);
+        break;
+      case 'email':
+        setEmail(value);
+        break;
+      default:
+        break;
+    }
+  }
+
+  const callTablebody = ()=>{
+    if(userArray.length > 0){
+      console.log('inside function...',userArray)
+      return userArray.map( (item,index)=>{
+        return(<tr key={index}>
+            <td>{item.firstname}</td>
+            <td>{item.email}</td>
+            <td>{item.mobile}</td>
+            <td>{item.createdate}</td>
+        </tr>)
+    })
+    }else{
+      return;
+    }
+  }
+
   return (
     <div className="container card">
-       <button className="btn btn-primary mt-5" onClick={ handleSubmit }>Add</button>
-      <div className="row">
-
-          <div className="col-md-5">
-            <label>FirstName</label>
-              <input className="form-control" name="firstname" type="text" onChange={(e)=>setFirstName(e.target.value)}/>
-          </div>
-          <div className="col-md-5">
-          <label>FirstName</label>
-              <input className="form-control" name="lastname" type="text" onChange={(e)=>setLastName(e.target.value)}/>
-          </div>
+      <div className="text-right mr-5">
+       <button className="btn btn-primary mt-5 col-md-2" onClick={ ()=>setShow(true) }>Add User</button>
       </div>
-      <div className="row">
-          <div className="col-md-5">
-            <label>Mobile</label>
-              <input className="form-control" name="mobile" type="text" onChange={(e)=>setMobile(e.target.value)}/>
-          </div>
-          <div className="col-md-5">
-          <label>Email</label>
-              <input className="form-control" name="email" type="email" onChange={(e)=>setEmail(e.target.value)}/>
-          </div>
-      </div>
-      { formFlag ? <div className="row">
+      { formFlag || userArray.length > 0 ? <div className="row">
         <div className="col-md-10">
           <div className="table table-responsive m-5">
           <table className="table table-bordered table-striped">
@@ -100,19 +114,20 @@ const App=()=>{
                 </tr>
               </thead>
               <tbody>
-                { userArray && userArray.length>0 && userArray.map( item=>{
-                    return(<tr key={item.id}>
-                        <td>{`${item.firstname} ${item.lastName}`}</td>
-                        <td>{item.email}</td>
-                        <td>{item.mobile}</td>
-                        <td>{item.createDate}</td>
-                    </tr>)
-                })}
-                </tbody>
+                {callTablebody()}
+              </tbody>
             </table>
           </div>
         </div>
       </div>:null}
+      <UserModal
+      show={ show }
+      validMobile = { validMobile }
+      addUserButtonFlag = { addUserButtonFlag }
+      handleClose={ handleClose }
+      handleShow={ handleShow }
+      handleChange={ handleChange }
+      handleSubmit={ handleSubmit } />
     </div>
   )
 }
